@@ -9,7 +9,7 @@ Um sie wie gewohnt als Notebooks zu nutzen, öffne sie mit jupyterlab und dem ju
 1. Installiere die requirements.txt via 
 ```
 pip install --upgrade pip
-pip install -r requirements.txt`
+pip install -r requirements.txt
 ```
 2. Öffne jupyterlab via `python -m jupyterlab`. (Ich bin mir nicht sicher, welche Konsole ihr in Windows benutzt). Es sollte sich anschließend der Browser öffnen und ihr seht jupyterlab.
 4. In jupyterlab: Rechte Maustaste auf die .py Datei und "Open with Notebook" auswählen.
