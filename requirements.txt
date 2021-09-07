@@ -3,3 +3,4 @@ numpy
 pyarrow
 jupyterlab
 jupytext
+tqdm
