@@ -66,7 +66,7 @@ verlustliste.info()
 
 # %%
 df_region = verlustliste.location.str.split(",", expand=True)
-df_region.rename(columns={col:f"part {col}" for col in df_region.columns}, inplace=True)
+df_region.rename(columns={col:f"part_{col}" for col in df_region.columns}, inplace=True)
 df_region
 
 # %%
@@ -76,7 +76,7 @@ verlustliste = verlustliste.join(df_region)
 verlustliste
 
 # %%
-(~verlustliste["part 4"].isna()).sum()
+(~verlustliste["part_4"].isna()).sum()
 
 # %%
 verlustliste.info()
