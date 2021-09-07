@@ -6,17 +6,16 @@
 #       extension: .py
 #       format_name: percent
 #       format_version: '1.3'
-#       jupytext_version: 1.11.4
+#       jupytext_version: 1.11.5
 #   kernelspec:
-#     display_name: Python 3 (ipykernel)
+#     display_name: Python 3.9 (compgen2)
 #     language: python
-#     name: python3
+#     name: compgen2
 # ---
 
 # %%
 import pandas as pd
 import numpy as np
-import matplotlib.pyplot as plt
 
 # %% [markdown]
 # # Read in TSV
@@ -58,6 +57,35 @@ verlustliste
 
 # %%
 verlustliste.query("loc_parts_count in [4,5]")
+
+# %%
+verlustliste.info()
+
+# %% [markdown]
+# # Add regions as columns
+
+# %%
+df_region = verlustliste.location.str.split(",", expand=True)
+df_region.rename(columns={col:f"part {col}" for col in df_region.columns}, inplace=True)
+df_region
+
+# %%
+verlustliste = verlustliste.join(df_region)
+
+# %%
+verlustliste
+
+# %%
+(~verlustliste["part 4"].isna()).sum()
+
+# %%
+verlustliste.info()
+
+# %%
+verlustliste["part 1"] = pd.arrays.SparseArray(verlustliste["part 1"])
+verlustliste["part 2"] = pd.arrays.SparseArray(verlustliste["part 2"])
+verlustliste["part 3"] = pd.arrays.SparseArray(verlustliste["part 3"])
+verlustliste["part 4"] = pd.arrays.SparseArray(verlustliste["part 4"])
 
 # %%
 verlustliste.info()

@@ -1,6 +1,7 @@
 pandas
 numpy
 pyarrow
+jupyter
 jupyterlab
 jupytext
 tqdm
