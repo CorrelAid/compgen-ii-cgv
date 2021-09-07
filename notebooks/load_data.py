@@ -67,7 +67,12 @@ verlustliste.info()
 # %%
 df_region = verlustliste.location.str.split(",", expand=True)
 df_region.rename(columns={col:f"part_{col}" for col in df_region.columns}, inplace=True)
+df_region = df_region.apply(lambda col: col.str.strip())
+
 df_region
+
+# %%
+df_region.loc[7]["part_1"]
 
 # %%
 verlustliste = verlustliste.join(df_region)
@@ -107,5 +112,7 @@ verlustliste
 
 # %%
 verlustliste.info()
+
+# %%
 
 # %%
