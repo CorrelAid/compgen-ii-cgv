@@ -30,18 +30,19 @@ class Pipeline:
         assert not self.vl.empty
         assert not self.gov_cities.empty
         assert not self.gov_districts.empty
-        
+
         print("preprocessing data...")
         self.preprocess()
-        
+
         print("matching data with gov...")
         self.get_matches()
         assert not self.matches.empty
         assert self.matches.shape[1] == 3  # should be a data frame with 3 columns
         assert len(self.matches) == len(self.vl)  # should have the same length like vl
-        
+
         print("saving pipeline and data to ./log...")
         self.output()
+        print(str(self))
 
     def __prepare_pipeline(self):
         pipeline_dir = Pipeline.dir_log / "pipeline"
@@ -53,7 +54,7 @@ class Pipeline:
             last_model_path = list(pipeline_dir.glob("*.pickle"))[-1]
             with open(last_model_path, "rb") as stream:
                 last_model: Pipeline = pickle.load(stream)
-                
+
             if last_model.hash != self.hash:
                 self.version = last_model.version + 1
 
@@ -63,54 +64,54 @@ class Pipeline:
             pickle.dump(self, stream, pickle.HIGHEST_PROTOCOL)
 
     def load_data(self):
-        """ load important data like Verlustliste and GOV lists
-        
+        """load important data like Verlustliste and GOV lists
+
         Here you can set self.vl, self.gov_cities and self.gov_districts
         """
         self.vl = Pipeline.read_vl(Pipeline.dir_vl)
         self.gov_cities = Pipeline.read_gov(Pipeline.dir_gov_cities)
         self.gov_districts = Pipeline.read_gov(Pipeline.dir_gov_districts)
-        
 
     def preprocess(self):
-        """ preprocess data to improve performance of matching algorithm 
-        
+        """preprocess data to improve performance of matching algorithm
+
         Here you can alter self.vl, self.gov_cities and self.gov_districts
         """
         pass
 
     def get_matches(self) -> pd.Series:
-        """ Get match for each entry of self.vl
-        
-        Here you can implement the matching algorithm. 
-        
+        """Get match for each entry of self.vl
+
+        Here you can implement the matching algorithm.
+
         Returns:
-               (pd.DataFrame): A data frame with three columns: the original location name as in vl, the matched gov id and an uncertainty score 
+               (pd.Series): A series with the matched IDs from GOV (or something that can be interpreted that way)
         """
-        self.matches = pd.DataFrame({"location": self.vl.location, "id": "", "score": 0})
-        
+        self.matches = pd.DataFrame({"location": self.vl.location, "id": "", "score": 0}, index=self.vl.index)
+
     def evaluate(self) -> tuple[int, int]:
-        """ Evaluate the results of the matching algorithm 
-        
+        """Evaluate the results of the matching algorithm
+
         Here you can evaluate the performance of the matching algorithm
-        
-        Returns: 
+
+        Returns:
             (tuple[int, float]): tuple of two values: absolute and relative number of matches
         """
         nr_matches = len(self.matches) - sum(self.matches["id"].eq(""))
         return nr_matches, nr_matches / len(self.matches)
-        
-            
+
     def output(self):
-        """ Append results to the pipeline log """
+        """Append results to the pipeline log"""
         output_file = Pipeline.dir_log.joinpath(self.get_pipeline_name() + ".log")
         with open(output_file, "a", encoding="utf-8") as stream:
             stream.write(str(self))
             stream.write("\n")
-            
-        output_file = Pipeline.dir_log.joinpath(self.get_pipeline_name() + "_matches.csv")
+
+        output_file = Pipeline.dir_log.joinpath(
+            self.get_pipeline_name() + "_matches.csv"
+        )
         self.matches.to_csv(output_file, index=False)
-        
+
     def __str__(self) -> str:
         return (
             f"{self.__class__.__name__} version {self.version} | vl: {len(self.vl):,} lines"
@@ -118,14 +119,14 @@ class Pipeline:
             f" | gov districts: {len(self.gov_districts):,} lines"
             f" | matches: {self.evaluate()[0]:,} ({self.evaluate()[1]:.2f})"
         )
-    
+
     def get_pipeline_name(self) -> str:
         return f"{self.__class__.__name__.lower()}_v{self.version:02}"
-                 
+
     def __get_pipeline_hash(self) -> bytes:
         m = hashlib.sha256()
         m.update(inspect.getsource(self.__class__).encode())
-        
+
         return m.digest()
 
     @staticmethod
