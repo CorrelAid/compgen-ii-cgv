@@ -17,7 +17,7 @@ class Pipeline:
         self.vl = pd.DataFrame()
         self.gov_cities = pd.DataFrame
         self.gov_districts = pd.DataFrame()
-        self.matches = pd.Series(dtype='object')
+        self.matches = pd.DataFrame()
         self.hash = b""
         self.version = 1
 
@@ -25,10 +25,22 @@ class Pipeline:
         self.hash = self.__get_pipeline_hash()
         self.__prepare_pipeline()
 
+        print("loading data...")
         self.load_data()
+        assert not self.vl.empty
+        assert not self.gov_cities.empty
+        assert not self.gov_districts.empty
+        
+        print("preprocessing data...")
         self.preprocess()
+        
+        print("matching data with gov...")
         self.get_matches()
-        self.evaluate()
+        assert not self.matches.empty
+        assert self.matches.shape[1] == 3  # should be a data frame with 3 columns
+        assert len(self.matches) == len(self.vl)  # should have the same length like vl
+        
+        print("saving pipeline and data to ./log...")
         self.output()
 
     def __prepare_pipeline(self):
@@ -73,9 +85,9 @@ class Pipeline:
         Here you can implement the matching algorithm. 
         
         Returns:
-               (pd.Series): A Series with self.vl.location as index and the Gov ID as value 
+               (pd.DataFrame): A data frame with three columns: the original location name as in vl, the matched gov id and an uncertainty score 
         """
-        self.matches = pd.Series("", index=self.vl.location)
+        self.matches = pd.DataFrame({"location": self.vl.location, "id": "", "score": 0})
         
     def evaluate(self) -> tuple[int, int]:
         """ Evaluate the results of the matching algorithm 
@@ -83,9 +95,9 @@ class Pipeline:
         Here you can evaluate the performance of the matching algorithm
         
         Returns: 
-            (tuple[int, float]): tuple of two values:absolute number of matches and relative number of non matches
+            (tuple[int, float]): tuple of two values: absolute and relative number of matches
         """
-        nr_matches = len(self.matches) - sum(self.matches.eq(""))
+        nr_matches = len(self.matches) - sum(self.matches["id"].eq(""))
         return nr_matches, nr_matches / len(self.matches)
         
             
@@ -97,9 +109,7 @@ class Pipeline:
             stream.write("\n")
             
         output_file = Pipeline.dir_log.joinpath(self.get_pipeline_name() + "_matches.csv")
-        self.matches.name = "ID"
-        self.matches.index.name = "location"
-        self.matches.to_csv(output_file)
+        self.matches.to_csv(output_file, index=False)
         
     def __str__(self) -> str:
         return (
