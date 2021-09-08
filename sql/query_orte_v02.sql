@@ -3,7 +3,7 @@ with recursive new_table as
     select o.child, o.parent, o.time_begin, o.time_end
     from relation o 
     /*190315=Deutches Reich, 191050=Schweiz, 306245=Österreich-Ungarn, 220100=Liechtenstein, 218129=Luxemburg*/
-    where o.parent in ("190315", "191050", "306245", "2201000", "218129") 
+    where o.parent in ("190315", "191050", "306245", "220100", "218129") 
     union
     select o.child, o.parent , o.time_begin, o.time_end
     from relation o, new_table c 
