@@ -2,8 +2,9 @@ with recursive new_table as
 (
     select o.child, o.parent, o.time_begin, o.time_end
     from relation o 
-    where o.parent = "190315" /*190315 = Deutches Reich*/
-    union 
+    /*190315=Deutches Reich, 191050=Schweiz, 306245=Österreich-Ungarn, 220100=Liechtenstein, 218129=Luxemburg*/
+    where o.parent in ("190315", "191050", "306245", "2201000", "218129") 
+    union
     select o.child, o.parent , o.time_begin, o.time_end
     from relation o, new_table c 
     where o.parent = c.child
@@ -34,6 +35,11 @@ and g1.id in
     and 
     (
         /*p2.type_object in ('5', '32', '36', '37', '110', '99', '78', '2', '149', '211', '212', '95') /* Kreisähnliche Gebilde */
+        /*or
+        /*p2.type_object in ('270', '25', '207', '134') /* Kreisähnlich Österreich-Ungarn, Schweiz*/
+        /*or*/
+        p2.type_object in ('275', '136') /* Unterste Verwaltungsseinheit Österreich-Ungarn, Schweiz */
+        or
         p2.type_object in ('1', '53', '95', '18', '85', '144', '150', '218') /* unterste Verwaltungseinheiten */
         or 
         p2.type_object in ('51', '55', '120', '230', '54', '39', '69', '129', '40', '54') /* unterste Wohnplätze */
@@ -55,6 +61,10 @@ Landgebiet  211
 Landherrschaft  212
 Kreisfreie Stadt    95
 Stadtteil (Verwaltung)  262
+Bezirk (Österreich) 270
+Kanton (Schweiz)    25
+Oberamt/Oberamtsbezirk  207
+Arrondissement (Schweiz) 134
 */
 
 /* ------ Unterste Verwaltungseinheiten
@@ -66,8 +76,9 @@ Landgemeinde    85
 Ortschaft   144
 Stadt (Gebietskörperschaft) 150
 Stadt (Einheitsgemeinde) 218
+Stadtgemeinde (Österreich) 275
+commune (Schweiz)   136
 Stadtrat (UDSSR)
-Stadtgemeinde (Österreich)
 Stadt- und Landgemeinde (Polen)
 */
 
