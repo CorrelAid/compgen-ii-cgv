@@ -7,7 +7,7 @@
 #       extension: .py
 #       format_name: percent
 #       format_version: '1.3'
-#       jupytext_version: 1.11.4
+#       jupytext_version: 1.11.5
 #   kernelspec:
 #     display_name: Python 3 (ipykernel)
 #     language: python
@@ -17,7 +17,6 @@
 # %%
 import pandas as pd
 import numpy as np
-import matplotlib.pyplot as plt
 
 # %% [markdown]
 # # Load GOV Liste
@@ -26,14 +25,14 @@ import matplotlib.pyplot as plt
 gov = pd.read_parquet("../data/gov_orte_v01.parquet")
 
 # Entferne Duplikate
-gov = gov.drop_duplicates(subset='location', keep="first")
+#gov = gov.drop_duplicates(subset='location', keep="first")
 gov
 
 # %%
 gov_kreise = pd.read_parquet("../data/gov_kreise_v01.parquet")
 
 # Entferne Duplikate 
-gov_kreise = gov_kreise.drop_duplicates(subset='location', keep="first")
+#gov_kreise = gov_kreise.drop_duplicates(subset='location', keep="first")
 gov_kreise
 
 # %% [markdown]
@@ -127,56 +126,29 @@ rest_2e.sort_values(by=['region'])
 # ## match verlustliste gegen gov und gov_kreise
 
 # %%
-verlustliste.query("location in @gov.location or location in @gov_kreise.location")
+matches = verlustliste[[f"part_{i}" for i in range(5)]].apply(lambda col: col.isin(gov.location) | col.isin(gov_kreise.location) | col.isna(), axis=0)
 
-# %%
-verlustliste_mit_regionen = verlustliste.location.str.split(",", expand=True)
-verlustliste_mit_regionen.columns = ["location", "1","2","3","4"]
-
-# %%
-verlustliste_mit_regionen
-
-# %%
-gov_all = pd.concat([gov.location, gov_kreise.location])
-
-# %%
-gov_all
-
-# %%
-# Welche 1. Einträge matchen mit GOV, egal ob mit oder ohne weiteren Bestandteilen
-verlustliste_mit_regionen.query("location in @gov_all") 
-
-# %%
-len(verlustliste_mit_regionen.query("location in @gov.location or location in @gov_kreise.location")) / len(verlustliste)
+matches
 
 # %% [markdown]
-# Demnach matchen 44% aller Einträge mit dem GOV, wenn man nur den allerersten Bestandteil nimmt, egal ob danach noch weitere Bestandteile kommen
+# Annahme: Eine einfache Basline ist dann erfüllt, wenn wir alle Bestandteile mit dem GOV matchen. Es ist zwar dann noch nicht die eindeutige ID ermittelt aber alle Bestandteile kommen vor so dass es prinzipiell möglich sein sollte die ID herauszufinden.
 
 # %%
-verlustliste = verlustliste.append(verlustliste.location.str.split(",", expand=True))
+matches.all(axis=1)
 
 # %%
-verlustliste.loc[10]
+verlustliste.query("loc_parts_count == 2")
 
 # %%
-verlustliste.iloc[10, 0:5].isin(gov.location)
+matches.loc[7]
 
 # %%
-matches = []
-for loc in verlustliste.location:
-    parts = loc.split(",")
-    for part in parts:
-        if part not in gov.location or part not in gov_kreise.location:
-            matches.append("")
-            continue
-    
-    first_part = parts[0]
-    if first_part in gov.location:
-        matches.append(gov.query("location == @first_part")["id"])
-    else:
-        matches.append(gov_kreise.query("location == @first_part")["id"])
+verlustliste.loc[7]["part_1"]
 
 # %%
-matches = pd.Series(matches, index=verlustliste.location)
+gov[gov.location.str.contains("Hadersleben")]
+
+# %%
+gov_kreise[gov_kreise.location.str.contains("Hadersleben")]
 
 # %%
