@@ -14,6 +14,7 @@ with recursive new_table as
 ) 
 select *
 from new_table n
+where n.child is not NULL and n.parent is not NULL
 ;
 
 
