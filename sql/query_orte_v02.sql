@@ -45,10 +45,32 @@ and g1.id in
         p2.type_object in ('51', '55', '120', '230', '54', '39', '69', '129', '40', '54') /* unterste Wohnplätze */
     )
 );
-/* ---- Kreisähnliche Gebilde
+
+/* ------ Bundesstaat
 ----- basierend auf https://upload.wikimedia.org/wikipedia/commons/1/17/Karte_Deutsches_Reich%2C_Verwaltungsgliederung_1900-01-01.png
+Königreich  31
+Großherzogtum   61
+Herzogtum   23
+Fürstentum 60
+Land 34   (Lübeck)
+Freistaat 16  (Bremen
+Bundesland  7 (Hamburg)
+Provinz 45 (Elsaß-Lothringen und Untereinheiten von Preußen)
+*/
+
+/* ------- Verwaltungsebene I
+----- basierend auf https://upload.wikimedia.org/wikipedia/commons/1/17/Karte_Deutsches_Reich%2C_Verwaltungsgliederung_1900-01-01.png
+Landeskommissarbezirk (Untereinheiten von Baden)
+*/
+
+
+/* ---- Verwaltungsebene II und Kreisähnliche Gebilde
+----- basierend auf https://upload.wikimedia.org/wikipedia/commons/1/17/Karte_Deutsches_Reich%2C_Verwaltungsgliederung_1900-01-01.png
+Regierungsbezirk    46 (Untereinheiten von Bayern. Im GOV anscheinend eher als Kreis bezeichnet)
+Kreishauptmannschaft    100 (Untereinheiten von Saschsen)
 Bezirk  5
 Kreis   32
+Bezirk  5
 Landkreis 36
 Oberamt 37
 Bezirksamt  110
@@ -65,6 +87,8 @@ Bezirk (Österreich) 270
 Kanton (Schweiz)    25
 Oberamt/Oberamtsbezirk  207
 Arrondissement (Schweiz) 134
+Reichshälfte (Österreich)   215
+Besatzungszone (Österreich - Bosnien Herzigowina)
 */
 
 /* ------ Unterste Verwaltungseinheiten
