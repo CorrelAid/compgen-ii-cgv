@@ -2,14 +2,13 @@
 # ---
 # jupyter:
 #   jupytext:
-#     formats: ipynb,py:percent
 #     text_representation:
 #       extension: .py
 #       format_name: percent
 #       format_version: '1.3'
-#       jupytext_version: 1.11.4
+#       jupytext_version: 1.12.0
 #   kernelspec:
-#     display_name: Python 3 (ipykernel)
+#     display_name: Python 3
 #     language: python
 #     name: python3
 # ---
@@ -130,7 +129,7 @@ for i, count in enumerate(verlustliste.loc_parts_count.unique()):
 
 plt.tight_layout()
 fig.suptitle(f"Die ersten {N} häufigsten Städte pro Anzahl Namensbestandteil")
-    
+
 
 # %% [markdown]
 # Wir sehen, dass die Häufigkeiten stark mit der Anzahl der Namensbestandteile abgeben, je kleiner der Ort bzw. je schwerer zu spezifizieren, desto unbedeutender wird er für die Gesamtstatistik. Nennungen mit 4 oder 5 Bestandteilen kommen absolut gesehen nicht mehr als 2 mal pro Nennung vor. Wie viele gibt es davon?

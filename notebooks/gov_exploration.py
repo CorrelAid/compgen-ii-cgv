@@ -2,14 +2,13 @@
 # ---
 # jupyter:
 #   jupytext:
-#     formats: ipynb,py:percent
 #     text_representation:
 #       extension: .py
 #       format_name: percent
 #       format_version: '1.3'
-#       jupytext_version: 1.11.4
+#       jupytext_version: 1.12.0
 #   kernelspec:
-#     display_name: Python 3 (ipykernel)
+#     display_name: Python 3
 #     language: python
 #     name: python3
 # ---
@@ -22,9 +21,11 @@ import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 
+# %% [markdown]
+# ## Read in gov
+
 # %%
-# read in gov data 
-gov = pd.read_csv("../data/gov_orte_v01.csv", sep="\t", header=None, names=["id", "location"])
+gov = pd.read_parquet("../data/gov_orte_v01.parquet")
 
 # %%
 gov.info()
@@ -70,19 +71,7 @@ gov[gov.location.str.contains(char)]
 # Anmerkung: Es gibt Zahlen und Sonderzeichen in gov_orte.
 
 # %% [markdown]
-# ## Save as parquet
-
-# %%
-gov.to_parquet("../data/gov_orte_v01.parquet")
-
-# %% [markdown]
-# ## Load parquet
-
-# %%
-gov = pd.read_parquet("../data/gov_orte_v01.parquet")
-
-# %% [markdown]
-# # Preprocessing GOV
+# ## Preprocessing GOV
 
 # %%
 # ´ ` und ' vereinheitlichen auf ' 
@@ -111,10 +100,10 @@ gov
 gov.to_parquet("../data/gov_orte_v01_preprocessed.parquet")
 
 # %% [markdown]
-# # Load GOV Kreise 
+# # GOV Kreise 
 
 # %%
-gov_kreise = pd.read_csv("../data/gov_kreise_v01.csv", sep="\t", header=None, names=["id", "location"])
+gov_kreise = pd.read_parquet("../data/gov_orte_v01.parquet")
 
 # %%
 gov_kreise
@@ -136,17 +125,5 @@ sorted(analysis_special_chars.items(), key=itemgetter(1), reverse=True)
 # %%
 dup_kreise = pd.concat(g for _, g in gov_kreise.groupby("location") if len(g) > 1)
 dup_kreise
-
-# %% [markdown]
-# ## Save as parquet
-
-# %%
-gov_kreise.to_parquet("../data/gov_kreise_v01.parquet")
-
-# %% [markdown]
-# ## Load as parquet
-
-# %%
-gov_kreise = pd.read_parquet("../data/gov_orte_v01.parquet")
 
 # %%
