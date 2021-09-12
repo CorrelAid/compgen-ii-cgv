@@ -222,7 +222,18 @@ def build_paths() -> set:
     paths = {p[0] for p in paths} # take path only without time_begin and time_end
     return paths
 
-build_paths()
+paths = build_paths()
+
+# +
+len(paths) # 547932 relations in dataset from parent to some child node
+sum([len(p) for p in paths]) / len(paths) # average relation chain length: 6.7
+
+paths
+# -
+
+# unique IDs in paths
+unique_ids = set((id for p in paths for id in p))
+len(unique_ids)
 
 
 def decode_paths_id(paths:set) -> set:
@@ -242,6 +253,28 @@ def decode_paths_name(paths:set) -> set:
 #decode_paths_name({(306245, 318701, 267743, 306293, 872044)})
 decode_paths_name({ (306245, 318701, 215344, 215408, 364134, 247107, 237565)})
 
+decode_paths_name({  (190315, 190317, 1281054, 218094, 214316, 45289, 89389)})
+
+read_names().query("content == 'Hammerstein'")
+
+# +
+query ="Hammerstein"
+
+all_ids = read_names().query("content == 'Hammerstein'").id
+
+type_dict = build_type_dict()
+type_names = read_type_names()
+
+for id_ in all_ids:
+    for type_ in type_dict[id_]:  
+        print(id_, type_, type_names.loc[type_])
+    
+    for path in paths:
+        if id_ in path:
+            print(decode_paths_name({path}))
+
+
+# -
 
 def filter_paths(paths:set) -> set:
     type_dict = build_type_dict()
@@ -258,6 +291,16 @@ def extract_all_types_from_paths(paths:set) -> set:
 
 
 extract_all_types_from_paths({(306245, 318701, 267743, 306293, 872044)})
+
+
+def decode_paths_type(paths:set) -> set:
+    type_dict = build_type_dict()
+    type_names = read_type_names()
+    paths_decoded = {tuple(type_names.loc[type_dict[o].pop()][0] for o in p) for p in paths}
+    return paths_decoded
+
+
+decode_paths_type({(306245, 318701, 267743, 306293, 872044)})
 
 if __name__ == "__main__":
     types_relevant = extract_all_types_from_paths(filter_paths(build_paths()))
