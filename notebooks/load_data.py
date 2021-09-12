@@ -6,11 +6,11 @@
 #       extension: .py
 #       format_name: percent
 #       format_version: '1.3'
-#       jupytext_version: 1.11.5
+#       jupytext_version: 1.12.0
 #   kernelspec:
-#     display_name: Python 3.9 (compgen2)
+#     display_name: Python 3
 #     language: python
-#     name: compgen2
+#     name: python3
 # ---
 
 # %%
@@ -18,7 +18,7 @@ import pandas as pd
 import numpy as np
 
 # %% [markdown]
-# # Read in TSV
+# # Read in VL
 
 # %%
 verlustliste = pd.read_csv("../data/deutsche-verlustlisten-1wk.tsv", sep="\t", header=None, names=["loc_count", "location"])
@@ -62,7 +62,7 @@ verlustliste.query("loc_parts_count in [4,5]")
 verlustliste.info()
 
 # %% [markdown]
-# # Add regions as columns
+# ## Add regions as columns
 
 # %%
 df_region = verlustliste.location.str.split(",", expand=True)
@@ -96,13 +96,13 @@ verlustliste["part 4"] = pd.arrays.SparseArray(verlustliste["part 4"])
 verlustliste.info()
 
 # %% [markdown]
-# # Store as parquet
+# ## Store as parquet
 
 # %%
 verlustliste.to_parquet("../data/deutsche-verlustlisten-1wk.parquet")
 
 # %% [markdown]
-# # Read in parquet
+# ## Read in parquet
 
 # %%
 verlustliste = pd.read_parquet("../data/deutsche-verlustlisten-1wk.parquet")
@@ -113,6 +113,56 @@ verlustliste
 # %%
 verlustliste.info()
 
+# %% [markdown]
+# # Read in GOV 
+
 # %%
+# read in gov data 
+gov = pd.read_csv("../data/gov_orte_v01.csv", sep="\t", header=None, names=["id", "location"])
+
+# %%
+gov
+
+# %%
+gov.info()
+
+# %%
+# Add regions as columns?
+
+# %% [markdown]
+# ## Store as parquet
+
+# %%
+gov.to_parquet("../data/gov_orte_v01.parquet")
+
+# %% [markdown]
+# ## Read in parquet
+
+# %%
+gov = pd.read_parquet("../data/gov_orte_v01.parquet")
+
+# %% [markdown]
+# # Read in gov Kreise
+
+# %%
+gov_kreise = pd.read_csv("../data/gov_kreise_v01.csv", sep="\t", header=None, names=["id", "location"])
+
+# %%
+gov_kreise
+
+# %%
+gov_kreise.info()
+
+# %% [markdown]
+# ## Store as parquet
+
+# %%
+gov_kreise.to_parquet("../data/gov_kreise_v01.parquet")
+
+# %% [markdown]
+# ## Read in parquet
+
+# %%
+gov_kreise = pd.read_parquet("../data/gov_orte_v01.parquet")
 
 # %%
