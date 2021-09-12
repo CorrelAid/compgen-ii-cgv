@@ -65,35 +65,35 @@ verlustliste.info()
 # ## Add regions as columns
 
 # %%
-df_region = verlustliste.location.str.split(",", expand=True)
-df_region.rename(columns={col:f"part_{col}" for col in df_region.columns}, inplace=True)
-df_region = df_region.apply(lambda col: col.str.strip())
+#df_region = verlustliste.location.str.split(",", expand=True)
+#df_region.rename(columns={col:f"part_{col}" for col in df_region.columns}, inplace=True)
+#df_region = df_region.apply(lambda col: col.str.strip())
 
-df_region
-
-# %%
-df_region.loc[7]["part_1"]
+#df_region
 
 # %%
-verlustliste = verlustliste.join(df_region)
+#df_region.loc[7]["part_1"]
 
 # %%
-verlustliste
+#verlustliste = verlustliste.join(df_region)
 
 # %%
-(~verlustliste["part_4"].isna()).sum()
+#verlustliste
 
 # %%
-verlustliste.info()
+#(~verlustliste["part_4"].isna()).sum()
 
 # %%
-verlustliste["part 1"] = pd.arrays.SparseArray(verlustliste["part 1"])
-verlustliste["part 2"] = pd.arrays.SparseArray(verlustliste["part 2"])
-verlustliste["part 3"] = pd.arrays.SparseArray(verlustliste["part 3"])
-verlustliste["part 4"] = pd.arrays.SparseArray(verlustliste["part 4"])
+#verlustliste.info()
 
 # %%
-verlustliste.info()
+#verlustliste["part 1"] = pd.arrays.SparseArray(verlustliste["part 1"])
+#verlustliste["part 2"] = pd.arrays.SparseArray(verlustliste["part 2"])
+#verlustliste["part 3"] = pd.arrays.SparseArray(verlustliste["part 3"])
+#verlustliste["part 4"] = pd.arrays.SparseArray(verlustliste["part 4"])
+
+# %%
+#verlustliste.info()
 
 # %% [markdown]
 # ## Store as parquet
