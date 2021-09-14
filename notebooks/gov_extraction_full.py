@@ -16,10 +16,19 @@
 # %%
 import pandas as pd
 import numpy as np
-import gov_extraction as gc
+from compgen2 import GOV
+from pathlib import Path
 
 # %%
-paths = gc.filter_paths(gc.build_paths())
+# does not work in a notebook so replace with path to data root
+#data_root = Path(__file__).parent.parent.joinpath("data")
+data_root = "/mnt/d/git/compgen-ii-cgv/data"
+gov = GOV(data_root)
+
+# %%
+paths = gov.build_paths()
+paths
+
 
 # %%
 pmax = tuple()
@@ -31,9 +40,9 @@ for p in paths:
 pmax
 
 # %%
-gc.decode_paths_name({pmax})
+gov.decode_paths_name({pmax})
 
 # %%
-gc.decode_paths_id({pmax})
+gov.decode_paths_id({pmax})
 
 # %%
