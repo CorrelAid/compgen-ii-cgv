@@ -1,0 +1,442 @@
+# # # eindeutige Ortsersetzungen;
+Anh.;Anhalt
+Altb.;Altenburg
+Altbg.;Altenburg
+Altenb.;Altenburg
+Altenbg.;Altenburg
+Arnsb.;Arnsberg
+Arnsbg.;Arnsberg
+Berg.;Bergisch
+Berg. Gladb.;Bergisch Gladbach
+Berg. Gladbach;Bergisch Gladbach
+B. Gladb.;Bergisch Gladbach
+B. Gladbach;Bergisch Gladbach
+Brschwg.;Braunschweig
+Braunschw.;Braunschweig
+Braunschwg.;Braunschweig
+Brdbg.;Brandenburg
+Brandb.;Brandenburg
+Brandbg.;Brandenburg
+Brandenb.;Brandenburg
+Brandenbg.;Brandenburg
+Brl.;Berlin
+Bln.;Berlin
+Böhm.;Böhmen
+Bay.;Bayern
+Bayr.;Bayern
+Bayer.;Bayern
+Brsg.;Breisgau
+Breis.;Breisgau
+Breisg.;Breisgau
+Bd.;Bad
+Bad.;Baden
+Beesk.;Beeskow
+Co.-Go.;Coburg-Gotha
+Cob.-Go.;Coburg-Gotha
+Cob.;Coburg
+Cobg.;Coburg
+Dzg.;Danzig
+Danz.;Danzig
+Danzg.;Danzig
+Darmst.;Darmstadt
+Detm.;Detmold
+Dithm.;Dithmarschen
+Dresden-N.;Dresden-Neustadt
+Dresden-A.;Dresden-Altstadt
+Donaukr.;Donaukreis
+Dortm.;Dortmund
+Düsseld.;Düsseldorf
+Eis.;Eisenach
+Eisen.;Eisenach
+Els.;Elsaß
+Erzg.;Erzgebirge
+Erzgb.;Erzgebirge
+Erzgeb.;Erzgebirge
+Flensb.;Flensburg
+Flensbg.;Flensburg
+Frankf.;Frankfurt
+Fehm.;Fehmarn
+Gelsenk.;Gelsenkirchen
+Gr.;Groß
+Gebirgskr.;Gebirgskreis
+Han.;Hannover
+Hann.;Hannover
+Hannov.;Hannover
+Hvld.;Havelland
+Havell.;Havelland
+Heppenh.;Heppenheim
+Hess.;Hessen
+Hildburgh.;Hildburghausen
+Hohenz.;Hohenzollern
+Hohenzoll.;Hohenzollern
+Holst.;Holstein
+Jüterb.;Jüterbog
+Kaisersl.;Kaiserslautern
+Königsb.;Königsberg
+Königsbg.;Königsberg
+Köllm.;Köllmisch
+Kolb.;Kolberg
+Kolbg.;Kolberg
+Kyffh.;Kyffhäuser
+Kl.;Klein
+Lbg.;Lauenburg
+Lauenb.;Lauenburg
+Lauenbg.;Lauenburg
+Loth.;Lothringen
+Lothr.;Lothringen
+Laus.;Lausitz
+Mähr.;Mährisch
+Mansf.;Mansfelder
+Mansfld.;Mansfelder
+Mansfeld.;Mansfelder
+Magdeb.;Magdeburg
+Magdebg.;Magdeburg
+Merseb.;Merseburg
+Mersebg.;Merseburg
+Mckl.;Mecklenburg
+Meckl.;Mecklenburg
+Mcklb.;Mecklenburg
+Mcklbg.;Mecklenburg
+Mecklb.;Mecklenburg
+Mecklbg.;Mecklenburg
+Mecklenb.;Mecklenburg
+Mecklenbg.;Mecklenburg
+Mein.;Meiningen
+Meining.;Meiningen
+M.-Gl.;Mönchengladbach
+M. Gl.;Mönchengladbach
+M.-Gladbach;Mönchengladbach
+M. Gladbach;Mönchengladbach
+Mkt. Oberdorf;Marktoberdorf
+Mtlfr.;Mittelfranken
+Mittelfr.;Mittelfranken
+MIttelfr.;Mittelfranken
+Mülh.;Mülheim
+Nass.;Nassau
+Nd.;Nieder
+Ndr.;Nieder
+Nied.;Nieder
+Ndb.;Niederbayern
+Niederb.;Niederbayern
+NIederb.;Niederbayern
+Niederbarn.;Niederbarnim
+Niederlaus.;Niederlausitz
+Neuhaldensl.;Neuhaldensleben
+Neust.;Neustadt
+Neum.;Neumark
+Ob.;Ober
+Oberb.;Oberbayern
+Oberbarn.;Oberbarnim
+Oberfr.;Oberfranken
+Obfr.;Oberfranken
+Oberpf.;Oberpfalz
+Obpf.;Oberpfalz
+Obertaunuskr.;Obertaunuskreis
+Oldb.;Oldenburg
+Oldbg.;Oldenburg
+Oldenb.;Oldenburg
+Oldenbg.;Oldenburg
+Odenw.;Odenwald
+Ortelsb.;Ortelsburg
+O. Schlesien;Oberschlesien
+O.-Schlesien;Oberschlesien
+Oberschl.;Oberschlesien
+Osthavelld.;Osthavelland
+Ostpr.;Ostpreußen
+O. Preußen;Ostpreußen
+O. Preußisch;Ostpreußen
+Pf.;Pfalz
+Pr.;Preußen
+Pr.-;Preußen
+Preuß.;Preußen
+Preuß.-;Preußen
+Pom.;Pommern
+Pomm.;Pommern
+Pos.;Posen
+Rappoltsw.;Rappoltsweiler
+Recklingh.;Recklinghausen
+Rheinpf.;Rheinland-Pfalz
+Rhld.;Rheinland
+Rhnl.;Rheinland
+Rheinl.;Rheinland
+Rheinld.;Rheinland
+St.;Sankt
+Skt.;Sankt
+Schwieb.;Schwiebus
+Schaumb.;Schaumburg
+Schaumbg.;Schaumburg
+Schwab.;Schwaben
+Sa.-Cob.;Sachsen-Coburg
+Saarbr.;Saarbrücken
+Schwarzb.;Schwarzburg
+Schwarzbg.;Schwarzburg
+Schwarzw.;Schwarzwald
+Schwarzwaldkr.;Schwarzwaldkreis
+Schl.;Schlesien
+Schles.;Schlesien
+Sach.;Sachsen
+Sachs.;Sachsen
+Sa-A.;Sachsen-Anhalt
+Sa.-A.;Sachsen-Anhalt
+Sa-Anh.;Sachsen-Anhalt
+Sa.-Anh.;Sachsen-Anhalt
+Sach.-A.;Sachsen-Anhalt
+Sach.-Anh.;Sachsen-Anhalt
+Sachs.-A.;Sachsen-Anhalt
+Sachs.-Anh.;Sachsen-Anhalt
+Sachsen-A.;Sachsen-Anhalt
+Sachsen-Anh.;Sachsen-Anhalt
+Sa. Weimar;Sachsen-Weimar
+Sa.-Weimar;Sachsen-Weimar
+S. Weimar E.;Sachsen-Weimar-Eisenach
+S.-Weimar-E.;Sachsen-Weimar-Eisenach
+Sa.;Sachsen
+Sa.-M.;Sachsen-Meiningen
+Sachsen M.;Sachsen-Meiningen
+S.-Meiningen;Sachsen-Meiningen
+Sa.-Meiningen;Sachsen-Meiningen
+Sachsen Mein.;Sachsen-Meiningen
+Sachsen-Mein.;Sachsen-Meiningen
+Sächs.;Sächsisch
+Saalkr.;Saalekreis
+Saalkrs.;Saalekreis
+Sd.-Dithm.;Süderdithmarschen
+Süd. Dithm.;Süderdithmarschen
+S. Dithmarschen;Süderdithmarschen
+Süderdithmarsch.;Süderdithmarschen
+Sond.;Sondershausen
+Sondersh.;Sondershausen
+Sondershaus.;Sondershausen
+Sch.-Lippe;Schaumburg-Lippe
+Schaumburg-L.;Schaumburg-Lippe
+Schaumb.;Schaumburg
+Schaumbg.;Schaumburg
+Schlesw.;Schleswig
+Schleswig-H.;Schleswig-Holstein
+Schleswig-Hol.;Schleswig-Holstein
+Strel.;Strelitz
+Schw.;Schwerin
+Schwer.;Schwerin
+Schwäb.;Schwäbisch
+Stork.;Storkow
+Straßb.;Straßburg
+Straßbg.;Straßburg
+Tauberbischofsh.;Tauberbischofsheim
+Taunuskr.;Taunuskreis
+Tecklenb.;Tecklenburg
+Tecklenbg.;Tecklenburg
+Th.;Thüringen
+Thr.;Thüringen
+Thür.;Thüringen
+Thüring.;Thüringen
+Uckerm.;Uckermark
+Unt.;Unter
+Untfr.;Unterfranken
+Unterfr.;Unterfranken
+Used.;Usedom
+U. Westerwald;Unterwesterwald
+Vgtl.;Vogtland
+Vgtld.;Vogtland
+Vogtl.;Vogtland
+Voigtl.;Vogtland
+Vogtld.;Vogtland
+Weim.;Weimar
+Weimar-E.;Weimar-Eisenach
+Westf.;Westfalen
+Wstpr.;Westpreußen
+Westpr.;Westpreußen
+Westerw.;Westerwald
+Westhavelld.;Westhavelland
+Wttbg.;Württemberg
+Wttmb.;Württemberg
+Wttmbg.;Württemberg
+Wrttb.;Württemberg
+Wrttbg.;Württemberg
+Württg.;Württemberg
+Wüttb.;Württemberg
+Wüttbg.;Württemberg
+Würtb.;Württemberg
+Würtbg.;Württemberg
+Württ.;Württemberg
+Württb.;Württemberg
+Württbg.;Württemberg
+Württemb.;Württemberg
+Württembg.;Württemberg
+bad.;baden
+bay.;bayern
+els.;elsaß
+fal.;falen
+friesl.;friesland
+frsld.;friesland
+geb.;gebirge
+hsn.;hausen
+havell.;havelland
+kirch.;kirchen
+preuß.;preußen
+pom.;pommern
+pomm.;pommern
+prov.;provinz
+schles.;schlesien
+#;
+# # # umstrittene Ortsersetzungen, da nur wenig Info;
+M. W. B.;Main-Weser-Bahn
+O. E.;Ober-Elsaß
+N.-A.;Nordamerika
+M.-A.;Nordamerika
+OS.;Oberschlesien
+O. S.;Oberschlesien
+O.-S.;Oberschlesien
+O. L.;Oberlausitzkreis
+O.-L.;Oberlausitzkreis
+S-A.;Sachsen-Anhalt
+S.-A.;Sachsen-Anhalt
+S. M.;Sachsen-Meiningen
+S.-M.;Sachsen-Meiningen
+S.-W.-E.;Sachsen-Weimar-Eisenach
+C.-G.;Coburg-Gotha
+#;
+# # # weitere Abkürzungen;
+ v. d. ; vor der 
+bei;, 
+ b. ;, 
+ i. ;, 
+ a. d. ; an der 
+str.;straße
+Str.;Straße
+#;
+# # # Flüsse ;
+Brz.;Brenz
+Elz.;Elsenz
+Katzb.;Katzbach
+Lde.;Lumda
+Mos.;Mosel
+Pers.;Persante
+Unstr.;Unstrut
+Wes.;Weser
+Rh.;Rhein
+#;
+# # # Länder;
+Dt.-;Deutsch 
+Dt.;Deutsch 
+Dtsch.-;Deutsch 
+Dtsch.;Deutsch 
+Engl.;England
+Brit.;Großbritannien
+Franz.-;Französisch 
+Franz.;Französisch
+Fr.-;Französisch 
+Fr.;Französisch
+Frankr.;Frankreich
+Niederl.;Niederlande
+Oest.;österreich
+Oesterr.;österreich
+Oster.;österreich
+Osterr.;österreich
+öster.;österreich
+österr.;österreich
+Pol.;Polen
+Poln.-;Polen
+Poln.;Polnisch
+Polln. ;Polnisch
+Russ.;Russland
+Rußl.;Russland
+Rußld.;Russland
+Ruß.;Russland
+rußl.;russland
+Ung.;Ungarn
+V. St. A.;United States of America
+U. S. A.;United States of America
+U. St. A.;United States of America
+Verein.;United
+V. St.;United States
+United St.;United States
+Ver.;United
+Staaten;States
+v. Nord-Amerika;of America
+v. Amerika;of America
+v. Nordamerika;of America
+#;
+# # #  Irrelevante Informationen löschen;
+O.-A.; 
+O-A.; 
+O.-A; 
+Amtsh.; 
+A. H.; 
+A.-H.; 
+B. A.; 
+B.-A.; 
+Abt.; 
+Ab.; 
+Abb.; 
+Altm.; 
+Bez.; 
+Chât.; 
+Chat.; 
+Ch.-Salins; 
+Ev.; 
+Fstt.; 
+Frstt.; 
+Fürst.; 
+Fürstt.; 
+Fürstent.; 
+Fürstl.; 
+Grfsch.; 
+Grafsch.; 
+Grschft.; 
+Grfscht.; 
+Grfschft.; 
+Grafschft.; 
+Gräfl.; 
+Gem.; 
+Gde.; 
+Gouv.; 
+Geistl.; 
+Großh.; 
+Großherz.; 
+Gutbez.; 
+Hzt.; 
+Hzgt.; 
+Hzgtm.; 
+Herz.; 
+Herzgt.; 
+Herzogt.; 
+Kgr.; 
+Königr.; 
+Kgl.; 
+Königl.; 
+Kt.; 
+Kth.; 
+Kath.; 
+Kathl.; 
+Kathol.; 
+Kirchl.; 
+Kr.; 
+Krs.; 
+krs.; 
+Kol.; 
+Kolon.; 
+Landkr.; 
+Niedrg.; 
+Niederg.; 
+Prov.; 
+Reg-Bez.; 
+Reg.-Bez.; 
+Reg.-Bezirk; 
+Sdt.; 
+Städt.; 
+Stadtkr.; 
+Vw.; 
+Vorw.; 
+Ad.; 
+Adl.; 
+Adlg.; 
+Adel.; 
+Adr.; 
+ a. ; 
+ j. L.; 
+ ä. L.; 
+ j.; 
+ ä.; 
+ wohnh.; 
+ d.; 
+ v.; 

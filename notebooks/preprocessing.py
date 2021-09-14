@@ -71,7 +71,12 @@ chars = ['!']
 verlustliste = verlustliste[~verlustliste.location.apply(lambda loc: any(c in loc for c in chars))]
 
 # %%
-# TBD: Sonderzeichen {} kennzeichnet Korrekturen aus moderner Zeit
+# Sonderzeichen {} kennzeichnet Korrekturen aus moderner Zeit  
+# 1) Fälle: A{achen}, A{.}chen --> {} entfernen
+verlustliste = verlustliste.replace({'location' : { '\{' : '', '\}' : ''}}, regex=True)
+
+# 2) Fall Achen {korr.: Aachen} --> korr.: in , umwandeln
+verlustliste = verlustliste.replace({'location' : { 'korr.:' : ',', 'korr:' : ',', 'Korr.:' : ',', 'Korr:' : ','}}, regex=True)
 
 # %%
 # TBD: Sonderzeichen / kennzeichnet sowohl Abkürzungen (wie .) als auch Regionen (wie ,)
@@ -83,8 +88,8 @@ verlustliste = verlustliste[~verlustliste.location.apply(lambda loc: any(c in lo
 # INFO: Sonderzeichen . kennzeichnet Abkürzungen 
 
 # %%
-# Lade definierte Abkürzungserweiterungen die im Rahmen der Masterarbeit von Dennis Sen erstellt wurden
-substitutions = pd.read_csv("../data/substitutions.csv", sep = "\t", header = None, 
+# Lade definierte Abkürzungserweiterungen
+substitutions = pd.read_csv("../data/substitutions_PM.csv", sep = ";", header = None, 
                             names = ["abbreviation", "expansion"], comment='#')
 
 # %%
@@ -94,12 +99,7 @@ substitutions.info()
 substitutions
 
 # %%
-## Leerzeilen entfernen
-substitutions.dropna(how = "any", inplace=True)
-substitutions
-
-# %%
-# INFO: Abkürzungen ohne Bedeutung werden entfernt (warum B.-A. hier vorkommt, ist unklar)
+# INFO: Abkürzungen ohne Bedeutung werden entfernt
 substitutions[substitutions.expansion == " "]
 
 # %%
@@ -150,10 +150,7 @@ verlustliste.location.str.count("[A-Za-zäöüßÄÖÜẞ]+\.").sum() / verlustl
 
 # %%
 # Check plot
-verlustliste.location.str.extract("(?P<Abkürzung>[A-Za-zäöüßÄÖÜẞ]+\.)").dropna().value_counts(normalize = True)[:30]
-
-# %% [markdown]
-# Anmerkung: substitutions.csv Liste scheint nicht ideal für unsere Zwecke. Zum einen fehlen einige eindeutig identifizierbare Fälle (Unterfr. = Unterfranken, Mecklbg. = Mecklenburg). Zum anderen sind Typenersetzungen drin (z.B. Amtshauptmannschaft, Kreise) die wir vermutlich nicht brauchen, zumindest nicht als normale Matching-Spalte. Außerdem finden sich am Ende des Dokuments auch Wortkorrekturen, die wir eher über die Levenstein Distanz abdecken.  
+verlustliste.location.str.extract("(?P<Abkürzung>[A-Za-zäöüßÄÖÜẞ]+\.)").dropna().value_counts(normalize = True)[0:50]
 
 # %%
 # TBD: Restliche Sonderzeichen . entfernen
