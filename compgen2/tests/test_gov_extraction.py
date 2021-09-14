@@ -13,3 +13,9 @@ def test_read_gov_data(gov):
     assert gov.types.dtypes.to_list() == [np.int32, np.int32, np.int64, np.int64]
     assert gov.relations.dtypes.to_list() == [np.int32, np.int32, np.int64, np.int64]
     assert gov.type_names.dtypes.to_list() == [object]
+
+def test_build_paths(gov):
+    paths = gov.build_paths()
+    assert isinstance(paths, set)
+    assert all(isinstance(path, tuple) for path in paths)
+    assert all(isinstance(id_, int) for path in paths for id_ in path)

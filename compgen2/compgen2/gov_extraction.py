@@ -38,6 +38,7 @@ class GOV:
 
     def read_gov_item(self) -> pd.DataFrame:
         """Read in govitems.csv"""
+        print("Reading in govitems.csv")
         gov_item = pd.read_csv(
             self.data_root / GOV_ITEMS,
             sep="\t",
@@ -48,6 +49,7 @@ class GOV:
 
     def read_names(self) -> pd.DataFrame:
         """Read in propertynames.csv"""
+        print("Reading in propertynames.csv")
         names = pd.read_csv(
             self.data_root / PROPERTY_NAMES,
             sep="\t",
@@ -65,6 +67,7 @@ class GOV:
 
     def read_types(self) -> pd.DataFrame:
         """Read in propertytypes.csv"""
+        print("Reading in propertytypes.csv")
         types = pd.read_csv(
             self.data_root / PROPERTY_TYPES,
             sep="\t",
@@ -80,6 +83,7 @@ class GOV:
 
     def read_relations(self) -> pd.DataFrame:
         """Read in relation.csv"""
+        print("Reading in relation.csv")
         relations = pd.read_csv(
             self.data_root / GOV_RELATIONS,
             sep="\t",
@@ -95,6 +99,7 @@ class GOV:
 
     def read_type_names(self) -> pd.DataFrame:
         """Read in typenames.csv"""
+        print("Reading in typenames.csv")
         type_names = pd.read_csv(
             self.data_root / GOV_TYPENAMES,
             sep="\t",
@@ -249,7 +254,7 @@ class GOV:
     def filter_relation(self, relations: set) -> set:
         type_dict = self.build_type_dict()
         relations_filtered = {
-            r for r in relations if not {type_dict[r[0]], type_dict[r[1]]} & TUNDESIRED
+            r for r in relations if not (type_dict[r[0]] | type_dict[r[1]]) & TUNDESIRED
         }
         return relations_filtered
 
