@@ -4,6 +4,7 @@
 
 from collections import defaultdict
 from functools import lru_cache
+
 ## Imports
 from pathlib import Path
 
@@ -12,11 +13,13 @@ import pandas as pd
 
 from .const import *
 
-def _set_retrieve(s:set):
+
+def _set_retrieve(s: set):
     return next(iter(s))
 
+
 class GOV:
-    """Main class to work with GOV elements.
+    """Main class to work with GOV items.
 
     Attributes:
         data_root (str):
@@ -32,17 +35,18 @@ class GOV:
         self.data_root = Path(data_root)
 
         # load data
-        self.gov_items = self.read_gov_item()
+        self.items = self.read_item()
         self.names = self.read_names()
         self.types = self.read_types()
         self.relations = self.read_relations()
         self.type_names = self.read_type_names()
 
+        # filter data
         self._prefilter_names()
         self._prefilter_relations()
         self._prefilter_types()
 
-    def read_gov_item(self) -> pd.DataFrame:
+    def read_item(self) -> pd.DataFrame:
         """Read in govitems.csv"""
         print("Reading in govitems.csv")
         gov_item = pd.read_csv(
@@ -114,31 +118,36 @@ class GOV:
             },
         )
         return type_names
-    
+
     def _prefilter_names(self):
-        self.names = self.names.query("language == 'deu'")
-    
+        self.names = self.names.query("language == 'deu'").drop(columns="language")
+
     def _prefilter_relations(self):
         # Filter relations DataFrame based on time
         relations_filtered = self.filter_time(self.relations)
         # Filter relations DataFrame based on deleted
-        relations_filtered = relations_filtered.merge(self.gov_items[["id", "deleted"]], left_on="child", right_on="id")
-        relations_filtered = relations_filtered.merge(self.gov_items[["id", "deleted"]], left_on="parent", right_on="id")
-        self.relations = relations_filtered.query("~deleted_x and ~deleted_y").drop(columns=["id_x", "id_y", "deleted_x", "deleted_y"])
+        relations_filtered = relations_filtered.merge(
+            self.items[["id", "deleted"]], left_on="child", right_on="id"
+        )
+        relations_filtered = relations_filtered.merge(
+            self.items[["id", "deleted"]], left_on="parent", right_on="id"
+        )
+        self.relations = relations_filtered.query("~deleted_x and ~deleted_y").drop(
+            columns=["id_x", "id_y", "deleted_x", "deleted_y"]
+        )
 
     def _prefilter_types(self):
         # The GOV does not store types for deleted objects. Hence no filtering by deleted necessary here.
         pass
 
-
     @lru_cache
-    def build_gov_dict(self) -> dict[int, tuple[str, bool]]:
+    def items_by_id(self) -> dict[int, tuple[str, bool]]:
         """Create a mapping from govitems with `id` as key and `textual_id` and `deleted` as values."""
         gov = set(
             zip(
-                self.gov_items.id,
-                self.gov_items.textual_id,
-                self.gov_items.deleted,
+                self.items.id,
+                self.items.textual_id,
+                self.items.deleted,
             )
         )
         gov_dict = {
@@ -151,7 +160,7 @@ class GOV:
         return gov_dict
 
     @lru_cache
-    def build_name_dict(self) -> dict[int, set[str]]:
+    def names_by_id(self) -> dict[int, set[str]]:
         """Create a mapping from propertynames with `id` as key and `content` as value.
 
         All names associated with the same id are combined into a set.
@@ -170,7 +179,7 @@ class GOV:
         return name_dict
 
     @lru_cache
-    def build_type_dict(self) -> dict[int, set[int]]:
+    def types_by_id(self) -> dict[int, set[int]]:
         """Create a mapping from propertytypes with `id` as key and `content` as value.
 
         All types associated with the same id are combined into a set.
@@ -188,7 +197,7 @@ class GOV:
         return type_dict
 
     @lru_cache
-    def build_relation_set(self) -> set[tuple[int, int, str, str]]:
+    def all_relations(self) -> set[tuple[int, int, str, str]]:
         """Transform the relations to set of tuples.
         Filter by specific criteria
         """
@@ -204,18 +213,20 @@ class GOV:
         relations = self.filter_relations_by_ancestor(relations)
         return relations
 
-    def filter_relations_by_type(self, relations: set[tuple[int, int, str, str]]) -> set[tuple[int, int, str, str]]:
-        """Filter relations that contain objects with undesired types.
-        """
-        type_dict = self.build_type_dict()
+    def filter_relations_by_type(
+        self, relations: set[tuple[int, int, str, str]]
+    ) -> set[tuple[int, int, str, str]]:
+        """Filter relations that contain objects with undesired types."""
+        type_dict = self.types_by_id()
         relations_filtered = {
             r for r in relations if not (type_dict[r[0]] | type_dict[r[1]]) & TUNDESIRED
         }
         return relations_filtered
 
-    def filter_relations_by_ancestor(self, relations_unfiltered: set[tuple[int, int, str, str]]) -> set[tuple[int, int, str, str]]:
-        """Find all relations that are children of the SUPERNODES defined.
-        """
+    def filter_relations_by_ancestor(
+        self, relations_unfiltered: set[tuple[int, int, str, str]]
+    ) -> set[tuple[int, int, str, str]]:
+        """Find all relations that are children of the SUPERNODES defined."""
 
         # begin with SUPERNODES, find all children and their children
         leaves_current = SUPERNODES
@@ -241,9 +252,9 @@ class GOV:
         return relations_filtered
 
     @lru_cache
-    def build_paths(self) -> set[tuple[int, ...]]:
+    def all_paths(self) -> set[tuple[int, ...]]:
         """Return a set of paths, where each path is a set of all nodes from a SUPERNODE to a particular child."""
-        relations = self.build_relation_set()
+        relations = self.all_relations()
         leave_dict_curr = {k: {((k,), T_MIN, T_MAX)} for k in SUPERNODES}
         paths = set()
         new_leaves_found = True
@@ -276,26 +287,35 @@ class GOV:
         return paths
 
     def decode_paths_id(self, paths: set) -> set:
-        gov_dict = self.build_gov_dict()
+        """Return the gov textual id for each node in a path."""
+        gov_dict = self.items_by_id()
         paths_decoded = {tuple(gov_dict[o][0] for o in p) for p in paths}
         return paths_decoded
 
     def decode_paths_name(self, paths: set) -> set:
-        name_dict = self.build_name_dict()
-        paths_decoded = {tuple(_set_retrieve(name_dict[o]) for o in p) for p in paths}
+        """Return the gov display name for each node in a path."""
+        name_dict = self.names_by_id()
+        paths_decoded = {tuple(_set_retrieve(name_dict.get(o, set("<error>"))) for o in p) for p in paths}
         return paths_decoded
-        
+
     def extract_all_types_from_paths(self, paths: set) -> set:
-        type_dict = self.build_type_dict()
+        """Return all unique type ids over all paths."""
+        type_dict = self.types_by_id()
         types_relevant = set().union(*[type_dict[n] for p in paths for n in p])
         return types_relevant
 
     def decode_paths_type(self, paths: set) -> set:
-        type_dict = self.build_type_dict()
+        """Return the type display name for each node in a path."""
+        type_dict = self.types_by_id()
         paths_decoded = {
-            tuple(self.type_names.loc[_set_retrieve(type_dict[o])][0] for o in p) for p in paths
+            tuple(self.type_names.loc[_set_retrieve(type_dict[o])][0] for o in p)
+            for p in paths
         }
         return paths_decoded
+
+    def get_all_ids_for_name(self, name: str) -> tuple[int, ...]:
+        names = self.names_by_id()
+        return tuple(id_ for id_, names in names.items() if name in names)
 
     @staticmethod
     def convert_time(data: pd.DataFrame) -> pd.DataFrame:
@@ -315,5 +335,3 @@ class GOV:
             "time_begin < @T_BEGIN and time_end > @T_END"
         )  # TODO: Introduce correct time constraints for julian date???
         return data
-
-
