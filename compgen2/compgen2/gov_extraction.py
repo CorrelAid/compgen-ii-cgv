@@ -12,6 +12,8 @@ import pandas as pd
 
 from .const import *
 
+def _set_retrieve(s:set):
+    return next(iter(s))
 
 class GOV:
     """Main class to work with GOV elements.
@@ -35,6 +37,10 @@ class GOV:
         self.types = self.read_types()
         self.relations = self.read_relations()
         self.type_names = self.read_type_names()
+
+        self._prefilter_names()
+        self._prefilter_relations()
+        self._prefilter_types()
 
     def read_gov_item(self) -> pd.DataFrame:
         """Read in govitems.csv"""
@@ -61,8 +67,7 @@ class GOV:
                 "time_end": object,
             },
         )
-        names = GOV.filter_names(names)
-        names = GOV.filter_time(names)
+        names = GOV.convert_time(names)
         return names
 
     def read_types(self) -> pd.DataFrame:
@@ -78,7 +83,7 @@ class GOV:
                 "time_end": object,
             },
         )
-        types = GOV.filter_time(types)
+        types = GOV.convert_time(types)
         return types
 
     def read_relations(self) -> pd.DataFrame:
@@ -94,7 +99,7 @@ class GOV:
                 "time_end": object,
             },
         )
-        relations = GOV.filter_time(relations)
+        relations = GOV.convert_time(relations)
         return relations
 
     def read_type_names(self) -> pd.DataFrame:
@@ -109,6 +114,22 @@ class GOV:
             },
         )
         return type_names
+    
+    def _prefilter_names(self):
+        self.names = self.names.query("language == 'deu'")
+    
+    def _prefilter_relations(self):
+        # Filter relations DataFrame based on time
+        relations_filtered = self.filter_time(self.relations)
+        # Filter relations DataFrame based on deleted
+        relations_filtered = relations_filtered.merge(self.gov_items[["id", "deleted"]], left_on="child", right_on="id")
+        relations_filtered = relations_filtered.merge(self.gov_items[["id", "deleted"]], left_on="parent", right_on="id")
+        self.relations = relations_filtered.query("~deleted_x and ~deleted_y").drop(columns=["id_x", "id_y", "deleted_x", "deleted_y"])
+
+    def _prefilter_types(self):
+        # The GOV does not store types for deleted objects. Hence no filtering by deleted necessary here.
+        pass
+
 
     @lru_cache
     def build_gov_dict(self) -> dict[int, tuple[str, bool]]:
@@ -141,16 +162,18 @@ class GOV:
                 self.names.content,
             )
         )
+
         name_dict = defaultdict(set)
         for n in names:
             name_dict[n[0]] |= {n[1]}
+        name_dict.default_factory = None
         return name_dict
 
     @lru_cache
     def build_type_dict(self) -> dict[int, set[int]]:
         """Create a mapping from propertytypes with `id` as key and `content` as value.
 
-        All names associated with the same id are combined into a set.
+        All types associated with the same id are combined into a set.
         """
         types = set(
             zip(
@@ -161,16 +184,15 @@ class GOV:
         type_dict = defaultdict(set)
         for t in types:
             type_dict[t[0]] |= {t[1]}
+        type_dict.default_factory = None
         return type_dict
 
     @lru_cache
-    def filter_relations(self) -> set[tuple[int, int, str, str]]:
-        """Find all relations that are children of the SUPERNODES defined.
-
-        Transform the relations to tuples.
-        Ignore all relations with undesired types.
+    def build_relation_set(self) -> set[tuple[int, int, str, str]]:
+        """Transform the relations to set of tuples.
+        Filter by specific criteria
         """
-        relations_unfiltered = set(
+        relations = set(
             zip(
                 self.relations.parent,
                 self.relations.child,
@@ -178,20 +200,33 @@ class GOV:
                 self.relations.time_end,
             )
         )
-        relations_unfiltered = self.filter_relation(relations_unfiltered)
-        relations_filtered = set()
+        relations = self.filter_relations_by_type(relations)
+        relations = self.filter_relations_by_ancestor(relations)
+        return relations
+
+    def filter_relations_by_type(self, relations: set[tuple[int, int, str, str]]) -> set[tuple[int, int, str, str]]:
+        """Filter relations that contain objects with undesired types.
+        """
+        type_dict = self.build_type_dict()
+        relations_filtered = {
+            r for r in relations if not (type_dict[r[0]] | type_dict[r[1]]) & TUNDESIRED
+        }
+        return relations_filtered
+
+    def filter_relations_by_ancestor(self, relations_unfiltered: set[tuple[int, int, str, str]]) -> set[tuple[int, int, str, str]]:
+        """Find all relations that are children of the SUPERNODES defined.
+        """
 
         # begin with SUPERNODES, find all children and their children
         leaves_current = SUPERNODES
         new_leaves_found = True
-
-        gov_dict = self.build_gov_dict()
+        relations_filtered = set()
 
         while new_leaves_found:
             leaves_next = set()
             for r in relations_unfiltered:
                 # only consider relation when parent is in current leaves and child has deleted = 0
-                if r[0] in leaves_current and gov_dict[r[1]][1] == 0:
+                if r[0] in leaves_current:
                     relations_filtered.add(r)
                     leaves_next.add(r[1])
             relations_unfiltered.difference_update(relations_filtered)
@@ -208,13 +243,13 @@ class GOV:
     @lru_cache
     def build_paths(self) -> set[tuple[int, ...]]:
         """Return a set of paths, where each path is a set of all nodes from a SUPERNODE to a particular child."""
-        relations = self.filter_relations()
+        relations = self.build_relation_set()
         leave_dict_curr = {k: {((k,), T_MIN, T_MAX)} for k in SUPERNODES}
         paths = set()
         new_leaves_found = True
 
         while new_leaves_found:
-            leave_dict_next = dict()
+            leave_dict_next = defaultdict(set)
             leaves_updated = set()
             for r in relations:
                 if r[0] in leave_dict_curr:
@@ -224,9 +259,8 @@ class GOV:
                         if tmin <= tmax:  # TODO: Introduce correct time constraints???
                             leaves_updated.add(r[0])
                             path_updated = ((*path[0], r[1]), tmin, tmax)
-                            leave_dict_next[r[1]] = {path_updated}.union(
-                                leave_dict_next.setdefault(r[1], set())
-                            )
+                            leave_dict_next[r[1]] |= {path_updated}
+            # If no matching relation has been found for a path/leave, the path is final and can be moved to the final output.
             for l in leaves_updated:
                 del leave_dict_curr[l]
             paths.update(*leave_dict_curr.values())
@@ -248,16 +282,9 @@ class GOV:
 
     def decode_paths_name(self, paths: set) -> set:
         name_dict = self.build_name_dict()
-        paths_decoded = {tuple(name_dict[o].pop() for o in p) for p in paths}
+        paths_decoded = {tuple(_set_retrieve(name_dict[o]) for o in p) for p in paths}
         return paths_decoded
-
-    def filter_relation(self, relations: set) -> set:
-        type_dict = self.build_type_dict()
-        relations_filtered = {
-            r for r in relations if not (type_dict[r[0]] | type_dict[r[1]]) & TUNDESIRED
-        }
-        return relations_filtered
-
+        
     def extract_all_types_from_paths(self, paths: set) -> set:
         type_dict = self.build_type_dict()
         types_relevant = set().union(*[type_dict[n] for p in paths for n in p])
@@ -265,14 +292,13 @@ class GOV:
 
     def decode_paths_type(self, paths: set) -> set:
         type_dict = self.build_type_dict()
-        type_names = self.read_type_names()
         paths_decoded = {
-            tuple(type_names.loc[type_dict[o].pop()][0] for o in p) for p in paths
+            tuple(self.type_names.loc[_set_retrieve(type_dict[o])][0] for o in p) for p in paths
         }
         return paths_decoded
 
     @staticmethod
-    def filter_time(data: pd.DataFrame) -> pd.DataFrame:
+    def convert_time(data: pd.DataFrame) -> pd.DataFrame:
         data = data.replace(
             {"time_begin": {np.NaN: T_MIN}, "time_end": {np.NaN: T_MAX}},
         ).astype(
@@ -281,12 +307,13 @@ class GOV:
                 "time_end": np.int64,
             }
         )
+        return data
+
+    @staticmethod
+    def filter_time(data: pd.DataFrame) -> pd.DataFrame:
         data = data.query(
             "time_begin < @T_BEGIN and time_end > @T_END"
         )  # TODO: Introduce correct time constraints for julian date???
         return data
 
-    @staticmethod
-    def filter_names(names: pd.DataFrame) -> pd.DataFrame:
-        names = names.query("language == 'deu'")
-        return names
+
