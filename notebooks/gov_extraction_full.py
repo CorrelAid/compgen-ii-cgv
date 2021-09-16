@@ -80,12 +80,27 @@ set().update(gov.get_all_ids_for_name("Krefeld"))
 matcher = Matcher(gov)
 
 # %%
-gov.decode_paths_name(matcher.find_relevant_paths("Blasdorf, Landeshut"))
+matcher.find_relevant_paths("Blasdorf, Landeshut")
 
 # %%
 gov.decode_paths_name(matcher.find_relevant_paths("Blasdorf"))
 
 # %%
 gov.names.query("content == 'Landeshut'")
+
+# %%
+matcher.find_relevant_paths("Aach, Freudenstadt")
+
+# %%
+matcher.group_relevant_paths_by_query(matcher.find_relevant_paths("Aach, Freudenstadt"), "Aach, Freudenstadt")
+
+# %% jupyter={"outputs_hidden": true} tags=[]
+matcher.group_relevant_paths_by_query(matcher.find_relevant_paths("Freudenstadt"), "Freudenstadt")
+
+# %%
+matcher.group_relevant_paths_by_query(matcher.find_relevant_paths("Neustadt, Sachsen"), "Neustadt, Sachsen")
+
+# %%
+gov.decode_paths_name(matcher.find_relevant_paths("Neustadt"))
 
 # %%
