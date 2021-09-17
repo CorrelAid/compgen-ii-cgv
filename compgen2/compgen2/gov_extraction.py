@@ -22,13 +22,12 @@ class GOV:
     """Main class to work with GOV items.
 
     Attributes:
-        data_root (str):
-        gov_items (pd.DataFrame):
-        names (pd.DataFrame):
-        types (pd.DataFrame):
-        relations (pd.DataFrame):
-        type_names (pd.DataFrame):
-
+        data_root (str): Path to a folder containing the data.
+        items (pd.DataFrame): content of govitems.csv
+        names (pd.DataFrame): content of propertynames.csv
+        types (pd.DataFrame): content of propertytypes.csv
+        relations (pd.DataFrame): content of relation.csv
+        type_names (pd.DataFrame): content of typenames.csv
     """
 
     def __init__(self, data_root: str) -> None:
