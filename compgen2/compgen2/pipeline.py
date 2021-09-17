@@ -27,7 +27,13 @@ class Pipeline:
 
     def __init__(self, data_root: str) -> None:
         self.data_root = Path(data_root)
-        self.gov = GOV(data_root)
+        
+        if self.data_root.joinpath("gov.pickle").exists():
+            logger.info("Found serialized gov object.")
+            self.gov = GOV.from_file(self.data_root / "gov.pickle")
+        else:
+            self.gov = GOV(data_root)
+            
         self.matcher = Matcher(self.gov)
 
         self.vl = pd.DataFrame()
@@ -104,17 +110,17 @@ class Pipeline:
 
         Here you can alter self.vl, and all data stored in self.gov
         """
-        self.vl = prep_clean_brackets(self.vl) # clean bracket
+        self.vl = Preprocessing.prep_clean_brackets(self.vl) # clean bracket
         # optional:  self.vl = prep_clean_korrigiert(self.vl) 
-        self.vl = prep_clean_characters(self.vl) # clean characters  
-        self.vl = prep_vl_abbreviations(self.vl) # substitute abbreviations
+        self.vl = Preprocessing.prep_clean_characters(self.vl) # clean characters  
+        self.vl = Preprocessing.prep_vl_abbreviations(self.vl) # substitute abbreviations
 
     def get_matches(self) -> None:
         """Get match for each entry of self.vl
 
         Here you can implement the matching algorithm.
         """
-        self.matches = self.matcher.get_match_for_locations(self.vl.location)
+        self.matches = self.matcher.get_match_for_locations(self.vl.location.values.tolist())
 
     def evaluate(self) -> tuple[int, int]:
         """Evaluate the results of the matching algorithm

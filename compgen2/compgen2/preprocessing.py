@@ -1,15 +1,12 @@
 # -*- coding: utf-8 -*-
-# %%
 """Preprocessing class for clearning special characters, brackets and abbreviations"""
 
-# %%
 import pandas as pd
-import re
 
 
-# %%
 class Preprocessing:
     
+    @staticmethod
     def prep_clean_brackets(data):
         """Function for removing historical corrections
         1. brackets including their content 
@@ -33,8 +30,9 @@ class Preprocessing:
         data['location'] = data['location'].replace(
             to_replace=[str_01, str_02, str_03, str_04, str_05, str_06, str_07, str_08, str_09], value=rep, regex=True)
         
-        return (data)
+        return data
 
+    @staticmethod
     def prep_clean_korrigiert(data): 
         """Function for integrating modern-day corrections by replacing it with a comma
         1. word 'korrigiert' and its variants
@@ -54,8 +52,9 @@ class Preprocessing:
         # replace with comma 
         data['location'] = data['location'].replace(to_replace=[str_01, str_02, str_03, str_04, str_05, str_06], value=rep, regex=True)
         
-        return (data)
-             
+        return data
+    
+    @staticmethod        
     def prep_clean_characters(data): 
         """Function for removing special characters: 
         1. simply removed: ?^_"#*\:{}()[]!
@@ -76,12 +75,11 @@ class Preprocessing:
         rep_3 = '\''
         
         # do replacement 
-        data['location'] = data['location'].replace(to_replace=char_1, value=rep_1, regex=True).replace(
-            to_replace=char_2, value=rep_2, regex=True).replace(
-            to_replace=char_3, value=rep_3, regex=True)
+        data['location'] = data['location'].replace(to_replace=[char_1, char_2, char_3], value=[rep_1, rep_2, rep_3], regex=True)
         
-        return (data)
-        
+        return data
+    
+    @staticmethod      
     def prep_vl_abbreviations(data): 
         """Function for substituting abbreviations with predefined content"""
         
@@ -92,8 +90,7 @@ class Preprocessing:
         subst_dict = dict(zip(substitutions.abbreviation, substitutions.expansion))
         
         # do replacement 
-        for old, new in subst_dict.items():
-            data['location'] = data['location'].str.replace(old, new, regex=False)
+        data['location'] = data['location'].replace(to_replace=subst_dict, regex=False)
 
-        return (data)
+        return data
 
