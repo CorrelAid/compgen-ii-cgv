@@ -1,0 +1,69 @@
+20:00:54 | INFO     | 0032 | Found serialized gov object.
+20:01:02 | INFO     | 0027 | Initialized matcher with a gov database of 1,271,026 items.
+20:01:11 | INFO     | 0027 | Initialized matcher with a gov database of 1,271,026 items.
+20:01:13 | INFO     | 0032 | Found serialized gov object.
+20:01:22 | INFO     | 0027 | Initialized matcher with a gov database of 1,271,026 items.
+20:01:23 | DEBUG    | 0182 | Solved problem for wreschen (ok), mislolaw (not ok): found miloslaw.
+20:01:23 | DEBUG    | 0182 | Solved problem for jarotschin (ok), zuckow (not ok): found zulkow.
+20:01:23 | DEBUG    | 0182 | Solved problem for mosbach (ok), wossenthal (not ok): found wessental.
+20:01:35 | DEBUG    | 0182 | Solved problem for bayern (ok), riedelwald (not ok): found riedelswald.
+20:01:36 | DEBUG    | 0131 | Solved problem for cätenhorn: found catenhorn.
+20:01:36 | DEBUG    | 0182 | Solved problem for sorau (ok), großbademensel (not ok): found groß bademeusel.
+20:01:36 | DEBUG    | 0151 | Solved problem for meinbach (not ok), württb. (not ok): found rheinbach.
+20:01:36 | DEBUG    | 0182 | Solved problem for eckernförde (ok), borkhorst (not ok): found borghorst.
+20:01:36 | DEBUG    | 0182 | Solved problem for lüchow (ok), katau (not ok): found kassau.
+20:01:36 | DEBUG    | 0182 | Solved problem for arnsberg (ok), hassorpe (not ok): found haspe.
+20:01:36 | DEBUG    | 0182 | Solved problem for magdeburg (ok), schlagenthien (not ok): found schlagenthin.
+20:01:36 | DEBUG    | 0182 | Solved problem for duderstadt (ok), bildhausen (not ok): found bilshausen.
+20:01:41 | DEBUG    | 0182 | Solved problem for obornik (ok), farnowko (not ok): found tarnowko.
+20:01:41 | DEBUG    | 0182 | Solved problem for oschersleben (ok), neubranzleben (not ok): found neubrandsleben.
+20:01:41 | DEBUG    | 0182 | Solved problem for bayern (ok), glau-münchweiler (not ok): found glan-münchweiler.
+20:01:43 | DEBUG    | 0131 | Solved problem for dagebüll-damm: found dagebülldamm.
+20:01:43 | DEBUG    | 0182 | Solved problem for gotha (ok), motschleben (not ok): found molschleben.
+20:01:43 | DEBUG    | 0182 | Solved problem for bautzen (ok), herwichsdorf (not ok): found herwigsdorf.
+20:01:43 | DEBUG    | 0151 | Solved problem for dohndorf (not ok), cöthen i. anh. (not ok): found bonndorf.
+20:01:49 | DEBUG    | 0131 | Solved problem for tiefensteig: found wiesensteig.
+20:01:49 | DEBUG    | 0182 | Solved problem for lublinitz (ok), kokotteck (not ok): found kokottek.
+20:01:50 | DEBUG    | 0182 | Solved problem for waldenburg (ok), neu salzbrunn (not ok): found ober salzbrunn.
+20:01:50 | DEBUG    | 0182 | Solved problem for benzingen (ok), emmertingen (not ok): found gammertingen.
+20:01:50 | DEBUG    | 0182 | Solved problem for ostheim (ok), rabboltsweiler (not ok): found rappoltsweiler.
+20:01:50 | DEBUG    | 0182 | Solved problem for diedenhofen (ok), benungen (not ok): found redingen.
+20:01:52 | DEBUG    | 0131 | Solved problem for todtemann: found todtenmann.
+20:01:53 | DEBUG    | 0182 | Solved problem for weener (ok), bom (not ok): found boen.
+20:01:53 | DEBUG    | 0182 | Solved problem for waldsee (ok), aichbühl (not ok): found buchbühl.
+20:01:53 | DEBUG    | 0182 | Solved problem for crivitz (ok), raduhm (not ok): found raduhn.
+20:01:53 | DEBUG    | 0182 | Solved problem for cloppenburg (ok), rephe (not ok): found repke.
+20:01:54 | DEBUG    | 0182 | Solved problem for obereichstädt (ok), querfurth (not ok): found querfurt.
+20:01:54 | DEBUG    | 0182 | Solved problem for herford (ok), buchstedt (not ok): found bustedt.
+20:01:57 | DEBUG    | 0182 | Solved problem for strelno (ok), borzejoewisz (not ok): found bozejewitz.
+20:02:00 | DEBUG    | 0182 | Solved problem for braunschweig (ok), groß brunsroda (not ok): found groß brunsrode.
+20:02:08 | DEBUG    | 0131 | Solved problem for röhnsahl: found rönsahl.
+20:02:15 | DEBUG    | 0182 | Solved problem for köslin (ok), zerrin (not ok): found zernin.
+20:02:15 | DEBUG    | 0182 | Solved problem for waltersdorf (ok), dippeldiswalde (not ok): found dippoldiswalde.
+20:02:15 | DEBUG    | 0182 | Solved problem for bühl (ok), unzhunst (not ok): found unzhurst.
+20:02:15 | DEBUG    | 0182 | Solved problem for flöha (ok), edrmannsdorf (not ok): found erdmannsdorf.
+20:02:15 | DEBUG    | 0182 | Solved problem for pfullendorf (ok), mettenbusch (not ok): found mettenbuch.
+20:02:15 | DEBUG    | 0182 | Solved problem for gmünd (ok), täferot (not ok): found täferrot.
+20:02:16 | DEBUG    | 0182 | Solved problem for oberbayern (ok), winkelhart (not ok): found winklhart.
+20:02:16 | DEBUG    | 0182 | Solved problem for molsheim (ok), grasweiler (not ok): found greßweiler.
+20:02:16 | DEBUG    | 0182 | Solved problem for wirsitz (ok), kazmirowo (not ok): found kazmierowo.
+20:02:16 | DEBUG    | 0182 | Solved problem for bielefeld (ok), nied. jöllenbeck (not ok): found niederjöllenbeck.
+20:02:16 | DEBUG    | 0182 | Solved problem for zabern (ok), nieder sulzbach (not ok): found niedersulzbach.
+20:02:16 | DEBUG    | 0182 | Solved problem for oberfranken (ok), niederlanitz (not ok): found niederlamitz.
+20:02:19 | DEBUG    | 0151 | Solved problem for sengefeld (not ok), kreis zwickau (not ok): found benfeld.
+20:02:19 | DEBUG    | 0182 | Solved problem for frankenberg (ok), haubern (not ok): found bayern.
+20:02:19 | DEBUG    | 0182 | Solved problem for oldenburg (ok), forsthold (not ok): found torsholt.
+20:02:21 | DEBUG    | 0182 | Solved problem for calau (ok), retchensdorf (not ok): found rettchensdorf.
+20:02:21 | DEBUG    | 0182 | Solved problem for mindelheim (ok), dorschhansen (not ok): found dorschhausen.
+20:02:21 | DEBUG    | 0182 | Solved problem for ragnit (ok), narnischken (not ok): found nurnischken.
+20:02:22 | DEBUG    | 0151 | Solved problem for genticken (not ok), sachs. (not ok): found sachsen.
+20:02:22 | DEBUG    | 0182 | Solved problem for trebnitz (ok), lucine (not ok): found luzine.
+20:02:22 | DEBUG    | 0182 | Solved problem for württemberg (ok), göschingen (not ok): found öschingen.
+20:02:23 | DEBUG    | 0131 | Solved problem for wiedzno: found miedzno.
+20:02:23 | DEBUG    | 0151 | Solved problem for felderow (not ok), klagow (not ok): found geldern.
+20:02:23 | DEBUG    | 0182 | Solved problem for felderow (ok), klagow (not ok): found klaßhof.
+20:02:23 | DEBUG    | 0182 | Solved problem for mohrungen (ok), kötzen (not ok): found köszen.
+20:02:23 | DEBUG    | 0182 | Solved problem for fraustadt (ok), ulpersdorf (not ok): found ulbersdorf.
+20:02:23 | DEBUG    | 0182 | Solved problem for volgelsheim (ok), oberelsaß (not ok): found ober-elsaß.
+20:02:24 | DEBUG    | 0182 | Solved problem for bitterfeld (ok), burg chemnitz (not ok): found burgkemnitz.
+20:02:24 | DEBUG    | 0182 | Solved problem for schwelm (ok), havlinghausen (not ok): found haßlinghausen.

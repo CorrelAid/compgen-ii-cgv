@@ -4,12 +4,13 @@ from datetime import datetime
 from .gov_extraction import GOV
 from .gov_matching import Matcher
 from .pipeline import Pipeline
+from .loc_autocorrection import LocCorrection
 
 
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.DEBUG)
 
-file_logger = logging.FileHandler(f"{datetime.now():%Y-%m-%d-%H-%M-%S}_compgen2.log")
+file_logger = logging.FileHandler(f"{datetime.now():%Y-%m-%d-%H-%M-%S}_compgen2.log", "w", "utf-8")
 file_logger.setLevel(logging.DEBUG)
 fileformat = logging.Formatter(
     "%(asctime)s | %(levelname)-8s | %(lineno)04d | %(message)s", datefmt="%H:%M:%S"
