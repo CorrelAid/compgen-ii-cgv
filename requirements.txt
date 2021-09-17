@@ -5,3 +5,5 @@ jupyter
 jupyterlab
 jupytext
 tqdm
+pytest
+-e ./compgen2
