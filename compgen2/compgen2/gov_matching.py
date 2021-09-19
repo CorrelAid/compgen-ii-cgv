@@ -1,5 +1,4 @@
 from itertools import product
-from typing import Union
 
 import numpy as np
 
@@ -12,7 +11,25 @@ class Matcher:
 
         print(f"Initialized matcher with a gov database of {len(gov.items):,} items.")
 
-    def find_relevant_paths(self, query: str) -> set[tuple[int, ...]]:
+    def find_relevant_ids(self, query: str) -> list[tuple[int, ...]]:
+        """Retrieve all ids from GOV where the query is part of the path."""
+        parts = Matcher.get_query_parts(query)
+        search_ids_by_part = self.get_ids_by_part(parts)
+
+        if any(not ids for ids in search_ids_by_part):
+            return []
+
+        if len(parts) == 1:
+            return [(x,) for x in search_ids_by_part[0]]
+
+        relevant_ids = []
+        for ids in product(*search_ids_by_part):
+            if self.gov.all_reachable_nodes_by_id()[ids[0]].issuperset(ids[1:]):
+                relevant_ids.append(ids)
+
+        return relevant_ids
+
+    def find_relevant_paths(self, query: str, break_early: bool = False) -> set[tuple[int, ...]]:
         """Retrieve all paths from GOV where query is part of the path.
 
         The query can have multiple 'parts' which are separated by ','.
@@ -21,6 +38,7 @@ class Matcher:
         Args:
             query (str): GOV item name, as defined in gov_a_propertynames.csv.
                 For example "Aachen, Freudenstadt".
+            break_early (bool): If True, only return first match.
 
         Returns:
             set[tuple[int, ...]]: The relevant paths from GOV that matched the query.
@@ -28,16 +46,19 @@ class Matcher:
         parts = Matcher.get_query_parts(query)
         search_ids_by_part = self.get_ids_by_part(parts)
 
-        if not search_ids_by_part:
+        if any(not ids for ids in search_ids_by_part):
             return set()
 
         paths = self.gov.all_paths()
+        relevant_paths = set()
 
-        return {
-            path
-            for path in paths
-            if all(set(path) & search_ids for search_ids in search_ids_by_part)
-        }
+        for path in paths:
+            if all(set(path) & search_ids for search_ids in search_ids_by_part):
+                relevant_paths.add(path)
+                if break_early:
+                    break
+
+        return relevant_paths
 
     def group_relevant_paths_by_query(
         self, paths: set[tuple[int, ...]], query: str

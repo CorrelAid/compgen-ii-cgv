@@ -20,6 +20,8 @@
 # %%
 # %load_ext autoreload
 # %autoreload 2
+# #%load_ext memory_profiler
+# #%load_ext line_profiler
 
 # %%
 import pandas as pd
@@ -101,6 +103,15 @@ matcher = Matcher(gov)
 matcher.find_relevant_paths("Blasdorf, Landeshut")
 
 # %%
+matcher.find_relevant_ids("Blasdorf")
+
+# %%
+matcher.find_relevant_ids("Blasdorf, Landeshut")
+
+# %%
+gov.decode_paths_name(matcher.find_relevant_paths("Blasdorf, Landeshut"))
+
+# %%
 gov.decode_paths_name(matcher.find_relevant_paths("Blasdorf"))
 
 # %%
@@ -121,10 +132,12 @@ gov.all_reachable_nodes_by_id()[1279230]
 # %% jupyter={"outputs_hidden": true, "source_hidden": true} tags=[]
 matcher.group_relevant_paths_by_query(matcher.find_relevant_paths("Neustadt, Sachsen"), "Neustadt, Sachsen")
 
-# %% tags=[] jupyter={"outputs_hidden": true}
-gov.decode_paths_name(matcher.find_relevant_paths("Neustadt"))
+# %% tags=[]
+matcher.group_relevant_paths_by_query(matcher.find_relevant_paths("Neustadt, Sachsen"), "Neustadt, Sachsen")
 
-# %% jupyter={"outputs_hidden": true} tags=[]
-matcher.find_relevant_paths("Sachsen")
+# %%
+matcher.find_relevant_ids("Neustadt, Sachsen")
+
+# %%
 
 # %%

@@ -324,7 +324,7 @@ class GOV:
         return paths_decoded
 
     def get_all_ids_for_name(self, name: str) -> set[int]:
-        return set(id_ for id_, names in self.names_by_id().items() if name in names)
+        return set(self.names.query("content == @name").id)
 
     @staticmethod
     def convert_time(data: pd.DataFrame) -> pd.DataFrame:
