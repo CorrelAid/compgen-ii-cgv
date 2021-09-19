@@ -5,6 +5,8 @@ GOV_RELATIONS = "gov_a_relation.csv"
 GOV_TYPENAMES = "gov_t_typenames.csv"
 PROPERTY_NAMES = "gov_a_propertynames.csv"
 PROPERTY_TYPES = "gov_a_propertytypes.csv"
+VL_FILE = "deutsche-verlustlisten-1wk.tsv"
+LOG_PATH = "log/"
 
 # 2404429 = 1. Januar 1871, 2420342 = 28. Juli 1914, 2421909 = 11. November 1918
 T_BEGIN = 24219092

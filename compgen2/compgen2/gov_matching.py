@@ -1,6 +1,7 @@
-from collections import defaultdict
 from itertools import product
 from typing import Union
+
+import numpy as np
 
 from .gov_extraction import GOV
 
@@ -24,19 +25,23 @@ class Matcher:
         Returns:
             set[tuple[int, ...]]: The relevant paths from GOV that matched the query.
         """
-        paths = self.gov.all_paths()
         parts = Matcher.get_query_parts(query)
         search_ids_by_part = self.get_ids_by_part(parts)
+
+        if not search_ids_by_part:
+            return set()
+
+        paths = self.gov.all_paths()
 
         return {
             path
             for path in paths
-            if all(set(path) & search_ids for search_ids in search_ids_by_part.values())
+            if all(set(path) & search_ids for search_ids in search_ids_by_part)
         }
 
     def group_relevant_paths_by_query(
         self, paths: set[tuple[int, ...]], query: str
-    ) -> dict[str, Union[int, set[tuple[int, ...]]]]:
+    ) -> list[dict]:
         """Take the result of `find_relevant_paths` and group by part ids.
 
         Args:
@@ -45,16 +50,19 @@ class Matcher:
                 For example "Aachen, Freudenstadt".
 
         Returns:
-            dict[str, Union[int, set[tuple[int, ...]]]]:
-                A dictionary with the tuple of part ids as key and the relevant paths as value.
+            list[dict]:
+                A list of dictionaries. Each dictionary contains the relevant paths for one particular combination of ids.
         """
+        if not paths:
+            return []
+
         parts = Matcher.get_query_parts(query)
         search_ids_by_part = self.get_ids_by_part(parts)
 
         # iterate each possible pair of ids
         # and group all paths by this pair
         matches = []
-        for ids in product(*search_ids_by_part.values()):
+        for ids in product(*search_ids_by_part):
             paths_containing_ids = set()
             for path in paths:
                 if set(path).issuperset(ids):
@@ -62,16 +70,21 @@ class Matcher:
 
             if paths_containing_ids:
                 match = {name: id_ for name, id_ in zip(parts, ids)}
+                lower_level_id = ids[np.argmax(ids.index(i) for i in ids)]
+                match["lower_level_id"] = lower_level_id
+                match["lower_level_textual_id"] = self.gov.items.query(
+                    "id == @lower_level_id"
+                ).textual_id.values[0]
                 match["paths"] = paths_containing_ids
                 matches.append(match)
 
         return matches
 
-    def get_ids_by_part(self, parts: tuple) -> dict[str, set]:
+    def get_ids_by_part(self, parts: tuple) -> tuple[set[int]]:
         """Return all ids for each name (part) of a GOV item."""
-        return dict((name, set(self.gov.get_all_ids_for_name(name))) for name in parts)
+        return tuple(self.gov.get_all_ids_for_name(name) for name in parts)
 
     @staticmethod
-    def get_query_parts(query: str) -> tuple:
+    def get_query_parts(query: str) -> tuple[str]:
         """Split GOV item (query) to get the single names (parts)."""
         return tuple(s.strip() for s in query.split(","))
