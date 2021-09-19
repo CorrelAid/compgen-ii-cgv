@@ -285,6 +285,17 @@ class GOV:
         paths = {p[0] for p in paths}  # take path only without time_begin and time_end
         return paths
 
+    @lru_cache
+    def all_reachable_nodes_by_id(self) -> dict[int, set[int]]:
+        """Find all reachable nodes for a given node."""
+        reachable_nodes = defaultdict(set)
+
+        for path in self.all_paths():
+            for id_ in path:
+                reachable_nodes[id_].update(set(path) - {id_})
+
+        return reachable_nodes
+
     def decode_paths_id(self, paths: set) -> set:
         """Return the gov textual id for each node in a path."""
         gov_dict = self.items_by_id()
