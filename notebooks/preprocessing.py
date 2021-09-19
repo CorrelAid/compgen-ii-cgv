@@ -39,12 +39,12 @@ sorted(analysis_special_chars.items(), key=itemgetter(1), reverse=True)
 
 # %%
 # INFO: Zeige Einträge mit Sonderzeichen an 
-char = "\["
+char = ':'
 verlustliste[verlustliste.location.str.contains(char)]
 
 # %%
 # Sonderzeichen ´ ` und ' vereinheitlichen auf ' 
-verlustliste = verlustliste.replace({'location' : { '´' : ''', '`' : '''}}, regex=True)
+verlustliste = verlustliste.replace({'location' : { '\´' : '\'', '\`' : '\''}}, regex=True)
 
 # %%
 # Sonderzeichen ? ^ _ " # * entfernen 
@@ -54,14 +54,14 @@ verlustliste = verlustliste.replace({'location' : { '\?' : '', '\^' : '', '\_' :
 # Sonderzeichen () und [] kennzeichnen Korrekturen aus historischer Zeit -> inklusive Inhalt entfernen
 verlustliste['location'] = verlustliste['location'].str.replace(r"\(.*\)","")
 verlustliste['location'] = verlustliste['location'].str.replace(r"\[.*\]","")
-
 # weitere vorkommende Varianten
 verlustliste['location'] = verlustliste['location'].str.replace(r"\(.*\]","")
 verlustliste['location'] = verlustliste['location'].str.replace(r"\[.*\)","")
 verlustliste['location'] = verlustliste['location'].str.replace(r"\(nicht.*","")
 verlustliste['location'] = verlustliste['location'].str.replace(r"\[nicht.*","")
 
-# es kommen immer noch einzelne ( ) [ ] vor, vor allem in Kombination mit { } d.h. Tippfehler -> ersetzen mit { } ?
+# es kommen immer noch einzelne ( ) [ ] vor, vor allem in Kombination mit { } d.h. Tippfehler -> entfernen
+verlustliste = verlustliste.replace({'location' : { '\(' : '', '\)' : '', '\[' : '', '\]' : '',}}, regex=True)
 
 # %%
 # Komplette Enfernung unsinniger Einträge (aktuell nur 1 Fall)
@@ -72,14 +72,17 @@ verlustliste = verlustliste[~verlustliste.location.apply(lambda loc: any(c in lo
 
 # %%
 # Sonderzeichen {} kennzeichnet Korrekturen aus moderner Zeit  
-# 1) Fälle: A{achen}, A{.}chen --> {} entfernen
+# 1) Fälle: A{achen}, A{.}chen -> {} entfernen
 verlustliste = verlustliste.replace({'location' : { '\{' : '', '\}' : ''}}, regex=True)
 
-# 2) Fall Achen {korr.: Aachen} --> korr.: in , umwandeln
-verlustliste = verlustliste.replace({'location' : { 'korr.:' : ',', 'korr:' : ',', 'Korr.:' : ',', 'Korr:' : ','}}, regex=True)
+# 2) Fall Achen {korr.: Aachen} -> korr.: (und ähnliche Varianten) in , umwandeln
+verlustliste = verlustliste.replace({'location' : { 'korr.:' : ',', 'korr:' : ',', 'Korr.:' : ',', 'Korr:' : ',', 'korrekt:' : ',', 'verm.:' : ','}}, regex=True)
 
 # %%
-# TBD: Sonderzeichen / kennzeichnet sowohl Abkürzungen (wie .) als auch Regionen (wie ,)
+# Sonderzeichen / in Verbindung mit Abkürzungen (wie .) und Regionen (wie ,) 
+# Sonderzeichen ; als Tippfehler für Komma 
+# -> beide durch , ersetzen
+verlustliste = verlustliste.replace({'location' : { '\/' : ',',  '\;' : ','}}, regex=True)
 
 # %% [markdown]
 # ## Abkürzungen erweitern
@@ -99,7 +102,7 @@ substitutions.info()
 substitutions
 
 # %%
-# INFO: Abkürzungen ohne Bedeutung werden entfernt
+# INFO: Abkürzungen ohne Bedeutung werden im Folgenden entfernt
 substitutions[substitutions.expansion == " "]
 
 # %%
@@ -113,28 +116,28 @@ replace_dict
 
 # %%
 # INFO: Test Methode mit str.replace() 
-with_abbreviations = verlustliste[verlustliste.location.str.contains("[A-Za-zäöüßÄÖÜẞ]+\.")].copy()
-with_abbreviations
+# with_abbreviations = verlustliste[verlustliste.location.str.contains("[A-Za-zäöüßÄÖÜẞ]+\.")].copy()
+# with_abbreviations
 
 # %%
 # INFO: Test Methode mit replace(regex=False)
-expanded = with_abbreviations.location.replace(replace_dict, regex=False)
-expanded
+# expanded = with_abbreviations.location.replace(replace_dict, regex=False)
+# expanded
 
-# Problem: Matched keine Substrings
+# Problem: Matched keine Substrings -> nicht geeignet
 
 # %%
 # INFO: Test Methode mit replace(regex=True)
-expanded_re = with_abbreviations.location.replace(replace_dict, regex=True)
-expanded_re
+# expanded_re = with_abbreviations.location.replace(replace_dict, regex=True)
+# expanded_re
 
-# Problem: Falsche Matches, da . in Dict als regex interpretiert wird 
+# Problem: Falsche Matches, da . in Dict als regex interpretiert wird -> nicht geeignet
 
 # %%
 # INFO: Test Methode mit str.replace, benötigt loop  
-for old, new in replace_dict.items():
-    with_abbreviations['location'] = with_abbreviations['location'].str.replace(old, new, regex=False)
-with_abbreviations
+# for old, new in replace_dict.items():
+#    with_abbreviations['location'] = with_abbreviations['location'].str.replace(old, new, regex=False)
+# with_abbreviations
 
 # Das funktioniert! 
 
@@ -145,15 +148,12 @@ for old, new in replace_dict.items():
 verlustliste
 
 # %%
-# Check percentage
+# Check: Prozentzahl an weiterhin bestehenden Abkürzungen
 verlustliste.location.str.count("[A-Za-zäöüßÄÖÜẞ]+\.").sum() / verlustliste.shape[0]
 
 # %%
-# Check plot
+# Check: Häufigste weiterhin bestehende Abkürzungen
 verlustliste.location.str.extract("(?P<Abkürzung>[A-Za-zäöüßÄÖÜẞ]+\.)").dropna().value_counts(normalize = True)[0:50]
-
-# %%
-# TBD: Restliche Sonderzeichen . entfernen
 
 # %% [markdown]
 # ### Save as parquet
