@@ -3,7 +3,6 @@
 # Issue link: https://github.com/CorrelAid/compgen-ii-cgv/issues/10
 
 from collections import defaultdict
-from functools import lru_cache
 ## Imports
 from pathlib import Path
 
@@ -43,6 +42,15 @@ class GOV:
         self._prefilter_names()
         self._prefilter_relations()
         self._prefilter_types()
+
+        # important search indices
+        self.items_by_id = self._items_by_id()
+        self.names_by_id = self._names_by_id()
+        self.ids_by_name = self._ids_by_name()
+        self.types_by_id = self._types_by_id()
+        self.all_relations = self._all_relations()
+        self.all_paths = self._all_paths()
+        self.all_reachable_nodes_by_id = self._all_reachable_nodes_by_id()
 
     def read_item(self) -> pd.DataFrame:
         """Read in govitems.csv"""
@@ -138,9 +146,9 @@ class GOV:
         # The GOV does not store types for deleted objects. Hence no filtering by deleted necessary here.
         pass
 
-    @lru_cache
-    def items_by_id(self) -> dict[int, tuple[str, bool]]:
+    def _items_by_id(self) -> dict[int, tuple[str, bool]]:
         """Create a mapping from govitems with `id` as key and `textual_id` and `deleted` as values."""
+        print("Create items by id")
         gov = set(
             zip(
                 self.items.id,
@@ -157,12 +165,12 @@ class GOV:
         }
         return gov_dict
 
-    @lru_cache
-    def names_by_id(self) -> dict[int, set[str]]:
+    def _names_by_id(self) -> dict[int, set[str]]:
         """Create a mapping from propertynames with `id` as key and `content` as value.
 
         All names associated with the same id are combined into a set.
         """
+        print("Create names by id")
         names = set(
             zip(
                 self.names.id,
@@ -176,12 +184,20 @@ class GOV:
         name_dict.default_factory = None
         return name_dict
 
-    @lru_cache
-    def types_by_id(self) -> dict[int, set[int]]:
+    def _ids_by_name(self) -> dict[str, set[int]]:
+        """Create a mapping from propertynames with `content` as key and `id` as value.
+
+        All ids associated with the same name are combined into a set.
+        """
+        print("Create ids by name")
+        return self.names.groupby("content").id.apply(set).to_dict()
+
+    def _types_by_id(self) -> dict[int, set[int]]:
         """Create a mapping from propertytypes with `id` as key and `content` as value.
 
         All types associated with the same id are combined into a set.
         """
+        print("Create types by id")
         types = set(
             zip(
                 self.types.id,
@@ -194,11 +210,11 @@ class GOV:
         type_dict.default_factory = None
         return type_dict
 
-    @lru_cache
-    def all_relations(self) -> set[tuple[int, int, str, str]]:
+    def _all_relations(self) -> set[tuple[int, int, str, str]]:
         """Transform the relations to set of tuples.
         Filter by specific criteria
         """
+        print("Create all relations")
         relations = set(
             zip(
                 self.relations.parent,
@@ -215,7 +231,7 @@ class GOV:
         self, relations: set[tuple[int, int, str, str]]
     ) -> set[tuple[int, int, str, str]]:
         """Filter relations that contain objects with undesired types."""
-        type_dict = self.types_by_id()
+        type_dict = self.types_by_id
         relations_filtered = {
             r for r in relations if not (type_dict[r[0]] | type_dict[r[1]]) & TUNDESIRED
         }
@@ -249,10 +265,10 @@ class GOV:
 
         return relations_filtered
 
-    @lru_cache
-    def all_paths(self) -> set[tuple[int, ...]]:
+    def _all_paths(self) -> set[tuple[int, ...]]:
         """Return a set of paths, where each path is a set of all nodes from a SUPERNODE to a particular child."""
-        relations = self.all_relations()
+        print("Create all paths")
+        relations = self.all_relations
         leave_dict_curr = {k: {((k,), T_MIN, T_MAX)} for k in SUPERNODES}
         paths = set()
         new_leaves_found = True
@@ -284,12 +300,11 @@ class GOV:
         paths = {p[0] for p in paths}  # take path only without time_begin and time_end
         return paths
 
-    @lru_cache
-    def all_reachable_nodes_by_id(self) -> dict[int, set[int]]:
+    def _all_reachable_nodes_by_id(self) -> dict[int, set[int]]:
         """Find all reachable nodes for a given node."""
         reachable_nodes = defaultdict(set)
 
-        for path in self.all_paths():
+        for path in self.all_paths:
             for id_ in path:
                 reachable_nodes[id_].update(set(path) - {id_})
 
@@ -297,13 +312,13 @@ class GOV:
 
     def decode_paths_id(self, paths: set) -> set:
         """Return the gov textual id for each node in a path."""
-        gov_dict = self.items_by_id()
+        gov_dict = self.items_by_id
         paths_decoded = {tuple(gov_dict[o][0] for o in p) for p in paths}
         return paths_decoded
 
     def decode_paths_name(self, paths: set) -> set:
         """Return the gov display name for each node in a path."""
-        name_dict = self.names_by_id()
+        name_dict = self.names_by_id
         paths_decoded = {
             tuple(_set_retrieve(name_dict.get(o, set("<error>"))) for o in p)
             for p in paths
@@ -312,21 +327,18 @@ class GOV:
 
     def extract_all_types_from_paths(self, paths: set) -> set:
         """Return all unique type ids over all paths."""
-        type_dict = self.types_by_id()
+        type_dict = self.types_by_id
         types_relevant = set().union(*[type_dict[n] for p in paths for n in p])
         return types_relevant
 
     def decode_paths_type(self, paths: set) -> set:
         """Return the type display name for each node in a path."""
-        type_dict = self.types_by_id()
+        type_dict = self.types_by_id
         paths_decoded = {
             tuple(self.type_names.loc[_set_retrieve(type_dict[o])][0] for o in p)
             for p in paths
         }
         return paths_decoded
-
-    def get_all_ids_for_name(self, name: str) -> set[int]:
-        return set(self.names.query("content == @name").id)
 
     @staticmethod
     def convert_time(data: pd.DataFrame) -> pd.DataFrame:

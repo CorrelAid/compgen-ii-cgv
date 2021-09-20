@@ -21,13 +21,14 @@
 # %load_ext autoreload
 # %autoreload 2
 # #%load_ext memory_profiler
-# #%load_ext line_profiler
+# %load_ext line_profiler
 
 # %%
 import pandas as pd
 import numpy as np
 from compgen2 import GOV, Matcher
 from pathlib import Path
+import sys
 
 # %% [markdown]
 # ## Using GOV
@@ -35,6 +36,35 @@ from pathlib import Path
 # %%
 data_root = "../data"
 gov = GOV(data_root)
+
+
+# %%
+def get_size(obj, seen=None):
+    """Recursively finds size of objects"""
+    size = sys.getsizeof(obj)
+    if seen is None:
+        seen = set()
+    obj_id = id(obj)
+    if obj_id in seen:
+        return 0
+    # Important mark as seen *before* entering recursion to gracefully handle
+    # self-referential objects
+    seen.add(obj_id)
+    if isinstance(obj, dict):
+        size += sum([get_size(v, seen) for v in obj.values()])
+        size += sum([get_size(k, seen) for k in obj.keys()])
+    elif hasattr(obj, '__dict__'):
+        size += get_size(obj.__dict__, seen)
+    elif hasattr(obj, '__iter__') and not isinstance(obj, (str, bytes, bytearray)):
+        size += sum([get_size(i, seen) for i in obj])
+    return size
+
+
+# %%
+get_size(gov)
+
+# %%
+1791218489 / 1024**2
 
 # %%
 gov.items
@@ -52,7 +82,7 @@ gov.type_names
 gov.relations
 
 # %%
-paths = gov.all_paths()
+paths = gov.all_paths
 list(paths)[:10]
 
 
@@ -85,13 +115,10 @@ gov.decode_paths_type({pmin})
 gov.extract_all_types_from_paths({pmax})
 
 # %%
-gov.get_all_ids_for_name("Krefeld")
+gov.ids_by_name["Krefeld"]
 
 # %%
-gov.decode_paths_name({gov.get_all_ids_for_name("Krefeld")})
-
-# %%
-set().update(gov.get_all_ids_for_name("Krefeld"))
+gov.decode_paths_name({tuple(gov.ids_by_name["Krefeld"])})
 
 # %% [markdown]
 # ## Using Matcher
@@ -115,10 +142,22 @@ gov.decode_paths_name(matcher.find_relevant_paths("Blasdorf, Landeshut"))
 gov.decode_paths_name(matcher.find_relevant_paths("Blasdorf"))
 
 # %%
-gov.names.query("content == 'Landeshut'")
+gov.ids_by_name["Landshut"]
 
 # %%
-matcher.find_relevant_paths("Aach, Freudenstadt")
+# %lprun -f matcher.find_relevant_paths  matcher.find_relevant_paths("Aach, Freudenstadt")
+
+# %%
+# %lprun -f matcher.find_relevant_ids  matcher.find_relevant_ids("Aach, Freudenstadt")
+
+# %%
+# %timeit gov.ids_by_name["Aach"]
+
+# %%
+matcher.find_relevant_ids("Freudenstadt")
+
+# %%
+gov.decode_paths_name(matcher.find_relevant_paths("Aach, Freudenstadt"))
 
 # %%
 matcher.group_relevant_paths_by_query(matcher.find_relevant_paths("Aach, Freudenstadt"), "Aach, Freudenstadt")
@@ -127,12 +166,12 @@ matcher.group_relevant_paths_by_query(matcher.find_relevant_paths("Aach, Freuden
 matcher.group_relevant_paths_by_query(matcher.find_relevant_paths("Freudenstadt"), "Freudenstadt")
 
 # %%
-gov.all_reachable_nodes_by_id()[1279230]
+gov.all_reachable_nodes_by_id[1279230]
 
 # %% jupyter={"outputs_hidden": true, "source_hidden": true} tags=[]
 matcher.group_relevant_paths_by_query(matcher.find_relevant_paths("Neustadt, Sachsen"), "Neustadt, Sachsen")
 
-# %% tags=[]
+# %% tags=[] jupyter={"outputs_hidden": true}
 matcher.group_relevant_paths_by_query(matcher.find_relevant_paths("Neustadt, Sachsen"), "Neustadt, Sachsen")
 
 # %%

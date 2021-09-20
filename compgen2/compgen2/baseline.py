@@ -11,7 +11,7 @@ class Baseline(Pipeline):
         that have a unique match.
     """
 
-    def get_matches(self) -> pd.Series:
+    def get_matches_by_path(self) -> pd.Series:
         def get_textual_id(query: str):
             paths = self.matcher.find_relevant_paths(query)
             grouped_paths = self.matcher.group_relevant_paths_by_query(paths, query)
@@ -23,7 +23,8 @@ class Baseline(Pipeline):
             return textual_id
 
         matches = [
-            get_textual_id(query) for query in tqdm(self.vl.location, desc="VL entry")
+            get_textual_id(query)
+            for query in tqdm(self.vl.location, desc="VL entry", position=0, leave=True)
         ]
 
         self.matches = pd.DataFrame(
@@ -34,7 +35,7 @@ class Baseline(Pipeline):
             }
         )
 
-    def get_matches_faster(self) -> pd.Series:
+    def get_matches(self) -> pd.Series:
         def get_textual_id(query: str):
             relevant_ids = self.matcher.find_relevant_ids(query)
 
@@ -42,7 +43,7 @@ class Baseline(Pipeline):
             if len(relevant_ids) == 1:
                 ids = relevant_ids[0]
                 lower_id = min(
-                    ids, key=lambda id_: len(self.gov.all_reachable_nodes_by_id()[id_])
+                    ids, key=lambda id_: len(self.gov.all_reachable_nodes_by_id[id_])
                 )
                 textual_id = self.gov.items.query("id == @lower_id").textual_id.values[
                     0
