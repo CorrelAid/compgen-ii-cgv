@@ -1,4 +1,3 @@
-import numpy as np
 import pandas as pd
 from tqdm import tqdm
 
@@ -12,7 +11,7 @@ class Baseline(Pipeline):
         that have a unique match.
     """
 
-    def get_matches_old(self) -> pd.Series:
+    def get_matches(self) -> pd.Series:
         def get_textual_id(query: str):
             paths = self.matcher.find_relevant_paths(query)
             grouped_paths = self.matcher.group_relevant_paths_by_query(paths, query)
@@ -35,15 +34,19 @@ class Baseline(Pipeline):
             }
         )
 
-    def get_matches(self) -> pd.Series:
+    def get_matches_faster(self) -> pd.Series:
         def get_textual_id(query: str):
             relevant_ids = self.matcher.find_relevant_ids(query)
 
             textual_id = ""
             if len(relevant_ids) == 1:
                 ids = relevant_ids[0]
-                lower_id = min(ids, key=lambda id_: len(self.gov.all_reachable_nodes_by_id()[id_]))
-                textual_id = self.gov.items.query("id == @lower_id").textual_id.values[0]
+                lower_id = min(
+                    ids, key=lambda id_: len(self.gov.all_reachable_nodes_by_id()[id_])
+                )
+                textual_id = self.gov.items.query("id == @lower_id").textual_id.values[
+                    0
+                ]
 
             return textual_id
 
@@ -59,7 +62,7 @@ class Baseline(Pipeline):
                 "score": [1 if x != "" else 0 for x in matches],
             }
         )
-    
+
     def get_matches_alt(self) -> pd.Series:
         matches = []
         scores = []
