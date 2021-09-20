@@ -8,8 +8,11 @@ p = Pipeline(data_root)
 
 p.run()
 
+data_root = "../data"
 b = Baseline(data_root)
 
 b.run()
+
+
 
 

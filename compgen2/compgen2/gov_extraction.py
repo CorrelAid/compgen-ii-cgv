@@ -4,7 +4,6 @@
 
 from collections import defaultdict
 from functools import lru_cache
-
 ## Imports
 from pathlib import Path
 
@@ -305,7 +304,10 @@ class GOV:
     def decode_paths_name(self, paths: set) -> set:
         """Return the gov display name for each node in a path."""
         name_dict = self.names_by_id()
-        paths_decoded = {tuple(_set_retrieve(name_dict.get(o, set("<error>"))) for o in p) for p in paths}
+        paths_decoded = {
+            tuple(_set_retrieve(name_dict.get(o, set("<error>"))) for o in p)
+            for p in paths
+        }
         return paths_decoded
 
     def extract_all_types_from_paths(self, paths: set) -> set:
