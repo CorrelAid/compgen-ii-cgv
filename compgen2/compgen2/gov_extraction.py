@@ -2,7 +2,9 @@
 # #Complete GOV extract #10
 # Issue link: https://github.com/CorrelAid/compgen-ii-cgv/issues/10
 
+import logging
 from collections import defaultdict
+
 ## Imports
 from pathlib import Path
 
@@ -10,6 +12,8 @@ import numpy as np
 import pandas as pd
 
 from .const import *
+
+logger = logging.getLogger(__name__)
 
 
 def _set_retrieve(s: set):
@@ -19,31 +23,70 @@ def _set_retrieve(s: set):
 class GOV:
     """Main class to work with GOV items.
 
+    To work with this class you have to
+        1. Initialize a new instance `Gov(data_root)`
+        2. Load the data `gov.load_data()`
+        3. Build the search indicies `gov.build_indices()`
+
+    Then, you can start querying the data.
+
     Attributes:
         data_root (str): Path to a folder containing the data.
+        fully_initialized (bool): Set to `True` if all data and indices are initialized.
         items (pd.DataFrame): content of govitems.csv
         names (pd.DataFrame): content of propertynames.csv
         types (pd.DataFrame): content of propertytypes.csv
         relations (pd.DataFrame): content of relation.csv
         type_names (pd.DataFrame): content of typenames.csv
+        items_by_id (dict): A mapping between an item's id and its textual id.
+        names_by_id (dict): A mapping between an item's id and its names.
+        ids_by_name (dict): A mapping between a name and its possible ids.
+        types_by_id (dict): A mapping between an item's id and its type.
+        all_relations (set): A set of all relations in GOV
+        all_paths (set): A set of all paths in GOV from SUPERNODES to their children.
+        all_reachable_nodes_by_id (dict): A mapping between an item's id and its reachable nodes.
     """
 
     def __init__(self, data_root: str) -> None:
         self.data_root = Path(data_root)
+        self.fully_initialized = False
 
-        # load data
-        self.items = self.read_item()
-        self.names = self.read_names()
-        self.types = self.read_types()
-        self.relations = self.read_relations()
-        self.type_names = self.read_type_names()
+        # raw gov tables
+        self.items = pd.DataFrame()
+        self.names = pd.DataFrame()
+        self.types = pd.DataFrame()
+        self.relations = pd.DataFrame()
+        self.type_names = pd.DataFrame()
+
+        # important search indices
+        self.items_by_id = {}
+        self.names_by_id = {}
+        self.ids_by_name = {}
+        self.types_by_id = {}
+        self.all_relations = set()
+        self.all_paths = set()
+        self.all_reachable_nodes_by_id = {}
+
+        logger.info("Initialized empty gov instance. Please call `load_data()` next.")
+
+    def load_data(self):
+        logger.info("Start loading all relevant GOV tables ...")
+        self.items = self._read_item()
+        self.names = self._read_names()
+        self.types = self._read_types()
+        self.relations = self._read_relations()
+        self.type_names = self._read_type_names()
 
         # filter data
         self._prefilter_names()
         self._prefilter_relations()
         self._prefilter_types()
 
-        # important search indices
+        logger.info("Finished loading all relevant GOV tables. Please call `build_indices()` next.")
+
+    def build_indices(self):
+        """Build all relevant indices that are necessary for efficiently querying and working with GOV."""
+        logger.info("Start building all relevant search indices ...")
         self.items_by_id = self._items_by_id()
         self.names_by_id = self._names_by_id()
         self.ids_by_name = self._ids_by_name()
@@ -51,10 +94,34 @@ class GOV:
         self.all_relations = self._all_relations()
         self.all_paths = self._all_paths()
         self.all_reachable_nodes_by_id = self._all_reachable_nodes_by_id()
+        self.fully_initialized = True
 
-    def read_item(self) -> pd.DataFrame:
+        logger.info("Finished building all relevant search indices. You can now start working with GOV data.")
+
+    def clear_data(self):
+        """Necessary step to pickle model so that its size its manageable.
+
+        If you unpickle a pipeline object you will have to call `load_data()` and `build_indices()` again.
+        """
+        self.items = pd.DataFrame()
+        self.names = pd.DataFrame()
+        self.types = pd.DataFrame()
+        self.relations = pd.DataFrame()
+        self.type_names = pd.DataFrame()
+        self.items_by_id = {}
+        self.names_by_id = {}
+        self.ids_by_name = {}
+        self.types_by_id = {}
+        self.all_relations = set()
+        self.all_paths = set()
+        self.all_reachable_nodes_by_id = {}
+        self.fully_initialized = False
+
+        logger.info("Cleared all data and attributes.")
+
+    def _read_item(self) -> pd.DataFrame:
         """Read in govitems.csv"""
-        print("Reading in govitems.csv")
+        logger.info("Reading in govitems.csv.")
         gov_item = pd.read_csv(
             self.data_root / GOV_ITEMS,
             sep="\t",
@@ -63,9 +130,9 @@ class GOV:
         assert not gov_item.id.duplicated().any()
         return gov_item
 
-    def read_names(self) -> pd.DataFrame:
+    def _read_names(self) -> pd.DataFrame:
         """Read in propertynames.csv"""
-        print("Reading in propertynames.csv")
+        logger.info("Reading in propertynames.csv.")
         names = pd.read_csv(
             self.data_root / PROPERTY_NAMES,
             sep="\t",
@@ -80,9 +147,9 @@ class GOV:
         names = GOV.convert_time(names)
         return names
 
-    def read_types(self) -> pd.DataFrame:
+    def _read_types(self) -> pd.DataFrame:
         """Read in propertytypes.csv"""
-        print("Reading in propertytypes.csv")
+        logger.info("Reading in propertytypes.csv.")
         types = pd.read_csv(
             self.data_root / PROPERTY_TYPES,
             sep="\t",
@@ -96,9 +163,9 @@ class GOV:
         types = GOV.convert_time(types)
         return types
 
-    def read_relations(self) -> pd.DataFrame:
+    def _read_relations(self) -> pd.DataFrame:
         """Read in relation.csv"""
-        print("Reading in relation.csv")
+        logger.info("Reading in relation.csv.")
         relations = pd.read_csv(
             self.data_root / GOV_RELATIONS,
             sep="\t",
@@ -112,9 +179,9 @@ class GOV:
         relations = GOV.convert_time(relations)
         return relations
 
-    def read_type_names(self) -> pd.DataFrame:
+    def _read_type_names(self) -> pd.DataFrame:
         """Read in typenames.csv"""
-        print("Reading in typenames.csv")
+        logger.info("Reading in typenames.csv.")
         type_names = pd.read_csv(
             self.data_root / GOV_TYPENAMES,
             sep="\t",
@@ -148,7 +215,7 @@ class GOV:
 
     def _items_by_id(self) -> dict[int, tuple[str, bool]]:
         """Create a mapping from govitems with `id` as key and `textual_id` and `deleted` as values."""
-        print("Create items by id")
+        logger.info("Create items by id.")
         gov = set(
             zip(
                 self.items.id,
@@ -170,7 +237,7 @@ class GOV:
 
         All names associated with the same id are combined into a set.
         """
-        print("Create names by id")
+        logger.info("Create names by id.")
         names = set(
             zip(
                 self.names.id,
@@ -189,7 +256,7 @@ class GOV:
 
         All ids associated with the same name are combined into a set.
         """
-        print("Create ids by name")
+        logger.info("Create ids by name")
         return self.names.groupby("content").id.apply(set).to_dict()
 
     def _types_by_id(self) -> dict[int, set[int]]:
@@ -197,7 +264,7 @@ class GOV:
 
         All types associated with the same id are combined into a set.
         """
-        print("Create types by id")
+        logger.info("Create types by id.")
         types = set(
             zip(
                 self.types.id,
@@ -214,7 +281,7 @@ class GOV:
         """Transform the relations to set of tuples.
         Filter by specific criteria
         """
-        print("Create all relations")
+        logger.info("Create all relations.")
         relations = set(
             zip(
                 self.relations.parent,
@@ -258,7 +325,7 @@ class GOV:
             if len(leaves_next) == 0:
                 new_leaves_found = False
 
-            print(
+            logger.debug(
                 f"old: {len(relations_unfiltered)}, new: {len(relations_filtered)}, sample-child: {tuple(leaves_next)[:1]}"
             )
             leaves_current = leaves_next
@@ -267,7 +334,7 @@ class GOV:
 
     def _all_paths(self) -> set[tuple[int, ...]]:
         """Return a set of paths, where each path is a set of all nodes from a SUPERNODE to a particular child."""
-        print("Create all paths")
+        logger.info("Create all paths.")
         relations = self.all_relations
         leave_dict_curr = {k: {((k,), T_MIN, T_MAX)} for k in SUPERNODES}
         paths = set()
@@ -292,7 +359,7 @@ class GOV:
             if len(leaves_updated) == 0:
                 new_leaves_found = False
 
-            print(
+            logger.debug(
                 f"Final paths: {len(paths)}, Updated paths: {len(set().union(*leave_dict_next.values()))}"
             )
             leave_dict_curr = leave_dict_next
@@ -302,6 +369,7 @@ class GOV:
 
     def _all_reachable_nodes_by_id(self) -> dict[int, set[int]]:
         """Find all reachable nodes for a given node."""
+        logger.info("Create all reachable nodes by id.")
         reachable_nodes = defaultdict(set)
 
         for path in self.all_paths:

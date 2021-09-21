@@ -1,3 +1,11 @@
+"""Extension of main pipeline class to calculate a baseline for matching VL entries against GOV. 
+
+How to use:
+```
+b = Baseline(<data_root>)
+b.run()
+```
+"""
 import pandas as pd
 from tqdm import tqdm
 

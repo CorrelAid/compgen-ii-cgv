@@ -1,15 +1,26 @@
+import logging
 from itertools import product
 
 import numpy as np
 
 from .gov_extraction import GOV
 
+logger = logging.getLogger(__name__)
+
 
 class Matcher:
     def __init__(self, gov: GOV) -> None:
         self.gov = gov
 
-        print(f"Initialized matcher with a gov database of {len(gov.items):,} items.")
+        if not self.gov.fully_initialized:
+            logger.warning(
+                "Passed instance of gov is not fully initialized. "
+                "Make sure to run `load_data()` and `build_indices()`."
+            )
+        else:
+            logger.info(
+                f"Initialized matcher with a gov database of {len(gov.items):,} items."
+            )
 
     def find_relevant_ids(self, query: str) -> list[tuple[int, ...]]:
         """Retrieve all ids from GOV where the query is part of the path."""

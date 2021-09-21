@@ -21,7 +21,7 @@
 # %load_ext autoreload
 # %autoreload 2
 # #%load_ext memory_profiler
-# %load_ext line_profiler
+# #%load_ext line_profiler
 
 # %%
 import pandas as pd
@@ -31,60 +31,58 @@ from pathlib import Path
 import sys
 
 # %% [markdown]
-# ## Using GOV
+# ## Initializing GOV instance
 
 # %%
 data_root = "../data"
 gov = GOV(data_root)
 
+# %%
+gov.load_data()
 
 # %%
-def get_size(obj, seen=None):
-    """Recursively finds size of objects"""
-    size = sys.getsizeof(obj)
-    if seen is None:
-        seen = set()
-    obj_id = id(obj)
-    if obj_id in seen:
-        return 0
-    # Important mark as seen *before* entering recursion to gracefully handle
-    # self-referential objects
-    seen.add(obj_id)
-    if isinstance(obj, dict):
-        size += sum([get_size(v, seen) for v in obj.values()])
-        size += sum([get_size(k, seen) for k in obj.keys()])
-    elif hasattr(obj, '__dict__'):
-        size += get_size(obj.__dict__, seen)
-    elif hasattr(obj, '__iter__') and not isinstance(obj, (str, bytes, bytearray)):
-        size += sum([get_size(i, seen) for i in obj])
-    return size
-
+gov.build_indices()
 
 # %%
-get_size(gov)
+#gov.clear_data() # needed when pickled in pipeline
+
+# %% [markdown]
+# ### Attributes
 
 # %%
-1791218489 / 1024**2
+for attr in ["items", "names", "types", "relations", "type_names"]:
+    print(f"Data: {attr}")
+    print(getattr(gov, attr).head())
 
 # %%
-gov.items
-
-# %% tags=[]
-gov.names
-
-# %%
-gov.types
-
-# %%
-gov.type_names
-
-# %%
-gov.relations
-
-# %%
+# all paths are accessible via all_paths attribute
 paths = gov.all_paths
 list(paths)[:10]
 
+
+# %% tags=[] jupyter={"outputs_hidden": true}
+gov.items_by_id
+
+# %% jupyter={"outputs_hidden": true} tags=[]
+gov.names_by_id
+
+# %% jupyter={"outputs_hidden": true} tags=[]
+gov.ids_by_name
+
+# %% jupyter={"outputs_hidden": true} tags=[]
+gov.types_by_id
+
+# %% jupyter={"outputs_hidden": true} tags=[]
+gov.all_relations
+
+# %% jupyter={"outputs_hidden": true} tags=[]
+gov.all_paths
+
+# %% jupyter={"outputs_hidden": true} tags=[]
+gov.all_reachable_nodes_by_id
+
+# %% [markdown]
+# ## Using GOV instance
 
 # %%
 pmax = max(paths, key=lambda p: len(p))
@@ -148,10 +146,11 @@ gov.ids_by_name["Landshut"]
 # %lprun -f matcher.find_relevant_paths  matcher.find_relevant_paths("Aach, Freudenstadt")
 
 # %%
-# %lprun -f matcher.find_relevant_ids  matcher.find_relevant_ids("Aach, Freudenstadt")
+# with this command you can measure the runtime of each line in the function
+# # %lprun -f matcher.find_relevant_ids  matcher.find_relevant_ids("Aach, Freudenstadt")
 
-# %%
-# %timeit gov.ids_by_name["Aach"]
+# %% [markdown]
+# ## Weitere Beispiele
 
 # %%
 matcher.find_relevant_ids("Freudenstadt")
@@ -165,13 +164,13 @@ matcher.group_relevant_paths_by_query(matcher.find_relevant_paths("Aach, Freuden
 # %% tags=[] jupyter={"outputs_hidden": true}
 matcher.group_relevant_paths_by_query(matcher.find_relevant_paths("Freudenstadt"), "Freudenstadt")
 
-# %%
+# %% jupyter={"outputs_hidden": true} tags=[]
 gov.all_reachable_nodes_by_id[1279230]
 
-# %% jupyter={"outputs_hidden": true, "source_hidden": true} tags=[]
+# %% tags=[] jupyter={"outputs_hidden": true}
 matcher.group_relevant_paths_by_query(matcher.find_relevant_paths("Neustadt, Sachsen"), "Neustadt, Sachsen")
 
-# %% tags=[] jupyter={"outputs_hidden": true}
+# %% tags=[]
 matcher.group_relevant_paths_by_query(matcher.find_relevant_paths("Neustadt, Sachsen"), "Neustadt, Sachsen")
 
 # %%
