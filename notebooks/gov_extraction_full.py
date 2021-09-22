@@ -28,33 +28,61 @@ import pandas as pd
 import numpy as np
 from compgen2 import GOV, Matcher
 from pathlib import Path
+import sys
 
 # %% [markdown]
-# ## Using GOV
+# ## Initializing GOV instance
 
 # %%
 data_root = "../data"
 gov = GOV(data_root)
 
 # %%
-gov.items
-
-# %% tags=[]
-gov.names
+gov.load_data()
 
 # %%
-gov.types
+gov.build_indices()
 
 # %%
-gov.type_names
+#gov.clear_data() # needed when pickled in pipeline
+
+# %% [markdown]
+# ### Attributes
 
 # %%
-gov.relations
+for attr in ["items", "names", "types", "relations", "type_names"]:
+    print(f"Data: {attr}")
+    print(getattr(gov, attr).head())
 
 # %%
-paths = gov.all_paths()
+# all paths are accessible via all_paths attribute
+paths = gov.all_paths
 list(paths)[:10]
 
+
+# %% tags=[] jupyter={"outputs_hidden": true}
+gov.items_by_id
+
+# %% jupyter={"outputs_hidden": true} tags=[]
+gov.names_by_id
+
+# %% jupyter={"outputs_hidden": true} tags=[]
+gov.ids_by_name
+
+# %% jupyter={"outputs_hidden": true} tags=[]
+gov.types_by_id
+
+# %% jupyter={"outputs_hidden": true} tags=[]
+gov.all_relations
+
+# %% jupyter={"outputs_hidden": true} tags=[]
+gov.all_paths
+
+# %% jupyter={"outputs_hidden": true} tags=[]
+gov.all_reachable_nodes_by_id
+
+# %% [markdown]
+# ## Using GOV instance
 
 # %%
 pmax = max(paths, key=lambda p: len(p))
@@ -85,13 +113,10 @@ gov.decode_paths_type({pmin})
 gov.extract_all_types_from_paths({pmax})
 
 # %%
-gov.get_all_ids_for_name("Krefeld")
+gov.ids_by_name["Krefeld"]
 
 # %%
-gov.decode_paths_name({gov.get_all_ids_for_name("Krefeld")})
-
-# %%
-set().update(gov.get_all_ids_for_name("Krefeld"))
+gov.decode_paths_name({tuple(gov.ids_by_name["Krefeld"])})
 
 # %% [markdown]
 # ## Using Matcher
@@ -115,10 +140,23 @@ gov.decode_paths_name(matcher.find_relevant_paths("Blasdorf, Landeshut"))
 gov.decode_paths_name(matcher.find_relevant_paths("Blasdorf"))
 
 # %%
-gov.names.query("content == 'Landeshut'")
+gov.ids_by_name["Landshut"]
 
 # %%
-matcher.find_relevant_paths("Aach, Freudenstadt")
+# %lprun -f matcher.find_relevant_paths  matcher.find_relevant_paths("Aach, Freudenstadt")
+
+# %%
+# with this command you can measure the runtime of each line in the function
+# # %lprun -f matcher.find_relevant_ids  matcher.find_relevant_ids("Aach, Freudenstadt")
+
+# %% [markdown]
+# ## Weitere Beispiele
+
+# %%
+matcher.find_relevant_ids("Freudenstadt")
+
+# %%
+gov.decode_paths_name(matcher.find_relevant_paths("Aach, Freudenstadt"))
 
 # %%
 matcher.group_relevant_paths_by_query(matcher.find_relevant_paths("Aach, Freudenstadt"), "Aach, Freudenstadt")
@@ -126,10 +164,10 @@ matcher.group_relevant_paths_by_query(matcher.find_relevant_paths("Aach, Freuden
 # %% tags=[] jupyter={"outputs_hidden": true}
 matcher.group_relevant_paths_by_query(matcher.find_relevant_paths("Freudenstadt"), "Freudenstadt")
 
-# %%
-gov.all_reachable_nodes_by_id()[1279230]
+# %% jupyter={"outputs_hidden": true} tags=[]
+gov.all_reachable_nodes_by_id[1279230]
 
-# %% jupyter={"outputs_hidden": true, "source_hidden": true} tags=[]
+# %% tags=[] jupyter={"outputs_hidden": true}
 matcher.group_relevant_paths_by_query(matcher.find_relevant_paths("Neustadt, Sachsen"), "Neustadt, Sachsen")
 
 # %% tags=[]

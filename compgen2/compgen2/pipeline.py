@@ -1,5 +1,14 @@
+"""Main Pipeline class to match entries of VL against GOV
+
+How to use:
+```
+p = Pipeline(<data_root>)
+p.run()
+```
+"""
 import hashlib
 import inspect
+import logging
 import pickle
 from pathlib import Path
 
@@ -8,6 +17,8 @@ import pandas as pd
 from .const import LOG_PATH, VL_FILE
 from .gov_extraction import GOV
 from .gov_matching import Matcher
+
+logger = logging.getLogger(__name__)
 
 
 class Pipeline:
@@ -27,22 +38,23 @@ class Pipeline:
         self.hash = self.__get_pipeline_hash()
         self.__prepare_pipeline()
 
-        print("loading data...")
+        logger.info("Loading data...")
         self.load_data()
         assert not self.vl.empty
+        assert not self.gov.items.empty
 
-        print("preprocessing data...")
+        logger.info("Preprocessing data...")
         self.preprocess()
+        self.gov.build_indices()
 
-        print("matching data with gov...")
+        logger.info("Matching data with gov...")
         self.get_matches()
         assert not self.matches.empty
         assert self.matches.shape[1] == 3  # should be a data frame with 3 columns
         assert len(self.matches) == len(self.vl)  # should have the same length like vl
 
-        print("saving pipeline and data to ./log...")
+        logger.info("Saving pipeline and data to ./log...")
         self.output()
-        print(str(self))
 
     def __prepare_pipeline(self):
         pipeline_dir = Path(LOG_PATH) / "pipeline"
@@ -58,14 +70,13 @@ class Pipeline:
             if last_model.hash != self.hash:
                 self.version = last_model.version + 1
 
-        with open(
-            pipeline_dir.joinpath(self.get_pipeline_name() + ".pickle"), "wb"
-        ) as stream:
-            pickle.dump(self, stream, pickle.HIGHEST_PROTOCOL)
-
     def load_data(self):
-        """load important data."""
+        """Load important data.
+
+        Loads Verlustliste and fully initializes GOV.
+        """
         self.vl = self.read_vl()
+        self.gov.load_data()
 
     def read_vl(self) -> pd.DataFrame:
         path = self.data_root / VL_FILE
@@ -90,7 +101,7 @@ class Pipeline:
     def preprocess(self):
         """preprocess data to improve performance of matching algorithm
 
-        Here you can alter self.vl, self.gov_cities and self.gov_districts
+        Here you can alter self.vl, and all data stored in self.gov
         """
         pass
 
@@ -119,6 +130,8 @@ class Pipeline:
 
     def output(self):
         """Append results to the pipeline log"""
+        logger.info(str(self))
+
         output_file = Path(LOG_PATH).joinpath(self.get_pipeline_name() + ".log")
         with open(output_file, "a", encoding="utf-8") as stream:
             stream.write(str(self))
@@ -126,6 +139,16 @@ class Pipeline:
 
         output_file = Path(LOG_PATH).joinpath(self.get_pipeline_name() + "_matches.csv")
         self.matches.to_csv(output_file, index=False)
+
+        # pickle pipeline
+        self.vl = pd.DataFrame()
+        self.matches = pd.DataFrame()
+        self.gov.clear_data()
+        pipeline_dir = Path(LOG_PATH) / "pipeline"
+        with open(
+            pipeline_dir.joinpath(self.get_pipeline_name() + ".pickle"), "wb"
+        ) as stream:
+            pickle.dump(self, stream, pickle.HIGHEST_PROTOCOL)
 
     def __str__(self) -> str:
         return (
@@ -145,8 +168,3 @@ class Pipeline:
         m.update(inspect.getsource(self.matcher.__class__).encode())
 
         return m.digest()
-
-
-if __name__ == "__main__":
-    p = Pipeline()
-    p.run()

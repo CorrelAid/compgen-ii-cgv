@@ -1,15 +1,26 @@
+import logging
 from itertools import product
 
 import numpy as np
 
 from .gov_extraction import GOV
 
+logger = logging.getLogger(__name__)
+
 
 class Matcher:
     def __init__(self, gov: GOV) -> None:
         self.gov = gov
 
-        print(f"Initialized matcher with a gov database of {len(gov.items):,} items.")
+        if not self.gov.fully_initialized:
+            logger.warning(
+                "Passed instance of gov is not fully initialized. "
+                "Make sure to run `load_data()` and `build_indices()`."
+            )
+        else:
+            logger.info(
+                f"Initialized matcher with a gov database of {len(gov.items):,} items."
+            )
 
     def find_relevant_ids(self, query: str) -> list[tuple[int, ...]]:
         """Retrieve all ids from GOV where the query is part of the path."""
@@ -22,14 +33,15 @@ class Matcher:
         if len(parts) == 1:
             return [(x,) for x in search_ids_by_part[0]]
 
-        relevant_ids = []
-        for ids in product(*search_ids_by_part):
-            if self.gov.all_reachable_nodes_by_id()[ids[0]].issuperset(ids[1:]):
-                relevant_ids.append(ids)
+        relevant_ids = [
+            ids
+            for ids in product(*search_ids_by_part)
+            if self.gov.all_reachable_nodes_by_id[ids[0]].issuperset(ids[1:])
+        ]
 
         return relevant_ids
 
-    def find_relevant_paths(self, query: str, break_early: bool = False) -> set[tuple[int, ...]]:
+    def find_relevant_paths(self, query: str) -> set[tuple[int, ...]]:
         """Retrieve all paths from GOV where query is part of the path.
 
         The query can have multiple 'parts' which are separated by ','.
@@ -38,7 +50,6 @@ class Matcher:
         Args:
             query (str): GOV item name, as defined in gov_a_propertynames.csv.
                 For example "Aachen, Freudenstadt".
-            break_early (bool): If True, only return first match.
 
         Returns:
             set[tuple[int, ...]]: The relevant paths from GOV that matched the query.
@@ -49,16 +60,11 @@ class Matcher:
         if any(not ids for ids in search_ids_by_part):
             return set()
 
-        paths = self.gov.all_paths()
-        relevant_paths = set()
-
-        for path in paths:
-            if all(set(path) & search_ids for search_ids in search_ids_by_part):
-                relevant_paths.add(path)
-                if break_early:
-                    break
-
-        return relevant_paths
+        return {
+            path
+            for path in self.gov.all_paths
+            if all(set(path) & search_ids for search_ids in search_ids_by_part)
+        }
 
     def group_relevant_paths_by_query(
         self, paths: set[tuple[int, ...]], query: str
@@ -103,7 +109,7 @@ class Matcher:
 
     def get_ids_by_part(self, parts: tuple) -> tuple[set[int]]:
         """Return all ids for each name (part) of a GOV item."""
-        return tuple(self.gov.get_all_ids_for_name(name) for name in parts)
+        return tuple(self.gov.ids_by_name.get(name, set()) for name in parts)
 
     @staticmethod
     def get_query_parts(query: str) -> tuple[str]:
