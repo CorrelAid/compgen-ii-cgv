@@ -34,7 +34,7 @@ and g1.id in
     and (p2.time_end   > 24044292 or p2.time_end   is NUll) /* 2404429 = 1. Januar 1871, 2420342 = 28. Juli 1914*/
     and 
     (
-        p2.type_object in ('5', '32', '36', '37', '110', '99', '78', '2', '149', '211', '212', '95') /* Kreisähnliche Gebilde */
+        p2.type_object in ('5', '32', '36', '37', '110', '99', '78', '149', '211', '212', '95') /* Kreisähnliche Gebilde */
         or
         p2.type_object in ('270', '25', '207', '134') /* Kreisähnlich Österreich-Ungarn, Schweiz */
     )
