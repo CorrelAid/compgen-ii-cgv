@@ -1,0 +1,1445 @@
+textual_id,longitude,latitude,content
+adm_131053,NULL,NULL,"Herzogtum Lauenburg"
+adm_131053,NULL,NULL,Lauenburg
+object_191059,NULL,NULL,Obwalden
+object_191054,NULL,NULL,Nidwalden
+object_191061,NULL,NULL,Uri
+object_191053,NULL,NULL,Glarus
+object_191056,NULL,NULL,Neuenburg
+object_191058,NULL,NULL,Schwyz
+object_191070,NULL,NULL,Thurgau
+object_191052,NULL,NULL,Zürich
+object_191069,NULL,NULL,Graubünden
+object_191065,NULL,NULL,Freiburg
+object_191055,NULL,NULL,Zug
+object_191066,NULL,NULL,Solothurn
+object_191051,NULL,NULL,Bern
+object_191076,NULL,NULL,Schaffhausen
+object_191072,NULL,NULL,"St. Gallen"
+object_191057,NULL,NULL,Wallis
+object_191063,NULL,NULL,Luzern
+object_191067,NULL,NULL,Tessin
+object_191068,NULL,NULL,Aargau
+object_191064,NULL,NULL,Waadt
+object_191074,NULL,NULL,"Republik und Kanton Genf"
+object_191074,NULL,NULL,Genf
+object_191060,NULL,NULL,Basel-Landschaft
+object_191062,NULL,NULL,Basel-Stadt
+object_191075,NULL,NULL,"Appenzell Ausserrhoden"
+object_191071,NULL,NULL,"Appenzell Innerrhoden"
+object_220144,NULL,NULL,Clervaux
+object_220143,NULL,NULL,Diekirch
+object_220140,NULL,NULL,Redange
+object_220148,NULL,NULL,Vianden
+object_220138,NULL,NULL,Wiltz
+object_1049789,NULL,NULL,Ebermannstadt
+object_1049790,NULL,NULL,Ebern
+object_1049791,NULL,NULL,Erlangen
+object_1049793,NULL,NULL,"Gemünden am Main"
+object_1049794,NULL,NULL,Hassfurt
+object_1049795,NULL,NULL,Heilsbronn
+object_1049796,NULL,NULL,Hemau
+object_1049797,NULL,NULL,Hersbrück
+object_1049798,NULL,NULL,"Höchstadt an der Aisch"
+object_1049799,NULL,NULL,Karlstadt
+object_1049800,NULL,NULL,Kemnath
+object_1049801,NULL,NULL,Nabburg
+object_1049802,NULL,NULL,Naila
+object_1049803,NULL,NULL,"Neunburg vorm Wald"
+object_1049804,NULL,NULL,"Neustadt am Main"
+object_1049805,NULL,NULL,"Obernburg am Main"
+object_1049806,NULL,NULL,Pegnitz
+object_1049807,NULL,NULL,Rehau
+object_1049808,NULL,NULL,Schwabach
+object_1049809,NULL,NULL,Stadtamhof
+object_1049810,NULL,NULL,Staffelstein
+object_1049811,NULL,NULL,Sulzbach
+object_1049812,NULL,NULL,Teuschnitz
+object_1049813,NULL,NULL,Velburg
+object_1049814,NULL,NULL,Vohenstrauß
+object_1049815,NULL,NULL,Volkach
+object_1049816,NULL,NULL,Waldmünchen
+object_1049817,NULL,NULL,Werdenfels
+object_1023469,NULL,NULL,Günzburg
+object_1177091,NULL,NULL,Oberviechtach
+object_190745,NULL,NULL,Tettnang
+object_387985,NULL,NULL,Bückeburg-Arensburg
+object_387985,NULL,NULL,Bückeburg
+object_387985,NULL,NULL,Bückeburg
+object_387986,NULL,NULL,Stadthagen
+object_387986,NULL,NULL,Stadthagen
+object_387986,NULL,NULL,Stadthagen-Hagenburg
+BUCURGJO42MG,NULL,NULL,Bückeburg
+STAGENJO42OH,NULL,NULL,Stadthagen
+adm_145112,NULL,NULL,Bernburg
+adm_145147,NULL,NULL,Zerbst
+object_320538,NULL,NULL,Köthen
+object_320537,NULL,NULL,Dessau
+adm_145261,NULL,NULL,Ballenstedt
+adm_134011,NULL,NULL,Bremen
+object_265447,NULL,NULL,"Wittenbergischer Kreis"
+object_265448,NULL,NULL,"Erzgebirgischer Kreis"
+object_265449,NULL,NULL,"Leipziger Kreis"
+object_265450,NULL,NULL,"Meißnische Kreis"
+object_265452,NULL,NULL,"Vogtländischer Kreis"
+object_190183,NULL,NULL,Sorau
+adm_142019,NULL,NULL,Cottbus
+adm_142026,NULL,NULL,Guben
+adm_144011,NULL,NULL,Annaberg
+adm_169771,NULL,NULL,Hoyerswerda
+adm_169755,NULL,NULL,Rothenburg
+adm_169755,NULL,NULL,"Rothenburg i./O.L."
+adm_144037,NULL,NULL,Leipzig
+adm_144016,NULL,NULL,Borna
+adm_144049,NULL,NULL,Schwarzenberg
+adm_144051,NULL,NULL,Stollberg
+object_265453,NULL,NULL,"Neustädter Kreis"
+adm_145242,NULL,NULL,Weißenfels
+object_265451,NULL,NULL,"Thüringischer Kreis"
+object_283618,NULL,NULL,Rüstringen
+adm_133403,NULL,NULL,Oldenburg
+adm_133458,NULL,NULL,Oldenburg
+adm_133453,NULL,NULL,Cloppenburg
+object_334829,NULL,NULL,Brake
+object_352389,NULL,NULL,Butjadingen
+object_352397,NULL,NULL,Varel
+object_352400,NULL,NULL,Wildeshausen
+object_384948,NULL,NULL,Varel
+object_361642,NULL,NULL,Jever
+object_352394,NULL,NULL,Jever
+object_352513,NULL,NULL,Ratzeburg
+object_333748,NULL,NULL,"Kabinettsamt Strelitz"
+object_385807,NULL,NULL,Braunschweig
+adm_133158,NULL,NULL,Wolfenbüttel
+adm_133154,NULL,NULL,Helmstedt
+object_283617,NULL,NULL,Gandersheim
+adm_133255,NULL,NULL,Holzminden
+adm_133153,NULL,NULL,Goslar
+object_281943,NULL,NULL,Blankenburg
+adm_146069,NULL,NULL,Hildburghausen
+adm_146040,NULL,NULL,Sonneberg
+adm_146028,NULL,NULL,Meiningen
+adm_146033,NULL,NULL,Saalfeld
+object_282470,NULL,NULL,Ostkreis
+object_282471,NULL,NULL,"Verwaltungsbezirk Roda"
+object_282471,NULL,NULL,Westkreis
+object_282625,NULL,NULL,Roda
+object_282626,NULL,NULL,Altenburg
+object_282624,NULL,NULL,Ronneburg
+object_386968,NULL,NULL,"Rostocker Distrikt"
+object_320566,NULL,NULL,Gera
+object_320567,NULL,NULL,Schleiz
+object_320568,NULL,NULL,Greiz
+object_280130,NULL,NULL,Bingen
+object_282175,NULL,NULL,Alzey
+adm_137315,NULL,NULL,Mainz
+object_280062,NULL,NULL,Meisenheim
+object_1082000,NULL,NULL,Dieburg
+object_282627,NULL,NULL,Büdingen
+object_292395,NULL,NULL,Friedberg
+object_292398,NULL,NULL,Lauterbach
+adm_136411,NULL,NULL,Darmstadt
+adm_136437,NULL,NULL,Erbach
+adm_136433,NULL,NULL,Groß-Gerau
+adm_136438,NULL,NULL,Offenbach
+adm_136531,NULL,NULL,Gießen
+object_282628,NULL,NULL,Alsfeld
+adm_137319,NULL,NULL,Worms
+object_1199845,NULL,NULL,"Stadtdirektion Stuttgart"
+object_190769,NULL,NULL,Aalen
+object_190760,NULL,NULL,Gerabronn
+object_190788,NULL,NULL,Crailsheim
+object_190761,NULL,NULL,Ellwangen
+object_190753,NULL,NULL,Gaildorf
+object_190787,NULL,NULL,Gmünd
+object_190776,NULL,NULL,Hall
+object_190791,NULL,NULL,Mergentheim
+object_190796,NULL,NULL,Neresheim
+object_190759,NULL,NULL,Öhringen
+object_190793,NULL,NULL,Künzelsau
+object_190786,NULL,NULL,Oberndorf
+object_190732,NULL,NULL,Reutlingen
+object_190737,NULL,NULL,Rottenburg
+object_190754,NULL,NULL,Nagold
+object_190755,NULL,NULL,Calw
+object_190775,NULL,NULL,Neuenbürg
+object_306575,NULL,NULL,Horb
+object_190757,NULL,NULL,Welzheim
+object_190792,NULL,NULL,Backnang
+object_190794,NULL,NULL,Balingen
+object_190728,NULL,NULL,Besigheim
+object_190736,NULL,NULL,Blaubeuren
+object_190789,NULL,NULL,Brackenheim
+object_306569,NULL,NULL,Böblingen
+object_306574,NULL,NULL,Freudenstadt
+object_190744,NULL,NULL,Göppingen
+object_190748,NULL,NULL,Heidenheim
+object_190766,NULL,NULL,Herrenberg
+object_190741,NULL,NULL,Kirchheim
+object_306576,NULL,NULL,Leonberg
+object_190752,NULL,NULL,Ludwigsburg
+object_190772,NULL,NULL,Marbach
+object_190785,NULL,NULL,Maulbronn
+object_190731,NULL,NULL,Münsingen
+object_190767,NULL,NULL,Nürtingen
+object_190778,NULL,NULL,Schorndorf
+object_190777,NULL,NULL,"Oberamt Stuttgart"
+object_190763,NULL,NULL,Sulz
+object_190774,NULL,NULL,Tübingen
+object_190797,NULL,NULL,Tuttlingen
+object_190738,NULL,NULL,Urach
+object_190770,NULL,NULL,Vaihingen
+object_190773,NULL,NULL,Waiblingen
+object_190747,NULL,NULL,Eßlingen
+object_190768,NULL,NULL,Heilbronn
+object_190798,NULL,NULL,Neckarsulm
+object_190758,NULL,NULL,Weinsberg
+object_190734,NULL,NULL,Saulgau
+object_190735,NULL,NULL,Riedlingen
+object_190739,NULL,NULL,Biberach
+object_190743,NULL,NULL,Ravensburg
+object_190746,NULL,NULL,Waldsee
+object_190740,NULL,NULL,Wangen
+object_190742,NULL,NULL,Ulm
+object_190750,NULL,NULL,Leutkirch
+object_190733,NULL,NULL,Ehingen
+object_190749,NULL,NULL,Geislingen
+object_190771,NULL,NULL,Laupheim
+object_190795,NULL,NULL,Rottweil
+object_190790,NULL,NULL,Spaichingen
+adm_146036,NULL,NULL,Schmalkalden
+adm_146036,NULL,NULL,"Herrschaft Schmalkalden"
+adm_136412,NULL,NULL,"Frankfurt am Main"
+object_1268912,NULL,NULL,Hamburg
+object_305681,NULL,NULL,Pyrmont
+object_305680,NULL,NULL,"Kreis der Eder"
+object_305678,NULL,NULL,"Kreis der Twiste"
+object_305679,NULL,NULL,"Kreis des Eisenberges"
+adm_140043,NULL,NULL,Neunkirchen
+adm_140046,NULL,NULL,"Sankt Wendel"
+object_289942,NULL,NULL,Merzig
+object_279986,NULL,NULL,Homburg
+object_280014,NULL,NULL,"Sankt Ingbert"
+adm_140044,NULL,NULL,Saarlouis
+object_289940,NULL,NULL,Saarbrücken
+CH_adm0600,NULL,NULL,Obwalden
+CH_adm0700,NULL,NULL,Nidwalden
+CH_adm0400,NULL,NULL,Uri
+CH_adm0800,NULL,NULL,Glarus
+CH_adm2401,NULL,NULL,"District de Boudry"
+CH_adm2402,NULL,NULL,"District de La Chaux-de-Fonds"
+CH_adm2403,NULL,NULL,"District du Locle"
+CH_adm2405,NULL,NULL,"District du Val-de-Ruz"
+CH_adm2406,NULL,NULL,"District du Val-de-Travers"
+CH_adm2404,NULL,NULL,Neuenburg
+CH_adm0501,NULL,NULL,Einsiedeln
+CH_adm0502,NULL,NULL,Gersau
+CH_adm0503,NULL,NULL,Höfe
+CH_adm0504,NULL,NULL,Küssnacht
+CH_adm0505,NULL,NULL,March
+CH_adm0506,NULL,NULL,Schwyz
+CH_adm2005,NULL,NULL,Kreuzlingen
+CH_adm2001,NULL,NULL,Arbon
+CH_adm2002,NULL,NULL,Bischofszell
+CH_adm2008,NULL,NULL,Weinfelden
+CH_adm2003,NULL,NULL,Diessenhofen
+CH_adm2004,NULL,NULL,Frauenfeld
+CH_adm2007,NULL,NULL,Steckborn
+CH_adm2006,NULL,NULL,Münchwilen
+CH_adm0101,NULL,NULL,Affoltern
+CH_adm0104,NULL,NULL,Dielsdorf
+CH_adm0107,NULL,NULL,Meilen
+CH_adm0103,NULL,NULL,Bülach
+CH_adm0106,NULL,NULL,Horgen
+CH_adm0111,NULL,NULL,Dietikon
+CH_adm0112,NULL,NULL,Zürich
+CH_adm0109,NULL,NULL,Uster
+CH_adm0108,NULL,NULL,Pfäffikon
+CH_adm0105,NULL,NULL,Hinwil
+CH_adm0102,NULL,NULL,Andelfingen
+CH_adm0110,NULL,NULL,Winterthur
+CH_adm1802,NULL,NULL,"Distretto di Bernina"
+CH_adm1809,NULL,NULL,"Distretto di Moesa"
+CH_adm1805,NULL,NULL,Hinterrhein
+CH_adm1804,NULL,NULL,Heinzenberg
+CH_adm1806,NULL,NULL,Imboden
+CH_adm1807,NULL,NULL,Inn
+CH_adm1808,NULL,NULL,Maloja
+CH_adm1811,NULL,NULL,Oberlandquart
+CH_adm1812,NULL,NULL,Plessur
+CH_adm1810,NULL,NULL,"Val Müstair"
+CH_adm1814,NULL,NULL,Vorderrhein
+CH_adm1803,NULL,NULL,Glenner
+CH_adm1801,NULL,NULL,Albula
+CH_adm1813,NULL,NULL,Unterlandquart
+CH_adm1005,NULL,NULL,See
+CH_adm1004,NULL,NULL,Sarine
+CH_adm1006,NULL,NULL,Sense
+CH_adm0900,NULL,NULL,Zug
+CH_adm1105,NULL,NULL,Gösgen
+CH_adm1104,NULL,NULL,Dorneck
+CH_adm1101,NULL,NULL,Gäu
+CH_adm1108,NULL,NULL,Olten
+CH_adm1109,NULL,NULL,Solothurn
+CH_adm1102,NULL,NULL,Thal
+CH_adm1110,NULL,NULL,Thierstein
+CH_adm1106,NULL,NULL,Wasseramt
+CH_adm1103,NULL,NULL,Bucheggberg
+CH_adm1107,NULL,NULL,Lebern
+CH_adm0207,NULL,NULL,Courtelary
+CH_adm0215,NULL,NULL,Neuveville
+object_395598,NULL,NULL,Delémont
+object_395599,NULL,NULL,Franches-Montagnes
+CH_adm1401,NULL,NULL,Oberklettgau
+CH_adm1402,NULL,NULL,Reiat
+CH_adm1403,NULL,NULL,Schaffhausen
+CH_adm1404,NULL,NULL,Schleitheim
+CH_adm1405,NULL,NULL,Stein
+CH_adm1406,NULL,NULL,Unterklettgau
+CH_adm1710,NULL,NULL,Neutoggenburg
+CH_adm1704,NULL,NULL,Oberrheintal
+CH_adm1709,NULL,NULL,Obertoggenburg
+CH_adm1702,NULL,NULL,Rorschach
+CH_adm1706,NULL,NULL,Sargans
+CH_adm1708,NULL,NULL,See
+CH_adm1701,NULL,NULL,"St. Gallen"
+CH_adm1703,NULL,NULL,Unterrheintal
+CH_adm1712,NULL,NULL,Untertoggenburg
+CH_adm1705,NULL,NULL,Werdenberg
+CH_adm1713,NULL,NULL,Wil
+CH_adm1711,NULL,NULL,Alttoggenburg
+CH_adm1707,NULL,NULL,Gaster
+CH_adm1714,NULL,NULL,Gossau
+CH_adm2601,NULL,NULL,Delsberg
+CH_adm2602,NULL,NULL,Freiberge
+CH_adm2603,NULL,NULL,Pruntrut
+CH_adm2301,NULL,NULL,Brig
+CH_adm2302,NULL,NULL,Gundis
+CH_adm2304,NULL,NULL,Goms
+CH_adm2305,NULL,NULL,Ering
+CH_adm2306,NULL,NULL,Leuk
+CH_adm2307,NULL,NULL,Martinach
+CH_adm2311,NULL,NULL,Siders
+CH_adm2312,NULL,NULL,Sitten
+CH_adm2313,NULL,NULL,Visp
+object_283624,NULL,NULL,"Westlich Raron"
+CH_adm2309,NULL,NULL,"Östlich Raron"
+CH_adm2102,NULL,NULL,"Distretto di Blenio"
+CH_adm2104,NULL,NULL,"Distretto di Locarno"
+CH_adm2107,NULL,NULL,"Distretto di Riviera"
+CH_adm2108,NULL,NULL,"Distretto di Vallemaggia"
+CH_adm2103,NULL,NULL,"Distretto di Leventina"
+CH_adm2106,NULL,NULL,"Distretto di Mendrisio"
+CH_adm1901,NULL,NULL,Aarau
+CH_adm1909,NULL,NULL,Rheinfelden
+CH_adm1902,NULL,NULL,Baden
+CH_adm1908,NULL,NULL,Muri
+CH_adm1906,NULL,NULL,Laufenburg
+CH_adm1903,NULL,NULL,Bremgarten
+CH_adm1905,NULL,NULL,Kulm
+CH_adm1907,NULL,NULL,Lenzburg
+CH_adm1910,NULL,NULL,Zofingen
+CH_adm1904,NULL,NULL,Brugg
+CH_adm1911,NULL,NULL,Zurzach
+CH_adm2201,NULL,NULL,"District d'Aigle"
+CH_adm2202,NULL,NULL,"District d'Aubonne"
+CH_adm2206,NULL,NULL,"District de Grandson"
+CH_adm2207,NULL,NULL,"District de Lausanne"
+CH_adm2208,NULL,NULL,"District de Lavaux"
+CH_adm2209,NULL,NULL,"District de Morges"
+CH_adm2210,NULL,NULL,"District de Moudon"
+CH_adm2212,NULL,NULL,"District d'Orbe"
+CH_adm2213,NULL,NULL,"District d'Oron"
+CH_adm2215,NULL,NULL,"District du Pays-d'Enhaut"
+CH_adm2216,NULL,NULL,"District de Rolle"
+CH_adm2217,NULL,NULL,"District de la Vallée"
+CH_adm2218,NULL,NULL,"District de Vevey"
+CH_adm2219,NULL,NULL,"District d'Yverdon"
+CH_adm2203,NULL,NULL,"District d'Avenches"
+CH_adm2214,NULL,NULL,"District de Payerne"
+CH_adm2205,NULL,NULL,"District d'Echallens"
+CH_adm2204,NULL,NULL,"District de Cossonay"
+CH_adm2211,NULL,NULL,"District de Nyon"
+CH_adm2500,NULL,NULL,Genève
+CH_adm1301,NULL,NULL,Arlesheim
+CH_adm1302,NULL,NULL,Laufen
+CH_adm1303,NULL,NULL,Liestal
+CH_adm1304,NULL,NULL,Sissach
+CH_adm1305,NULL,NULL,Waldenburg
+CH_adm1200,NULL,NULL,"Basel-Stadt (Bezirk)"
+CH_adm1501,NULL,NULL,Hinterland
+CH_adm1502,NULL,NULL,Mittelland
+CH_adm1503,NULL,NULL,Vorderland
+object_220139,NULL,NULL,Capellen
+object_220141,NULL,NULL,Luxembourg-Campagne
+object_220142,NULL,NULL,Mersch
+object_220146,NULL,NULL,Esch
+object_220145,NULL,NULL,Remich
+object_220147,NULL,NULL,Grevenmacher
+object_220149,NULL,NULL,Echternach
+object_267011,NULL,NULL,Gebweiler
+object_267013,NULL,NULL,Rappoltsweiler
+object_267012,NULL,NULL,Mülhausen
+object_267009,NULL,NULL,Altkirch
+object_267014,NULL,NULL,Thann
+object_267010,NULL,NULL,Kolmar
+object_279896,NULL,NULL,Bolchen
+object_279903,NULL,NULL,Metz
+object_294776,NULL,NULL,Metz
+object_279900,NULL,NULL,Diedenhofen-Ost
+object_295047,NULL,NULL,Diedenhofen
+object_294775,NULL,NULL,Diedenhofen-West
+object_279904,NULL,NULL,Saarburg
+object_279905,NULL,NULL,Saargemünd
+object_279902,NULL,NULL,Forbach
+object_279899,NULL,NULL,Château-Salins
+object_386970,NULL,NULL,"Sankt Avold"
+object_278570,NULL,NULL,Hagenau
+object_278575,NULL,NULL,Zabern
+object_278578,NULL,NULL,Schlettstadt
+object_266454,NULL,NULL,Straßburg-Stadt
+object_278581,NULL,NULL,Weißenburg
+object_266453,NULL,NULL,Straßburg-Land
+LANDAUJN49BE,NULL,NULL,"Landau in der Pfalz"
+LANDAUJN49BE,NULL,NULL,Landau
+adm_139278,NULL,NULL,Straubing-Bogen
+object_379468,NULL,NULL,Pfarrkirchen
+object_378786,NULL,NULL,Eggenfelden
+object_386999,NULL,NULL,Dingolfing
+object_386995,NULL,NULL,Bogen
+object_386946,NULL,NULL,Grafenau
+object_379527,NULL,NULL,"Griesbach im Rottal"
+adm_139273,NULL,NULL,Kelheim
+object_395282,NULL,NULL,Kötzting
+adm_139271,NULL,NULL,Deggendorf
+object_389338,NULL,NULL,"Landau an der Isar"
+adm_139274,NULL,NULL,Landshut
+object_395283,NULL,NULL,Mallersdorf
+adm_139275,NULL,NULL,Passau
+adm_139276,NULL,NULL,Regen
+object_395285,NULL,NULL,Rottenburg
+object_395286,NULL,NULL,Mainburg
+object_354108,NULL,NULL,Straubing
+object_395288,NULL,NULL,Viechtach
+object_381884,NULL,NULL,Vilsbiburg
+object_385228,NULL,NULL,Vilshofen
+object_379413,NULL,NULL,Wegscheid
+object_379018,NULL,NULL,Wolfstein
+adm_139188,NULL,NULL,Starnberg
+adm_139187,NULL,NULL,Rosenheim
+adm_139173,NULL,NULL,Tölz
+adm_139173,NULL,NULL,"Bad Tölz"
+adm_139180,NULL,NULL,Garmisch
+adm_139189,NULL,NULL,Traunstein
+adm_139186,NULL,NULL,"Pfaffenhofen an der Ilm"
+object_386981,NULL,NULL,Aichach
+object_386985,NULL,NULL,Berchtesgaden
+adm_139179,NULL,NULL,Fürstenfeldbruck
+adm_139179,NULL,NULL,Bruck
+adm_139174,NULL,NULL,Dachau
+adm_139175,NULL,NULL,Ebersberg
+adm_139177,NULL,NULL,Erding
+adm_139178,NULL,NULL,Freising
+object_387898,NULL,NULL,Friedberg
+adm_139181,NULL,NULL,"Landsberg am Lech"
+adm_139182,NULL,NULL,Miesbach
+object_387899,NULL,NULL,Laufen
+adm_139183,NULL,NULL,"Mühldorf am Inn"
+object_387952,NULL,NULL,"München links der Isar"
+object_387953,NULL,NULL,"München rechts der Isar"
+object_387896,NULL,NULL,"Bad Aibling"
+object_396979,NULL,NULL,Schongau
+object_397115,NULL,NULL,"Wasserburg am Inn"
+object_387954,NULL,NULL,"München II"
+object_397172,NULL,NULL,Wolfratshausen
+adm_139184,NULL,NULL,München
+adm_139184,NULL,NULL,"München I"
+object_397282,NULL,NULL,Schrobenhausen
+adm_139171,NULL,NULL,Altötting
+adm_139176,NULL,NULL,Eichstätt
+object_1184110,NULL,NULL,"Weilheim in Oberbayern"
+object_381067,NULL,NULL,Ingolstadt
+adm_139462,NULL,NULL,Bayreuth
+adm_139461,NULL,NULL,Bamberg
+adm_139464,NULL,NULL,Hof
+adm_139474,NULL,NULL,Forchheim
+adm_139478,NULL,NULL,Lichtenfels
+adm_139479,NULL,NULL,"Wunsiedel im Fichtelgebirge"
+adm_139476,NULL,NULL,Kronach
+adm_139471,NULL,NULL,"Bamberg II"
+adm_139472,NULL,NULL,Bayreuth
+adm_139475,NULL,NULL,Hof
+object_283885,NULL,NULL,Stadtsteinach
+object_374516,NULL,NULL,Münchberg
+object_386983,NULL,NULL,"Bamberg I"
+object_386994,NULL,NULL,Berneck
+adm_139473,NULL,NULL,Coburg
+adm_139463,NULL,NULL,Coburg
+adm_139477,NULL,NULL,Kulmbach
+adm_139761,NULL,NULL,Augsburg
+adm_139776,NULL,NULL,"Lindau (Bodensee)"
+adm_139774,NULL,NULL,Günzburg
+adm_139780,NULL,NULL,Oberallgäu
+adm_139772,NULL,NULL,Augsburg
+object_375720,NULL,NULL,"Kempten (Allgäu)"
+object_375725,NULL,NULL,Sonthofen
+object_283989,NULL,NULL,"Neuburg an der Donau"
+object_397824,NULL,NULL,Marktoberdorf
+object_884413,NULL,NULL,Oberdorf
+object_884414,NULL,NULL,Zusmarshausen
+object_884415,NULL,NULL,Schwabmünchen
+object_306530,NULL,NULL,"Dillingen an der Donau"
+object_306398,NULL,NULL,Donauwörth
+object_884408,NULL,NULL,Füssen
+object_397592,NULL,NULL,Kaufbeuren
+object_884410,NULL,NULL,Krumbach
+object_884412,NULL,NULL,Mindelheim
+object_884409,NULL,NULL,Illertissen
+object_884411,NULL,NULL,Memmingen
+object_306404,NULL,NULL,Nördlingen
+object_306536,NULL,NULL,Wertingen
+adm_139374,NULL,NULL,"Neustadt an der Waldnaab"
+adm_139371,NULL,NULL,Amberg-Sulzbach
+adm_139377,NULL,NULL,Tirschenreuth
+adm_139372,NULL,NULL,Cham
+object_283988,NULL,NULL,Roding
+adm_139376,NULL,NULL,Schwandorf
+adm_139375,NULL,NULL,Regensburg
+adm_139373,NULL,NULL,"Neumarkt in der Oberpfalz"
+object_386984,NULL,NULL,Beilngries
+object_386982,NULL,NULL,Amberg
+object_397589,NULL,NULL,Riedenburg
+object_398908,NULL,NULL,Parsberg
+object_1049781,NULL,NULL,"Eschenbach in der Oberpfalz"
+object_386997,NULL,NULL,Burglengenfeld
+adm_139565,NULL,NULL,Schwabach
+adm_139562,NULL,NULL,Erlangen
+adm_139564,NULL,NULL,Nürnberg
+adm_139563,NULL,NULL,Fürth
+adm_139573,NULL,NULL,Fürth
+adm_139574,NULL,NULL,"Nürnberger Land"
+adm_139572,NULL,NULL,Erlangen-Höchstadt
+adm_139577,NULL,NULL,Weißenburg-Gunzenhausen
+adm_139575,NULL,NULL,"Neustadt a. d. Aisch"
+adm_139561,NULL,NULL,Ansbach
+adm_139561,NULL,NULL,Onolzbach
+adm_139561,NULL,NULL,Anspach
+adm_139561,NULL,NULL,Onoldisbach
+adm_139561,NULL,NULL,Onolsbach
+adm_139561,NULL,NULL,Onsbach
+adm_139576,NULL,NULL,Roth
+object_218055,NULL,NULL,Gunzenhausen
+object_218051,NULL,NULL,Dinkelsbühl
+object_218052,NULL,NULL,Feuchtwangen
+object_218053,NULL,NULL,"Rothenburg o.d. Tauber"
+object_218056,NULL,NULL,Weißenburg
+object_217911,NULL,NULL,Scheinfeld
+object_218054,NULL,NULL,Uffenheim
+adm_139571,NULL,NULL,Ansbach
+object_397854,NULL,NULL,Hilpoltstein
+adm_139662,NULL,NULL,Schweinfurt
+adm_139678,NULL,NULL,Schweinfurt
+adm_139672,NULL,NULL,"Bad Kissingen"
+adm_139672,NULL,NULL,Kissingen
+adm_139673,NULL,NULL,"Bad Neustadt"
+adm_139675,NULL,NULL,Kitzingen
+adm_139679,NULL,NULL,Würzburg
+object_275019,NULL,NULL,Königshofen
+object_221044,NULL,NULL,"Lohr am Main"
+object_218057,NULL,NULL,Gerolzhofen
+object_275021,NULL,NULL,Mellrichstadt
+object_215669,NULL,NULL,Ochsenfurt
+object_217763,NULL,NULL,Alzenau
+adm_139671,NULL,NULL,Aschaffenburg
+adm_139676,NULL,NULL,Miltenberg
+object_884458,NULL,NULL,Miltenberg
+object_1049782,NULL,NULL,Hammelburg
+object_386996,NULL,NULL,Brückenau
+object_218058,NULL,NULL,Marktheidenfeld
+object_280013,NULL,NULL,Rockenhausen
+object_280029,NULL,NULL,Dürkheim
+object_280007,NULL,NULL,"Ludwigshafen am Rhein"
+object_268802,NULL,NULL,Bergzabern
+object_279989,NULL,NULL,Kirchheimbolanden
+object_280008,NULL,NULL,"Neustadt (Haardt)"
+object_280008,NULL,NULL,"Neustadt an der Haardt"
+adm_137334,NULL,NULL,Germersheim
+adm_137311,NULL,NULL,Frankenthal
+adm_137336,NULL,NULL,Kusel
+adm_137336,NULL,NULL,Cusel
+adm_137335,NULL,NULL,Kaiserslautern
+adm_137318,NULL,NULL,Speyer
+object_280022,NULL,NULL,Zweibrücken
+adm_137313,NULL,NULL,"Landau in der Pfalz"
+object_320437,NULL,NULL,Konstanz
+object_320438,NULL,NULL,Villingen
+object_320439,NULL,NULL,Waldshut
+object_320457,NULL,NULL,Bonndorf
+object_320454,NULL,NULL,Donaueschingen
+object_320458,NULL,NULL,Säckingen
+object_320459,NULL,NULL,"St. Blasien"
+object_320455,NULL,NULL,Triberg
+object_1087538,NULL,NULL,Waldshut
+object_1190682,NULL,NULL,Überlingen
+object_320451,NULL,NULL,Pfullendorf
+object_320450,NULL,NULL,Meßkirch
+object_320456,NULL,NULL,Villingen
+object_320448,NULL,NULL,Engen
+object_391260,NULL,NULL,Radolfzell
+object_320449,NULL,NULL,Konstanz
+object_306585,NULL,NULL,Stockach
+object_320440,NULL,NULL,Freiburg
+object_320472,NULL,NULL,Kork
+object_320472,NULL,NULL,Kehl
+object_320441,NULL,NULL,Lörrach
+object_320442,NULL,NULL,Offenburg
+object_320465,NULL,NULL,Neustadt
+object_320469,NULL,NULL,Müllheim
+object_293605,NULL,NULL,Wolfach
+object_320475,NULL,NULL,Offenburg
+adm_138311,NULL,NULL,Freiburg
+object_320473,NULL,NULL,Lahr
+object_320444,NULL,NULL,Karlsruhe
+object_320443,NULL,NULL,Baden
+object_320478,NULL,NULL,Bühl
+adm_138212,NULL,NULL,Karlsruhe
+object_320485,NULL,NULL,Pforzheim
+adm_138216,NULL,NULL,Rastatt
+object_1089598,NULL,NULL,Bruchsal
+object_320445,NULL,NULL,Mannheim
+object_320446,NULL,NULL,Heidelberg
+object_320447,NULL,NULL,Mosbach
+object_320486,NULL,NULL,Mannheim
+object_320496,NULL,NULL,Buchen
+object_320498,NULL,NULL,Mosbach
+object_320491,NULL,NULL,Sinsheim
+object_320495,NULL,NULL,Tauberbischofsheim
+object_320490,NULL,NULL,Heidelberg
+object_320530,NULL,NULL,Königsee
+object_320531,NULL,NULL,Rudolstadt
+object_320532,NULL,NULL,Frankenhausen
+object_398679,NULL,NULL,Gotha
+object_398681,NULL,NULL,Waltershausen
+object_398680,NULL,NULL,Ohrdruf
+adm_144039,NULL,NULL,Marienberg
+adm_144024,NULL,NULL,Flöha
+adm_144028,NULL,NULL,Glauchau
+adm_144025,NULL,NULL,Freiberg
+adm_144048,NULL,NULL,Rochlitz
+adm_144013,NULL,NULL,Auerbach
+adm_144042,NULL,NULL,Ölsnitz
+adm_144042,NULL,NULL,Oelsnitz
+adm_144045,NULL,NULL,Plauen
+adm_144018,NULL,NULL,Chemnitz
+adm_144058,NULL,NULL,Zwickau
+adm_144292,NULL,NULL,Kamenz
+adm_144056,NULL,NULL,Zittau
+adm_144272,NULL,NULL,Bautzen
+adm_144029,NULL,NULL,Löbau
+adm_144043,NULL,NULL,Oschatz
+adm_144052,NULL,NULL,Torgau
+adm_144374,NULL,NULL,Delitzsch
+adm_144021,NULL,NULL,Döbeln
+adm_144030,NULL,NULL,Grimma
+adm_144262,NULL,NULL,Dresden
+object_257978,NULL,NULL,Meißen
+adm_144044,NULL,NULL,Pirna
+object_289756,NULL,NULL,Dresden-Altstadt
+object_289757,NULL,NULL,Dresden-Neustadt
+object_257976,NULL,NULL,Kamenz
+object_257976,NULL,NULL,"Wokrjes Kamjenc"
+adm_169765,NULL,NULL,Görlitz
+adm_144031,NULL,NULL,Großenhain
+adm_144020,NULL,NULL,Dippoldiswalde
+object_215694,NULL,NULL,Ahrensbök
+object_1092095,NULL,NULL,"Justitiariat der vier vormaligen Stadt-Lübeckschen Stiftsdörfer"
+object_280129,NULL,NULL,Oppenheim
+object_292402,NULL,NULL,Schotten
+object_263921,NULL,NULL,Biedenkopf
+object_292396,NULL,NULL,Grünberg
+object_292401,NULL,NULL,Nidda
+object_292403,NULL,NULL,Vilbel
+object_292404,NULL,NULL,Vöhl
+object_1090856,NULL,NULL,Gießen
+object_292400,NULL,NULL,Neustadt
+object_292393,NULL,NULL,Bensheim
+object_292399,NULL,NULL,Lindenfels
+object_292397,NULL,NULL,Heppenheim
+object_292394,NULL,NULL,Dieburg
+object_282166,NULL,NULL,Wimpfen
+object_190751,NULL,NULL,Cannstatt
+adm_131060,NULL,NULL,Segeberg
+adm_131061,NULL,NULL,Steinburg
+adm_131056,NULL,NULL,Pinneberg
+adm_131062,NULL,NULL,Stormarn
+adm_131057,NULL,NULL,Plön
+adm_131057,NULL,NULL,Plön
+object_214372,NULL,NULL,Süderdithmarschen
+object_214373,NULL,NULL,Norderdithmarschen
+object_214365,NULL,NULL,Sonderburg
+object_214368,NULL,NULL,Schleswig
+object_214374,NULL,NULL,Flensburg-Land
+object_214374,NULL,NULL,Flensburg
+object_214362,NULL,NULL,Eiderstedt
+object_214363,NULL,NULL,Tondern
+object_268797,NULL,NULL,Rendsburg
+object_214361,NULL,NULL,Eckernförde
+object_214377,NULL,NULL,Kiel
+object_214377,NULL,NULL,Bordesholm
+object_214366,NULL,NULL,Hadersleben
+object_214360,NULL,NULL,Apenrade
+object_214367,NULL,NULL,Husum
+object_214370,NULL,NULL,Oldenburg
+object_263323,NULL,NULL,Hamburg-Nord
+object_1049958,NULL,NULL,Marschlande
+object_1049955,NULL,NULL,Geestlande
+object_271037,NULL,NULL,Altona
+object_257607,NULL,NULL,Bergedorf
+object_271035,NULL,NULL,Eimsbüttel
+object_271038,NULL,NULL,"Hamburg Mitte"
+object_271033,NULL,NULL,Harburg
+object_1049957,NULL,NULL,Bergedorf
+object_215349,NULL,NULL,Wien
+object_334476,NULL,NULL,Marburg
+object_334477,NULL,NULL,Cilli
+object_284336,NULL,NULL,Prachatitz
+object_356663,NULL,NULL,Rascien
+object_1047445,NULL,NULL,"Triest Stadt"
+object_294329,NULL,NULL,Ensisheim
+object_294330,NULL,NULL,Gebweiler
+object_294331,NULL,NULL,Rufach
+object_294332,NULL,NULL,Sulz
+object_294025,NULL,NULL,Kaysersberg
+object_294024,NULL,NULL,Schnierlach
+object_293370,NULL,NULL,Rappoltsweiler
+object_294026,NULL,NULL,Markirch
+object_294508,NULL,NULL,Habsheim
+object_294509,NULL,NULL,Hüningen
+object_294516,NULL,NULL,Landser
+object_294537,NULL,NULL,Altkirch
+object_294539,NULL,NULL,Pfirt
+object_294540,NULL,NULL,Hirsingen
+object_294935,NULL,NULL,Mülhausen-Nord
+object_294936,NULL,NULL,Mülhausen-Süd
+object_294538,NULL,NULL,Dammerkirch
+object_294534,NULL,NULL,Sennheim
+object_294536,NULL,NULL,Masmünster
+object_294535,NULL,NULL,"Sankt Amarin"
+object_294533,NULL,NULL,Thann
+object_294060,NULL,NULL,Kolmar
+object_268498,NULL,NULL,Andolsheim
+object_268502,NULL,NULL,Münster
+object_268503,NULL,NULL,Neubreisach
+object_268504,NULL,NULL,Winzenheim
+object_295095,NULL,NULL,Fentsch
+object_295093,NULL,NULL,Hayingen
+object_295094,NULL,NULL,Grossmoyeuvre
+object_297260,NULL,NULL,Finstingen
+object_297261,NULL,NULL,Lörchingen
+object_297262,NULL,NULL,Pfalzburg
+object_297263,NULL,NULL,Rixingen
+object_297259,NULL,NULL,Saarburg
+object_298135,NULL,NULL,Bitsch
+object_298136,NULL,NULL,Rohrbach
+object_298137,NULL,NULL,Saaralben
+object_298138,NULL,NULL,Saargemünd
+object_298139,NULL,NULL,Wolmünster
+object_298199,NULL,NULL,Forbach
+object_298245,NULL,NULL,Grosstänchen
+object_298248,NULL,NULL,"Sankt Avold"
+object_278590,NULL,NULL,Hagenau
+object_278591,NULL,NULL,Niederbronn
+object_278596,NULL,NULL,Wasselnheim
+object_278599,NULL,NULL,Maursmünster
+object_278602,NULL,NULL,Zabern
+object_278601,NULL,NULL,Saarunion
+object_278597,NULL,NULL,Buchsweiler
+object_278600,NULL,NULL,Lützelstein
+object_278609,NULL,NULL,Oberehnheim
+object_278604,NULL,NULL,Markolsheim
+object_278605,NULL,NULL,Schlettstadt
+object_278606,NULL,NULL,Weiler
+object_278618,NULL,NULL,Lauterburg
+object_278619,NULL,NULL,Selz
+object_278620,NULL,NULL,Sulz-unterm-Wald
+object_278622,NULL,NULL,Wörth
+object_381398,NULL,NULL,Dahn
+object_278614,NULL,NULL,Illkirch-Grafenstaden
+object_391261,NULL,NULL,Jestetten
+object_320461,NULL,NULL,Breisach
+object_391262,NULL,NULL,Kenzingen
+object_320466,NULL,NULL,Staufen
+object_320467,NULL,NULL,Waldkirch
+object_1286321,NULL,NULL,Emmendingen
+object_320470,NULL,NULL,Schönau
+object_320468,NULL,NULL,Lörrach
+object_320471,NULL,NULL,Schopfheim
+object_391263,NULL,NULL,Gengenbach
+object_320474,NULL,NULL,Oberkirch
+object_320482,NULL,NULL,Durlach
+object_320480,NULL,NULL,Bretten
+object_320483,NULL,NULL,Ettlingen
+object_320476,NULL,NULL,Achern
+object_320477,NULL,NULL,Baden
+object_391264,NULL,NULL,Gernsbach
+object_320487,NULL,NULL,Schwetzingen
+object_320488,NULL,NULL,Weinheim
+object_320489,NULL,NULL,Eppingen
+object_320492,NULL,NULL,Wiesloch
+object_320497,NULL,NULL,Eberbach
+object_391265,NULL,NULL,Walldürn
+object_320494,NULL,NULL,Boxberg
+object_320493,NULL,NULL,Adelsheim
+object_320499,NULL,NULL,Wertheim
+object_262354,NULL,NULL,Adelnau
+adm_159700,NULL,NULL,"Posen Ost"
+object_214351,NULL,NULL,"Posen West"
+object_214343,NULL,NULL,Gostyn
+object_1050005,NULL,NULL,Grätz
+object_214352,NULL,NULL,Rawitsch
+object_263538,NULL,NULL,Koschmin
+object_263537,NULL,NULL,Kempen
+object_264730,NULL,NULL,Ostrowo
+object_263536,NULL,NULL,Fraustadt
+object_386951,NULL,NULL,Kröben
+object_214349,NULL,NULL,Lissa
+object_214350,NULL,NULL,Obornik
+object_214353,NULL,NULL,Samter
+object_263389,NULL,NULL,Schildberg
+object_214355,NULL,NULL,Schrimm
+object_214347,NULL,NULL,Kosten
+object_386950,NULL,NULL,Buk
+adm_368367,NULL,NULL,"Posen Land"
+object_190186,NULL,NULL,Meseritz
+object_214344,NULL,NULL,Neutomischel
+object_190088,NULL,NULL,"Schwerin (Warthe)"
+object_190092,NULL,NULL,Birnbaum
+object_190095,NULL,NULL,Bomst
+object_214341,NULL,NULL,Schroda
+object_214342,NULL,NULL,Wreschen
+object_214345,NULL,NULL,Jarotschin
+object_262954,NULL,NULL,Schmiegel
+object_262955,NULL,NULL,Pleschen
+object_214346,NULL,NULL,"Kolmar in Posen"
+object_214346,NULL,NULL,Chodziesen
+object_262355,NULL,NULL,Gostyn
+object_214348,NULL,NULL,Krotoschin
+object_262358,NULL,NULL,Znin
+object_262357,NULL,NULL,Wongrowitz
+object_264459,NULL,NULL,Mogilno
+object_215041,NULL,NULL,Schubin
+object_214333,NULL,NULL,Kulm
+object_214333,NULL,NULL,Culm
+object_214335,NULL,NULL,Thorn
+object_262362,NULL,NULL,Filehne
+object_262953,NULL,NULL,Witkowo
+object_214332,NULL,NULL,Bromberg
+object_262353,NULL,NULL,Gnesen
+object_265040,NULL,NULL,Strelno
+object_262356,NULL,NULL,Hohensalza
+object_262356,NULL,NULL,Inowrazlaw
+object_214337,NULL,NULL,Wirsitz
+object_214354,NULL,NULL,Czarnikau
+object_263899,NULL,NULL,Kassel
+object_263890,NULL,NULL,Gersfeld
+object_263913,NULL,NULL,Frankenberg
+object_263898,NULL,NULL,Fritzlar
+object_263909,NULL,NULL,Hersfeld
+object_263905,NULL,NULL,Hofgeismar
+object_263897,NULL,NULL,Melsungen
+object_263893,NULL,NULL,Hanau
+object_263906,NULL,NULL,Schlüchtern
+object_263912,NULL,NULL,Gelnhausen
+object_263915,NULL,NULL,Hünfeld
+object_263901,NULL,NULL,Homberg
+object_263904,NULL,NULL,Witzenhausen
+object_263895,NULL,NULL,Kirchhain
+object_263710,NULL,NULL,Wolfhagen
+object_263920,NULL,NULL,Ziegenhain
+object_263903,NULL,NULL,Rotenburg
+object_263908,NULL,NULL,Eschwege
+adm_136633,NULL,NULL,Cassel
+object_263916,NULL,NULL,Marburg
+adm_136631,NULL,NULL,Fulda
+object_1159799,NULL,NULL,Waldeck
+object_263922,NULL,NULL,Rinteln
+object_263922,NULL,NULL,"Grafschaft Schaumburg"
+object_263900,NULL,NULL,Usingen
+object_263919,NULL,NULL,Untertaunuskreis
+object_263894,NULL,NULL,Obertaunuskreis
+object_263914,NULL,NULL,Oberwesterwaldkreis
+object_263910,NULL,NULL,Unterwesterwaldkreis
+object_263923,NULL,NULL,Unterlahnkreis
+object_263911,NULL,NULL,Westerburg
+object_263891,NULL,NULL,Höchst
+object_333792,NULL,NULL,Wiesbaden
+object_263902,NULL,NULL,Limburg
+object_306229,NULL,NULL,"Frankfurt am Main"
+object_263918,NULL,NULL,Oberlahnkreis
+object_263918,NULL,NULL,Ober-Lahn-Kreis
+object_1160943,NULL,NULL,Hinterlandskreis
+object_263907,NULL,NULL,Dill
+object_263907,NULL,NULL,Dillkreis
+object_263917,NULL,NULL,"Kreis Sankt Goarshausen"
+object_311757,NULL,NULL,Wetzlar
+object_263896,NULL,NULL,Rheingau
+object_263896,NULL,NULL,Rheingaukreis
+adm_135916,NULL,NULL,Herne
+object_284950,NULL,NULL,Brilon
+adm_135966,NULL,NULL,Olpe
+BOCHUMJO31OL,NULL,NULL,Bochum
+object_1141407,NULL,NULL,Hagen
+object_1141408,NULL,NULL,Hamm
+HERRN1JO31ON,NULL,NULL,Herne
+object_320217,NULL,NULL,Schwelm
+object_320212,NULL,NULL,Hattingen
+object_290516,NULL,NULL,Arnsberg
+object_290844,NULL,NULL,Altena
+adm_135914,NULL,NULL,Hagen
+object_320214,NULL,NULL,Iserlohn
+adm_135911,NULL,NULL,Bochum
+adm_135913,NULL,NULL,Dortmund
+adm_135915,NULL,NULL,Hamm
+object_320216,NULL,NULL,Meschede
+object_320208,NULL,NULL,Gelsenkirchen
+object_320206,NULL,NULL,Witten
+object_361299,NULL,NULL,Iserlohn
+object_1143521,NULL,NULL,Lüdenscheid
+object_1143522,NULL,NULL,Hörde
+object_320213,NULL,NULL,Hörde
+adm_135513,NULL,NULL,Gelsenkirchen
+object_320215,NULL,NULL,Lippstadt
+adm_135974,NULL,NULL,Soest
+object_190147,NULL,NULL,Wittgenstein
+object_320218,NULL,NULL,Siegen
+object_311843,NULL,NULL,"Halle (Westf.)"
+object_304435,NULL,NULL,Lübbecke
+object_213753,NULL,NULL,Minden
+adm_135758,NULL,NULL,Herford
+object_301235,NULL,NULL,Bielefeld
+object_320211,NULL,NULL,Wiedenbrück
+adm_135774,NULL,NULL,Paderborn
+object_284432,NULL,NULL,Büren
+object_320210,NULL,NULL,Warburg
+adm_135762,NULL,NULL,Höxter
+adm_135562,NULL,NULL,Recklinghausen
+adm_135558,NULL,NULL,Coesfeld
+adm_135570,NULL,NULL,Warendorf
+BUEUER_W4650,NULL,NULL,Buer
+object_263338,NULL,NULL,Ahaus
+object_263339,NULL,NULL,Beckum
+adm_135566,NULL,NULL,Steinfurt
+object_263341,NULL,NULL,Tecklenburg
+object_263342,NULL,NULL,Münster
+object_263340,NULL,NULL,Lüdinghausen
+adm_135515,NULL,NULL,Münster
+adm_135554,NULL,NULL,Borken
+object_152850,NULL,NULL,Hörnerkirchen
+adm_146044,NULL,NULL,Worbis
+adm_146029,NULL,NULL,Mühlhausen/Thüringen
+adm_146031,NULL,NULL,"Grafschaft Hohenstein"
+adm_146031,NULL,NULL,Nordhausen
+object_289845,NULL,NULL,Ziegenrück
+object_289840,NULL,NULL,Erfurt
+adm_146004,NULL,NULL,Henneberg
+adm_146004,NULL,NULL,Schleusingen
+adm_146026,NULL,NULL,Langensalza
+adm_146022,NULL,NULL,Heiligenstadt
+adm_146022,NULL,NULL,Obereichsfeld
+adm_146001,NULL,NULL,Weißensee
+adm_145113,NULL,NULL,Bitterfeld
+adm_142013,NULL,NULL,Liebenwerda
+object_268952,NULL,NULL,"Mansfelder Gebirgskreis"
+adm_145215,NULL,NULL,"Mansfelder Seekreis"
+adm_145227,NULL,NULL,Merseburg
+adm_145246,NULL,NULL,Zeitz
+adm_142027,NULL,NULL,Schweinitz
+adm_145144,NULL,NULL,Wittenberg
+adm_145228,NULL,NULL,Naumburg
+adm_145233,NULL,NULL,Querfurt
+adm_145235,NULL,NULL,Saalkreis
+adm_145237,NULL,NULL,Sangerhausen
+object_265497,NULL,NULL,Eckartsberga
+adm_145338,NULL,NULL,Calbe
+adm_145319,NULL,NULL,Halberstadt
+adm_145332,NULL,NULL,Aschersleben
+adm_145332,NULL,NULL,Quedlinburg
+adm_145331,NULL,NULL,Osterburg
+adm_145316,NULL,NULL,Gardelegen
+adm_145343,NULL,NULL,"Grafschaft Wernigerode"
+adm_145317,NULL,NULL,"Jerichow II"
+adm_145320,NULL,NULL,Neuhaldensleben
+adm_145330,NULL,NULL,Oschersleben
+adm_145336,NULL,NULL,Salzwedel
+adm_145340,NULL,NULL,Stendal
+adm_145341,NULL,NULL,Wanzleben
+adm_145345,NULL,NULL,Wolmirstedt
+adm_145314,NULL,NULL,"Jerichow I"
+adm_143019,NULL,NULL,Grimmen
+object_289916,NULL,NULL,Franzburg
+adm_143001,NULL,NULL,Greifswald
+adm_143032,NULL,NULL,Rügen
+object_214315,NULL,NULL,Neustettin
+object_276382,NULL,NULL,Bublitz
+object_214305,NULL,NULL,"Lauenburg in Pommern"
+object_214309,NULL,NULL,Stolp
+object_214309,NULL,NULL,Stolpe
+object_214301,NULL,NULL,Bütow
+object_214306,NULL,NULL,Regenwalde
+object_214308,NULL,NULL,Schlawe
+object_214302,NULL,NULL,Greifenberg
+object_214302,NULL,NULL,Greiffenberg
+object_284807,NULL,NULL,Fürstenthum
+object_214300,NULL,NULL,Belgard
+object_214307,NULL,NULL,Rummelsburg
+object_190202,NULL,NULL,Schivelbein
+object_214303,NULL,NULL,Cöslin
+object_214303,NULL,NULL,Köslin
+object_214303,NULL,NULL,Köslin
+object_214304,NULL,NULL,Colberg-Cörlin
+object_214304,NULL,NULL,Kolberg-Körlin
+object_190094,NULL,NULL,Dramburg
+object_214291,NULL,NULL,Greifenhagen
+object_214291,NULL,NULL,Greiffenhagen
+object_214292,NULL,NULL,Naugard
+adm_143012,NULL,NULL,Anklam
+object_214295,NULL,NULL,Ueckermünde
+adm_171000,NULL,NULL,Randow
+object_214293,NULL,NULL,Pyritz
+adm_143015,NULL,NULL,Demmin
+object_214296,NULL,NULL,Usedom-Wollin
+object_214290,NULL,NULL,Cammin
+object_214290,NULL,NULL,Kammin
+object_190096,NULL,NULL,"Friedeberg (Neumark)"
+object_214294,NULL,NULL,Saatzig
+object_277462,NULL,NULL,Bergheim
+object_283980,NULL,NULL,Waldbröl
+adm_135370,NULL,NULL,Heinsberg
+object_311778,NULL,NULL,"Mülheim am Rhein"
+object_311780,NULL,NULL,Wipperfürth
+object_311779,NULL,NULL,Gummersbach
+object_282164,NULL,NULL,Köln
+object_190360,NULL,NULL,Bonn
+adm_135366,NULL,NULL,Euskirchen
+object_190351,NULL,NULL,Rheinbach
+KOLOLNJO30LW,NULL,NULL,Cöln
+adm_135382,NULL,NULL,Siegkreis
+object_271805,NULL,NULL,Geilenkirchen
+object_271806,NULL,NULL,Heinsberg
+object_271804,NULL,NULL,Eupen
+object_271808,NULL,NULL,Malmedy
+object_271847,NULL,NULL,Düren
+object_271803,NULL,NULL,Erkelenz
+object_271810,NULL,NULL,Schleiden
+object_271807,NULL,NULL,Jülich
+object_271809,NULL,NULL,Montjoie
+adm_135354,NULL,NULL,Aachen
+object_308894,NULL,NULL,Gammertingen
+object_308893,NULL,NULL,Sigmaringen
+object_308896,NULL,NULL,Haigerloch
+object_308895,NULL,NULL,Hechingen
+adm_137141,NULL,NULL,Rhein-Lahn-Kreis
+adm_137132,NULL,NULL,"Altenkirchen (Westerwald)"
+object_320295,NULL,NULL,Coblenz
+object_300249,NULL,NULL,Kochem
+object_300249,NULL,NULL,Cochem
+adm_137133,NULL,NULL,Kreuznach
+object_280691,NULL,NULL,Mayen
+adm_137137,NULL,NULL,Mayen-Koblenz
+object_280409,NULL,NULL,"Sankt Goar"
+object_280409,NULL,NULL,"St. Goar"
+object_299825,NULL,NULL,Simmern
+adm_137143,NULL,NULL,Westerwald
+object_300190,NULL,NULL,Zell
+object_279959,NULL,NULL,Hocheifelkreis
+object_279959,NULL,NULL,Adenau
+adm_137131,NULL,NULL,Ahrweiler
+adm_137138,NULL,NULL,Neuwied
+object_299634,NULL,NULL,Koblenz-Land
+object_299634,NULL,NULL,Coblenz
+adm_138122,NULL,NULL,Solingen
+object_356671,NULL,NULL,Opladen
+adm_135154,NULL,NULL,Kleve
+adm_135154,NULL,NULL,Cleve
+object_311786,NULL,NULL,Krefeld
+object_311786,NULL,NULL,Crefeld
+object_311787,NULL,NULL,Kempen
+object_311784,NULL,NULL,Lennep
+object_311785,NULL,NULL,Gladbach
+object_320296,NULL,NULL,Essen
+object_290857,NULL,NULL,Neuß
+object_290857,NULL,NULL,Neuss
+object_284269,NULL,NULL,Grevenbroich
+object_320298,NULL,NULL,Moers
+object_320298,NULL,NULL,Mörs
+object_320298,NULL,NULL,Mörs
+object_311781,NULL,NULL,Düsseldorf
+adm_135158,NULL,NULL,Mettmann
+object_311783,NULL,NULL,Solingen
+object_311788,NULL,NULL,Geldern
+object_1091744,NULL,NULL,"Mülheim an der Ruhr"
+object_311789,NULL,NULL,Rees
+object_320299,NULL,NULL,Dinslaken
+object_320299,NULL,NULL,Ruhrort
+object_289939,NULL,NULL,Wittlich
+object_289937,NULL,NULL,Ottweiler
+object_289941,NULL,NULL,Prüm
+object_289943,NULL,NULL,Bitburg
+object_1050003,NULL,NULL,Saarburg
+object_289944,NULL,NULL,Bernkastel
+adm_137232,NULL,NULL,Bitburg-Prüm
+adm_137233,NULL,NULL,Daun
+TRIIERJN39HS,NULL,NULL,Trier
+adm_137211,NULL,NULL,Trier
+object_263359,NULL,NULL,Ostprignitz
+adm_142039,NULL,NULL,Prenzlau
+adm_142046,NULL,NULL,Templin
+adm_142024,NULL,NULL,Beeskow-Storkow
+object_263366,NULL,NULL,Niederbarnim
+object_263370,NULL,NULL,Teltow
+object_263365,NULL,NULL,Osthavelland
+object_263360,NULL,NULL,Ruppin
+object_263369,NULL,NULL,Zauch-Belzig
+adm_142011,NULL,NULL,Angermünde
+object_263364,NULL,NULL,Westhavelland
+object_263358,NULL,NULL,Westprignitz
+object_263372,NULL,NULL,Jüterbog-Luckenwalde
+object_263367,NULL,NULL,Oberbarnim
+object_257152,NULL,NULL,Sternberg
+object_190203,NULL,NULL,Züllichau-Schwiebus
+object_190203,NULL,NULL,Züllichau
+object_190205,NULL,NULL,Weststernberg
+object_190201,NULL,NULL,Oststernberg
+object_190196,NULL,NULL,"Königsberg (Neumark)"
+object_190091,NULL,NULL,Arnswalde
+object_190187,NULL,NULL,"Landsberg (Warthe)"
+object_190187,NULL,NULL,Landsberg
+object_190185,NULL,NULL,Soldin
+object_190093,NULL,NULL,Crossen
+adm_142042,NULL,NULL,Lebus
+adm_142032,NULL,NULL,Luckau
+adm_142031,NULL,NULL,Lübben
+adm_142044,NULL,NULL,Spremberg
+object_292979,NULL,NULL,Calau
+object_218096,NULL,NULL,"Preußisch Stargard"
+object_215038,NULL,NULL,"Neustadt (Westpreußen)"
+object_218095,NULL,NULL,Berent
+object_215039,NULL,NULL,Karthaus
+object_214285,NULL,NULL,Elbing
+object_218109,NULL,NULL,Danzig-Land
+object_256398,NULL,NULL,"Danziger Niederung"
+object_218097,NULL,NULL,"Danziger Höhe"
+object_215037,NULL,NULL,Putzig
+object_213751,NULL,NULL,Dirschau
+object_218098,NULL,NULL,"Marienburg (Westpreußen)"
+object_214336,NULL,NULL,Tuchel
+object_214334,NULL,NULL,Schwetz
+object_214316,NULL,NULL,Schlochau
+object_214312,NULL,NULL,"Deutsch Krone"
+object_214312,NULL,NULL,Dt.-Crone
+object_214312,NULL,NULL,"Deutsch Crone"
+adm_159800,NULL,NULL,Briesen
+object_214313,NULL,NULL,Flatow
+object_218103,NULL,NULL,Konitz
+object_218103,NULL,NULL,Conitz
+object_218101,NULL,NULL,Graudenz
+object_214282,NULL,NULL,Stuhm
+object_214284,NULL,NULL,Marienwerder
+object_218105,NULL,NULL,Strasburg
+object_218105,NULL,NULL,"Strasburg (Westpreußen)"
+object_218104,NULL,NULL,Löbau
+adm_172600,NULL,NULL,Rosenberg
+adm_133456,NULL,NULL,"Grafschaft Bentheim"
+object_283614,NULL,NULL,Lingen
+object_284264,NULL,NULL,Bersenbrück
+object_284267,NULL,NULL,Iburg
+object_284266,NULL,NULL,Melle
+adm_133459,NULL,NULL,Osnabrück
+object_284265,NULL,NULL,Wittlage
+object_284262,NULL,NULL,Aschendorf
+object_284263,NULL,NULL,Hümmling
+object_283615,NULL,NULL,Meppen
+adm_133462,NULL,NULL,Wittmund
+adm_133402,NULL,NULL,Emden
+adm_133452,NULL,NULL,Aurich
+adm_133457,NULL,NULL,Leer
+object_283616,NULL,NULL,Norden
+object_284252,NULL,NULL,Weener
+adm_133254,NULL,NULL,Hildesheim
+object_1163108,NULL,NULL,Diepholz
+object_284236,NULL,NULL,Linden
+object_1163926,NULL,NULL,Hoya
+adm_133256,NULL,NULL,Nienburg
+object_268017,NULL,NULL,Springe
+object_284232,NULL,NULL,Stolzenau
+object_284233,NULL,NULL,Sulingen
+object_284237,NULL,NULL,Hameln
+adm_133201,NULL,NULL,Hannover
+object_284234,NULL,NULL,"Neustadt am Rübenberge"
+object_284231,NULL,NULL,Syke
+object_284239,NULL,NULL,Gronau
+object_284238,NULL,NULL,"Marienburg i. Hann."
+object_284238,NULL,NULL,Marienburg
+adm_133157,NULL,NULL,Peine
+object_272137,NULL,NULL,Alfeld
+adm_133152,NULL,NULL,Göttingen
+object_284241,NULL,NULL,Münden
+adm_133155,NULL,NULL,Northeim
+object_284242,NULL,NULL,Uslar
+object_284243,NULL,NULL,Einbeck
+adm_133156,NULL,NULL,"Osterode am Harz"
+adm_133156,NULL,NULL,Osterode
+adm_133361,NULL,NULL,Verden
+adm_133357,NULL,NULL,Rotenburg
+adm_133357,NULL,NULL,"Rotenburg in Hannover"
+adm_133359,NULL,NULL,Stade
+object_284249,NULL,NULL,Bleckede
+object_268016,NULL,NULL,Burgdorf
+adm_133351,NULL,NULL,Celle
+adm_133151,NULL,NULL,Gifhorn
+object_284246,NULL,NULL,Isenhagen
+adm_133353,NULL,NULL,Harburg
+object_284247,NULL,NULL,Lüchow
+object_283609,NULL,NULL,Soltau
+object_283610,NULL,NULL,Fallingbostel
+adm_133356,NULL,NULL,Osterholz
+object_284250,NULL,NULL,"Winsen an der Luhe"
+object_284250,NULL,NULL,Winsen
+adm_133360,NULL,NULL,Uelzen
+adm_133355,NULL,NULL,Lüneburg
+adm_133354,NULL,NULL,Dannenberg
+object_218049,NULL,NULL,Lehe
+object_386948,NULL,NULL,"Stader Geestkreis"
+object_386949,NULL,NULL,"Stader Marschkreis"
+CUXVENJO43IU,NULL,NULL,Cuxhaven
+object_284259,NULL,NULL,Achim
+object_284258,NULL,NULL,Blumenthal
+object_283612,NULL,NULL,Bremervörde
+object_284254,NULL,NULL,Jork
+object_284260,NULL,NULL,Zeven
+object_284256,NULL,NULL,Neuhaus
+object_284256,NULL,NULL,"Neuhaus an der Oste"
+object_810609,NULL,NULL,Hadeln
+object_284255,NULL,NULL,Kehdingen
+object_218050,NULL,NULL,Geestemünde
+object_284245,NULL,NULL,Ilfeld
+object_284240,NULL,NULL,Duderstadt
+object_284244,NULL,NULL,Zellerfeld
+adm_169865,NULL,NULL,"Groß Wartenberg"
+adm_169865,NULL,NULL,Wartenberg
+object_268799,NULL,NULL,Steinau
+adm_169854,NULL,NULL,Trebnitz
+adm_169861,NULL,NULL,Namslau
+adm_169862,NULL,NULL,Militsch
+object_190917,NULL,NULL,Striegau
+adm_169864,NULL,NULL,Guhrau
+adm_169856,NULL,NULL,Schweidnitz
+adm_169857,NULL,NULL,Reichenbach
+adm_169867,NULL,NULL,Frankenstein
+adm_169866,NULL,NULL,Glatz
+adm_169853,NULL,NULL,Waldenburg
+adm_169859,NULL,NULL,Oels
+adm_169859,NULL,NULL,Öls
+adm_169860,NULL,NULL,Neumarkt
+object_256177,NULL,NULL,Münsterberg
+adm_169869,NULL,NULL,Breslau
+adm_169858,NULL,NULL,Ohlau
+adm_169868,NULL,NULL,Brieg
+object_256170,NULL,NULL,Nimptsch
+adm_169855,NULL,NULL,Strehlen
+adm_169852,NULL,NULL,Wohlau
+object_268800,NULL,NULL,Neurode
+adm_169863,NULL,NULL,Habelschwerdt
+adm_168865,NULL,NULL,Kreuzburg
+adm_168868,NULL,NULL,"Falkenberg O.S."
+adm_169768,NULL,NULL,Fraustadt
+adm_169769,NULL,NULL,Bunzlau
+adm_169759,NULL,NULL,Lauban
+adm_169760,NULL,NULL,Landeshut
+adm_169754,NULL,NULL,Sprottau
+adm_169756,NULL,NULL,Lüben
+adm_169761,NULL,NULL,Jauer
+adm_169758,NULL,NULL,Liegnitz
+adm_169757,NULL,NULL,Löwenberg
+adm_169762,NULL,NULL,Hirschberg
+adm_169766,NULL,NULL,Glogau
+object_263779,NULL,NULL,Goldberg-Haynau
+object_263779,NULL,NULL,Goldberg-Hainau
+object_263686,NULL,NULL,Sagan
+object_263715,NULL,NULL,Bolkenhain
+object_263786,NULL,NULL,Schönau
+adm_169763,NULL,NULL,Grünberg
+adm_169767,NULL,NULL,Freystadt
+adm_169767,NULL,NULL,Freistadt
+adm_168864,NULL,NULL,Leobschütz
+adm_168867,NULL,NULL,"Groß Strehlitz"
+adm_168859,NULL,NULL,Ratibor
+adm_168730,NULL,NULL,Tarnowitz
+adm_168834,NULL,NULL,Kattowitz
+adm_168802,NULL,NULL,Beuthen
+adm_169957,NULL,NULL,Lublinitz
+adm_168860,NULL,NULL,Oppeln
+adm_168866,NULL,NULL,Grottkau
+adm_168862,NULL,NULL,Neisse
+adm_168858,NULL,NULL,"Rosenberg i. Ob. Schl."
+adm_168858,NULL,NULL,"Rosenberg O.S."
+adm_168861,NULL,NULL,"Neustadt i. O. Schl."
+adm_168861,NULL,NULL,"Neustadt O.S."
+adm_168743,NULL,NULL,Pless
+adm_168743,NULL,NULL,Pleß
+adm_168737,NULL,NULL,Rybnik
+adm_168869,NULL,NULL,Cosel
+adm_168869,NULL,NULL,Kosel
+object_268798,NULL,NULL,Hindenburg
+object_268798,NULL,NULL,Zabrze
+adm_168768,NULL,NULL,Tost
+adm_168768,NULL,NULL,Tost-Gleiwitz
+object_213956,NULL,NULL,Memel
+adm_172789,NULL,NULL,Insterburg
+object_190253,NULL,NULL,Gumbinnen
+adm_157700,NULL,NULL,Heydekrug
+adm_172864,NULL,NULL,Labiau
+adm_172788,NULL,NULL,Tilsit
+object_190258,NULL,NULL,Ragnit
+object_190242,NULL,NULL,Neidenburg
+object_190239,NULL,NULL,Ortelsburg
+adm_172689,NULL,NULL,Allenstein
+object_190244,NULL,NULL,"Osterode in Ostpreußen"
+object_190244,NULL,NULL,Osterode
+object_190245,NULL,NULL,Rößel
+object_190245,NULL,NULL,Rössel
+adm_172700,NULL,NULL,Johannisburg
+object_190241,NULL,NULL,Lyck
+object_190240,NULL,NULL,Lötzen
+object_190246,NULL,NULL,Sensburg
+adm_172861,NULL,NULL,"Preußisch Holland"
+adm_172865,NULL,NULL,Heilsberg
+adm_172867,NULL,NULL,Gerdauen
+adm_172869,NULL,NULL,Friedland
+adm_172868,NULL,NULL,Braunsberg
+adm_172866,NULL,NULL,Heiligenbeil
+object_217930,NULL,NULL,"Königsberg i. Pr."
+adm_172862,NULL,NULL,"Preußisch Eylau"
+adm_172858,NULL,NULL,Wehlau
+adm_172900,NULL,NULL,Fischhausen
+adm_172863,NULL,NULL,Mohrungen
+adm_172860,NULL,NULL,Rastenburg
+object_190256,NULL,NULL,Niederung
+object_190251,NULL,NULL,Darkehmen
+object_190257,NULL,NULL,Pillkallen
+object_1069558,NULL,NULL,Angerburg
+object_190259,NULL,NULL,Stallupönen
+object_190252,NULL,NULL,Goldap
+object_190243,NULL,NULL,Oletzko
+adm_172800,NULL,NULL,Angerburg
+object_810382,NULL,NULL,Ritzebüttel
+object_306814,NULL,NULL,"Waidhofen an der Ybbs"
+object_319507,NULL,NULL,Linz
+object_319515,NULL,NULL,Steyr
+object_319523,NULL,NULL,Wels
+adm_169967,NULL,NULL,Jägerndorf
+adm_169968,NULL,NULL,Jägerndorf
+object_306873,NULL,NULL,"Krems an der Donau"
+object_362639,NULL,NULL,Travnik
+object_362640,NULL,NULL,Tuzla
+object_362641,NULL,NULL,Bihač
+object_362642,NULL,NULL,Banjaluka
+object_362643,NULL,NULL,Sarajevo
+object_1143370,NULL,NULL,Bijeljina
+object_1143371,NULL,NULL,Brčko
+object_1143372,NULL,NULL,Bugojno
+object_1143373,NULL,NULL,Cazin
+object_1143374,NULL,NULL,Dervent
+object_1143376,NULL,NULL,Foča
+object_1143377,NULL,NULL,Fojnica
+object_1143378,NULL,NULL,Gračanica
+object_1143379,NULL,NULL,Gradačac
+object_1143380,NULL,NULL,Ključ
+object_1143381,NULL,NULL,Livno
+object_1143382,NULL,NULL,Maglaj
+object_1143383,NULL,NULL,Prijedor
+object_1143384,NULL,NULL,Rogatica
+object_1143385,NULL,NULL,Srebrenica
+object_1143386,NULL,NULL,Tešanj
+object_1143387,NULL,NULL,Visoko
+object_1143388,NULL,NULL,Zvornik
+object_1205566,NULL,NULL,Mostar
+object_395588,NULL,NULL,"Heiligenkreuz an der Gran"
+object_395576,NULL,NULL,Neusohl
+object_395578,NULL,NULL,"Bries an der Gran"
+object_354629,NULL,NULL,Gran
+adm_160200,NULL,NULL,Kaschau
+object_395584,NULL,NULL,Großsteffelsdorf
+object_395583,NULL,NULL,Großrauschenbach
+adm_136611,NULL,NULL,Cassel
+object_190179,NULL,NULL,Girkhausen
+object_190180,NULL,NULL,Schüllar
+object_190181,NULL,NULL,Neuastenberg
+object_1191142,NULL,NULL,Rahden
+object_290577,NULL,NULL,Hausberge
+object_1190991,NULL,NULL,Petershagen
+object_255449,NULL,NULL,Rehme
+object_985336,NULL,NULL,Recklinghausen
+object_307173,NULL,NULL,Haltern
+object_1141174,NULL,NULL,Bottrop
+object_1090578,NULL,NULL,Buer
+object_985341,NULL,NULL,Datteln
+object_1141176,NULL,NULL,Lembeck
+object_307242,NULL,NULL,Marl
+object_1141248,NULL,NULL,Horst
+object_1141249,NULL,NULL,Osterfeld
+object_1141250,NULL,NULL,Westerholt
+object_1141173,NULL,NULL,Altschermbeck
+object_1141216,NULL,NULL,Kirchhellen
+object_307214,NULL,NULL,Osterwick
+object_1052313,NULL,NULL,Buldern
+object_1140581,NULL,NULL,Gescher
+object_1140583,NULL,NULL,Rorup
+object_1052315,NULL,NULL,Darfeld
+object_1052314,NULL,NULL,Coesfeld
+object_1051723,NULL,NULL,Billerbeck
+object_1052316,NULL,NULL,Dülmen
+object_1140139,NULL,NULL,Nienborg
+object_1140140,NULL,NULL,Ottenstein
+object_1140141,NULL,NULL,Schöppingen
+object_1140275,NULL,NULL,Wüllen
+object_1140128,NULL,NULL,Epe
+object_1140128,NULL,NULL,Gronau
+object_1140129,NULL,NULL,Legden
+object_1140208,NULL,NULL,Südlohn
+object_1166963,NULL,NULL,Steinfurt
+object_1141221,NULL,NULL,Horstmar
+object_1158251,NULL,NULL,Ochtrup
+object_1158252,NULL,NULL,"Rheine (Land)"
+object_1139280,NULL,NULL,Bevergern
+object_1140612,NULL,NULL,Olfen
+object_1140611,NULL,NULL,Lüdinghausen
+object_1140622,NULL,NULL,Ascheberg
+object_1140618,NULL,NULL,Werne
+object_1140668,NULL,NULL,Herbern
+object_1140352,NULL,NULL,Rhede
+object_1140310,NULL,NULL,Gemen
+object_1140309,NULL,NULL,Dingden
+object_1140345,NULL,NULL,"Marbeck (Borken Landbez.)"
+object_1140358,NULL,NULL,Werth
+object_1140353,NULL,NULL,Velen
+object_1140359,NULL,NULL,Weseke
+object_1140347,NULL,NULL,Raesfeld
+object_1137957,NULL,NULL,Kreuzau
+object_1137966,NULL,NULL,Vettweiß
+object_287789,NULL,NULL,Bornefeld
+object_287787,NULL,NULL,"Beyenburg und Barmen"
+object_1160126,NULL,NULL,Broich
+object_319700,NULL,NULL,Sereth
+object_266913,NULL,NULL,Freiwaldau
+object_266918,NULL,NULL,Grulich
+object_266920,NULL,NULL,Hohenstadt
+object_266905,NULL,NULL,Bärn
+adm_169926,NULL,NULL,Troppau
+object_284368,NULL,NULL,"Mährisch Schönberg"
+object_359329,NULL,NULL,Bereg
+object_276878,NULL,NULL,Severni
+object_276879,NULL,NULL,"Severni Banat"
+object_277048,NULL,NULL,"Südliche Batschka"
+object_277050,NULL,NULL,Syrmien
+object_396354,NULL,NULL,Herdwangen
