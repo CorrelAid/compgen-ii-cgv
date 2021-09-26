@@ -50,14 +50,18 @@ class Baseline(Pipeline):
             relevant_ids = self.matcher.find_relevant_ids(query)
 
             textual_id = ""
-            if len(relevant_ids) == 1:
+            score = 0
+            
+            # take first id as baseline
+            if relevant_ids:
+                score = 1 / len(relevant_ids)
                 ids = relevant_ids[0]
                 lower_id = min(
                     ids, key=lambda id_: len(self.gov.all_reachable_nodes_by_id[id_])
                 )
                 textual_id = self.gov.items_by_id[lower_id][0]
 
-            return textual_id
+            return textual_id, score
 
         with concurrent.futures.ThreadPoolExecutor(max_workers=8) as executor:
             matches = list(executor.map(get_textual_id, tqdm(self.vl.location, desc="VL entry")))
@@ -65,8 +69,8 @@ class Baseline(Pipeline):
         self.matches = pd.DataFrame(
             {
                 "location": self.vl.location,
-                "id": matches,
-                "score": [1 if x != "" else 0 for x in matches],
+                "id": [m[0] for m in matches],
+                "score": [m[1] for m in matches],
             }
         )
 
