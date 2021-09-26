@@ -1,7 +1,10 @@
+import concurrent.futures
 import logging
 from itertools import product
 
 import numpy as np
+import pandas as pd
+from tqdm import tqdm
 
 from .gov_extraction import GOV
 
@@ -110,6 +113,41 @@ class Matcher:
     def get_ids_by_part(self, parts: tuple) -> tuple[set[int]]:
         """Return all ids for each name (part) of a GOV item."""
         return tuple(self.gov.ids_by_name.get(name, set()) for name in parts)
+
+    def get_match_for_locations(
+        self, locations: pd.Series, max_workers: int = 8
+    ) -> pd.DataFrame:
+        with concurrent.futures.ThreadPoolExecutor(max_workers=max_workers) as executor:
+            matches = list(
+                executor.map(
+                    self.get_textual_id, tqdm(locations, desc="VL entry")
+                )
+            )
+
+        return pd.DataFrame(
+            {
+                "location": locations,
+                "id": [m[0] for m in matches],
+                "score": [m[1] for m in matches],
+            }
+        )
+
+    def get_textual_id(self, query) -> tuple[str, float]:
+        relevant_ids = self.find_relevant_ids(query)
+
+        textual_id = ""
+        score = 0
+
+        # take first id as baseline
+        if relevant_ids:
+            score = 1 / len(relevant_ids)
+            ids = relevant_ids[0]
+            lower_id = min(
+                ids, key=lambda id_: len(self.gov.all_reachable_nodes_by_id[id_])
+            )
+            textual_id = self.gov.items_by_id[lower_id][0]
+
+        return textual_id, score
 
     @staticmethod
     def get_query_parts(query: str) -> tuple[str]:

@@ -1,10 +1,10 @@
 import logging
 from datetime import datetime
 
-from .baseline import Baseline
 from .gov_extraction import GOV
 from .gov_matching import Matcher
 from .pipeline import Pipeline
+
 
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.DEBUG)
