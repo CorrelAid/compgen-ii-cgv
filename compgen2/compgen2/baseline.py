@@ -6,6 +6,8 @@ b = Baseline(<data_root>)
 b.run()
 ```
 """
+import concurrent.futures
+
 import pandas as pd
 from tqdm import tqdm
 
@@ -53,16 +55,12 @@ class Baseline(Pipeline):
                 lower_id = min(
                     ids, key=lambda id_: len(self.gov.all_reachable_nodes_by_id[id_])
                 )
-                textual_id = self.gov.items.query("id == @lower_id").textual_id.values[
-                    0
-                ]
+                textual_id = self.gov.items_by_id[lower_id][0]
 
             return textual_id
 
-        matches = [
-            get_textual_id(query) for query in tqdm(self.vl.location, desc="VL entry")
-        ]
-        print(matches)
+        with concurrent.futures.ThreadPoolExecutor(max_workers=8) as executor:
+            matches = list(executor.map(get_textual_id, tqdm(self.vl.location, desc="VL entry")))
 
         self.matches = pd.DataFrame(
             {

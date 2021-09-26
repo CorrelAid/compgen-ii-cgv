@@ -1,8 +1,5 @@
 from compgen2 import Pipeline, Baseline
 
-# %load_ext autoreload
-# %autoreload 2
-
 # ## Basic Pipeline
 
 data_root = "../data"
@@ -25,5 +22,13 @@ data_root = "../data"
 b = Baseline(data_root)
 
 b.run()
+
+
+
+# ## Synthetic Test Pipelines
+
+from compgen2.synthetic import TestGOV
+
+TestGOV("../data").run()
 
 
