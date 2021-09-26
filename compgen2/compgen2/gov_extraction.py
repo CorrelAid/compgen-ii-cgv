@@ -82,7 +82,9 @@ class GOV:
         self._prefilter_relations()
         self._prefilter_types()
 
-        logger.info("Finished loading all relevant GOV tables. Please call `build_indices()` next.")
+        logger.info(
+            "Finished loading all relevant GOV tables. Please call `build_indices()` next."
+        )
 
     def build_indices(self):
         """Build all relevant indices that are necessary for efficiently querying and working with GOV."""
@@ -96,7 +98,9 @@ class GOV:
         self.all_reachable_nodes_by_id = self._all_reachable_nodes_by_id()
         self.fully_initialized = True
 
-        logger.info("Finished building all relevant search indices. You can now start working with GOV data.")
+        logger.info(
+            "Finished building all relevant search indices. You can now start working with GOV data."
+        )
 
     def clear_data(self):
         """Necessary step to pickle model so that its size its manageable.

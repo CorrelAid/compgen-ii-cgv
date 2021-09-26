@@ -99,9 +99,9 @@ class Matcher:
                 match = {name: id_ for name, id_ in zip(parts, ids)}
                 lower_level_id = ids[np.argmax(ids.index(i) for i in ids)]
                 match["lower_level_id"] = lower_level_id
-                match["lower_level_textual_id"] = self.gov.items.query(
-                    "id == @lower_level_id"
-                ).textual_id.values[0]
+                match["lower_level_textual_id"] = self.gov.items_by_id[lower_level_id][
+                    0
+                ]
                 match["paths"] = paths_containing_ids
                 matches.append(match)
 

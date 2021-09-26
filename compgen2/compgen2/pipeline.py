@@ -73,10 +73,10 @@ class Pipeline:
     def load_data(self):
         """Load important data.
 
-        Loads Verlustliste and fully initializes GOV.
+        Loads Verlustliste and GOV data tables.
         """
-        self.vl = self.read_vl()
         self.gov.load_data()
+        self.vl = self.read_vl()
 
     def read_vl(self) -> pd.DataFrame:
         path = self.data_root / VL_FILE
