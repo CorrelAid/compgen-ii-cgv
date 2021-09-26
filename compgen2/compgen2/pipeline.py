@@ -30,7 +30,7 @@ class Pipeline:
         self.matcher = Matcher(self.gov)
 
         self.vl = pd.DataFrame()
-        self.matches = pd.DataFrame()
+        self.matches = pd.DataFrame()  # a df with three columns for location, textual_id and score
         self.hash = b""
         self.version = 1
 
@@ -70,7 +70,7 @@ class Pipeline:
             if last_model.hash != self.hash:
                 self.version = last_model.version + 1
 
-    def load_data(self):
+    def load_data(self) -> None:
         """Load important data.
 
         Loads Verlustliste and GOV data tables.
@@ -98,24 +98,19 @@ class Pipeline:
 
         return pd.read_parquet(parquet_filename)
 
-    def preprocess(self):
+    def preprocess(self) -> None:
         """preprocess data to improve performance of matching algorithm
 
         Here you can alter self.vl, and all data stored in self.gov
         """
         pass
 
-    def get_matches(self) -> pd.Series:
+    def get_matches(self) -> None:
         """Get match for each entry of self.vl
 
         Here you can implement the matching algorithm.
-
-        Returns:
-               (pd.Series): A series with the matched IDs from GOV (or something that can be interpreted that way)
         """
-        self.matches = pd.DataFrame(
-            {"location": self.vl.location, "id": "", "score": 0}, index=self.vl.index
-        )
+        self.matches = self.matcher.get_match_for_locations(self.vl.location)
 
     def evaluate(self) -> tuple[int, int]:
         """Evaluate the results of the matching algorithm
@@ -128,7 +123,7 @@ class Pipeline:
         nr_matches = len(self.matches) - sum(self.matches["id"].eq(""))
         return nr_matches, nr_matches / len(self.matches)
 
-    def output(self):
+    def output(self) -> None:
         """Append results to the pipeline log"""
         logger.info(str(self))
 
