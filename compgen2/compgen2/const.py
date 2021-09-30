@@ -58,9 +58,12 @@ TWOHNPLAETZE = {51, 55, 120, 230, 54, 39, 69, 129, 40, 54}  # unterste Wohnplät
 # - geographische Typen
 # - Zivilverwaltung
 # - Gericht
+# - Verkehrswesen
 # - Sonstige
-# Desired are therefore these two groups of GOV types:
-# - (politische) Verwaltung
+# - special cases:
+#   * politische Verwaltung: 223 Landgericht (älterer Ordnung)
+# Desired are therefore these groups of GOV types:
+# - politische Verwaltung
 # - Wohnplatz
 TUNDESIRED = {
     47,
@@ -121,4 +124,6 @@ TUNDESIRED = {
     103,
     172,
     242,
+    118,
+    223,
 }
