@@ -66,6 +66,7 @@ class GOV:
         self.all_relations = set()
         self.all_paths = set()
         self.all_reachable_nodes_by_id = {}
+        self.julian_by_year= {}
 
         logger.info("Initialized empty gov instance. Please call `load_data()` next.")
 
@@ -89,6 +90,7 @@ class GOV:
     def build_indices(self):
         """Build all relevant indices that are necessary for efficiently querying and working with GOV."""
         logger.info("Start building all relevant search indices ...")
+        self.julian_by_year = self._julian_years()
         self.items_by_id = self._items_by_id()
         self.names_by_id = self._names_by_id()
         self.ids_by_name = self._ids_by_name()
@@ -120,6 +122,7 @@ class GOV:
         self.all_paths = set()
         self.all_reachable_nodes_by_id = {}
         self.fully_initialized = False
+        self.julian_by_year = {}
 
         logger.info("Cleared all data and attributes.")
 
@@ -350,8 +353,10 @@ class GOV:
             for r in relations:
                 if r[0] in leave_dict_curr:
                     for path in leave_dict_curr[r[0]]:
-                        tmin = min(r[2], path[1])
-                        tmax = max(r[3], path[2])
+                        tmin = max(r[2], path[1])
+                        tmax = min(r[3], path[2])
+                        if r[2]//10 < T_BEGIN and (r[2]//10,r[3]//10) in self.julian_by_year.values():
+                            tmax = path[2]
                         if tmin <= tmax:  # TODO: Introduce correct time constraints???
                             leaves_updated.add(r[0])
                             path_updated = ((*path[0], r[1]), tmin, tmax)
@@ -430,3 +435,15 @@ class GOV:
             "time_begin < @T_BEGIN and time_end > @T_END"
         )  # TODO: Introduce correct time constraints for julian date???
         return data
+
+    def _julian_years(self) -> dict[int, tuple[int,int]]:
+        """ Compute the tuple (1st of January, 31st of December) in julian date format for all years from 1 A.D. to 3000 A.D.
+        """
+        new_years_day = 1721426 # 1721426 is 0001-01-01 12:00:00
+        new_years_eve = 0
+        julian_by_year = dict()
+        for y in range(1,3001):
+            new_years_eve = new_years_day + 364 + int( y%4 == 0 and (y%100 !=0 or y%400 == 0) )
+            julian_by_year[y] = (new_years_day,new_years_eve)
+            new_years_day = new_years_eve + 1
+        return julian_by_year
