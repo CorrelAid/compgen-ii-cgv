@@ -39,7 +39,7 @@ sorted(analysis_special_chars.items(), key=itemgetter(1), reverse=True)
 
 # %%
 # INFO: Zeige Einträge mit Sonderzeichen an 
-char = ':'
+char = '\Wnicht'
 verlustliste[verlustliste.location.str.contains(char)]
 
 # %%
@@ -49,10 +49,6 @@ verlustliste = verlustliste.replace({'location' : { '\´' : '\'', '\`' : '\''}},
 # %%
 # Sonderzeichen ? ^ _ " # * entfernen 
 verlustliste = verlustliste.replace({'location' : { '\?' : '', '\^' : '', '\_' : '', '\"' : '', '\#' : '', '\*' : '', '\\\\' : ''  }}, regex=True)
-
-# %%
-rep1 = '\''
-verlustliste = verlustliste.replace({'location' : { '\´' : rep1, '\`' : rep1}}, regex=True)
 
 # %%
 # Sonderzeichen () und [] kennzeichnen Korrekturen aus historischer Zeit -> inklusive Inhalt entfernen
@@ -87,6 +83,37 @@ verlustliste = verlustliste.replace({'location' : { 'korr.:' : ',', 'korr:' : ',
 # Sonderzeichen ; als Tippfehler für Komma 
 # -> beide durch , ersetzen
 verlustliste = verlustliste.replace({'location' : { '\/' : ',',  '\;' : ','}}, regex=True)
+
+# %% [markdown]
+# ### Test
+
+# %%
+from preprocessing import Preprocessing
+
+# %%
+vl = Preprocessing.prep_vl_multi(verlustliste)
+
+# %%
+vl
+
+# %%
+# INFO: Zeige Einträge mit Sonderzeichen an 
+#char = r'\(.*?\)'
+#char = 'nicht'
+#char = r'(?i)korr'
+char = r'\Wverm.*'
+vl[vl.location.str.contains(char)]
+
+# %%
+vl = Preprocessing.prep_vl_single(verlustliste)
+
+# %%
+vl
+
+# %%
+# INFO: Zeige Einträge mit Sonderzeichen an 
+char = "\]"
+vl[vl.location.str.contains(char)]
 
 # %% [markdown]
 # ## Abkürzungen erweitern
