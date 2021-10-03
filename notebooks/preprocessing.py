@@ -16,7 +16,7 @@ class Preprocessing:
     """
     """
     
-    def prep_vl_multi(data): # -> pd.DataFrame:
+    def prep_vl_multi_char(data): # -> pd.DataFrame:
         """
         """
         
@@ -41,13 +41,14 @@ class Preprocessing:
         str_13 = r'(?i)\Wkorr\W'
         rep_2 = ','
 
+        # do replacement 
         data['location'] = data['location'].replace(
             to_replace=[str_01, str_02, str_03, str_04, str_05, str_06, str_07, str_08, str_09, str_10], value=rep_1, regex=True).replace(
             to_replace=[str_11, str_12, str_13], value=rep_2, regex=True)
         
         return (data)
              
-    def prep_vl_single(data): # -> pd.DataFrame:
+    def prep_vl_single_char(data): # -> pd.DataFrame:
         """
         """
 
@@ -65,26 +66,35 @@ class Preprocessing:
         char_3 = '[´`]'
         rep_3 = '\''
         
-        
+        # do replacement 
         data['location'] = data['location'].replace(to_replace=char_1, value=rep_1, regex=True).replace(
             to_replace=char_2, value=rep_2, regex=True).replace(
             to_replace=char_3, value=rep_3, regex=True)
         
         return (data)
         
-    def abbreviations_vl(data):
+    def prep_vl_abbreviations(data):  # -> pd.DataFrame:
         """
         """
         
+        # load defined abbreviations 
+        substitutions = pd.read_csv("../data/substitutions_PM.csv", sep = ";", header = None, names = ["abbreviation", "expansion"], comment='#')
 
-        pass
+        # save as dict 
+        subst_dict = dict(zip(substitutions.abbreviation, substitutions.expansion))
+        
+        # do replacement 
+        for old, new in subst_dict.items():
+            data['location'] = data['location'].str.replace(old, new, regex=False)
+
+        return (data)
     
-#    def characters_gov(data):
+#    def prep_gov_char(data): # -> pd.DataFrame:
 #        """
 #        """
 #        pass
 #        
-#    def abbreviations_gov(data):
+#    def prep_gov_abbreviations(data): # -> pd.DataFrame:
 #        """
 #        """
 #        pass

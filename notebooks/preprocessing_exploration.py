@@ -3,6 +3,7 @@
 import pandas as pd
 import numpy as np
 import re
+from preprocessing import Preprocessing
 
 # %% [markdown]
 # # Preprocessing
@@ -85,13 +86,13 @@ verlustliste = verlustliste.replace({'location' : { 'korr.:' : ',', 'korr:' : ',
 verlustliste = verlustliste.replace({'location' : { '\/' : ',',  '\;' : ','}}, regex=True)
 
 # %% [markdown]
-# ### Test
+# ### Test: Methoden aus Preprocessing
 
 # %%
-from preprocessing import Preprocessing
+vl = verlustliste.copy()
 
 # %%
-vl = Preprocessing.prep_vl_multi(verlustliste)
+vl = Preprocessing.prep_vl_multi_char(vl)
 
 # %%
 vl
@@ -105,7 +106,7 @@ char = r'\Wverm.*'
 vl[vl.location.str.contains(char)]
 
 # %%
-vl = Preprocessing.prep_vl_single(verlustliste)
+vl = Preprocessing.prep_vl_single_char(vl)
 
 # %%
 vl
@@ -113,6 +114,23 @@ vl
 # %%
 # INFO: Zeige Einträge mit Sonderzeichen an 
 char = "\]"
+vl[vl.location.str.contains(char)]
+
+# %%
+vl = Preprocessing.prep_vl_abbreviations(vl)
+
+# %%
+# Check: Prozentzahl an weiterhin bestehenden Abkürzungen
+vl.location.str.count("[A-Za-zäöüßÄÖÜẞ]+\.").sum() / vl.shape[0]
+
+# %%
+# Check: Häufigste weiterhin bestehende Abkürzungen
+vl.location.str.extract("(?P<Abkürzung>[A-Za-zäöüßÄÖÜẞ]+\.)").dropna().value_counts(normalize = True)[0:50]
+
+# %%
+# INFO: Zeige Einträge mit Sonderzeichen an 
+char = "\."
+char = "Oberf\."
 vl[vl.location.str.contains(char)]
 
 # %% [markdown]
