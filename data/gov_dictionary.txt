@@ -76974,7 +76974,6 @@ schlempmühle
 liliental
 lilienthal
 rüschberg
-rö{ff}
 ruschkrug
 mittelstkoppel
 neukathe
@@ -77209,7 +77208,6 @@ großbüttel
 wasmerskoog
 scheldehof
 scheldehoffeld
-scheldefeld??
 schottsbüllfeld
 katharinenlund
 kjaer-westerfeld
@@ -99495,7 +99493,6 @@ pützmühle
 luchem
 merode
 blumental
-d´horn
 d'horn
 hamich
 mettlermühle
