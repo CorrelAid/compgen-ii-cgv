@@ -7,9 +7,9 @@
 #       extension: .py
 #       format_name: percent
 #       format_version: '1.3'
-#       jupytext_version: 1.11.4
+#       jupytext_version: 1.12.0
 #   kernelspec:
-#     display_name: Python 3 (ipykernel)
+#     display_name: Python 3
 #     language: python
 #     name: python3
 # ---
@@ -23,18 +23,30 @@ import matplotlib.pyplot as plt
 # # Load GOV Liste
 
 # %%
-gov = pd.read_parquet("./data/gov_orte_v01.parquet")
+gov = pd.read_parquet("../data/gov_orte_v01_preprocessed.parquet")
 
 # Entferne Duplikate
 gov = gov.drop_duplicates(subset='location', keep="first")
 gov
 
 # %%
-gov_kreise = pd.read_parquet("./data/gov_kreise_v01.parquet")
+gov_oneword = gov[gov.location.apply(lambda x: len(x.split())==1)]
+
+# %%
+with open("../data/gov_preprocessed_dictionary.txt", "w") as dictionary:
+    for element in gov_oneword.location.values:
+        dictionary.write(element.lower() + "\n")
+        
+    
+
+# %%
+gov_kreise = pd.read_parquet("../data/gov_kreise_v01.parquet")
 
 # Entferne Duplikate 
 gov_kreise = gov_kreise.drop_duplicates(subset='location', keep="first")
 gov_kreise
+
+# %%
 
 # %% [markdown]
 # # Load Verlustliste
