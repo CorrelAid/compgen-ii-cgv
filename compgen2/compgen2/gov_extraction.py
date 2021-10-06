@@ -292,7 +292,7 @@ class GOV:
 
         name_dict = defaultdict(set)
         for n in names:
-            name_dict[n[0]] |= {(n[1],n[2],n[3],n[4])}
+            name_dict[n[0]] |= {n[1:]}
         name_dict.default_factory = None
         return name_dict
 
@@ -326,7 +326,7 @@ class GOV:
         )
         type_dict = defaultdict(set)
         for t in types:
-            type_dict[t[0]] |= {(t[1],t[2],t[3])}
+            type_dict[t[0]] |= {t[1:]}
         type_dict.default_factory = None
         return type_dict
 
