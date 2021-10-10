@@ -1,5 +1,6 @@
 from trie_levenshtein import TrieNode
 import re
+from Levenshtein import distance
 
 class LocCorrection:
     def __init__(self, loc_list):
@@ -38,8 +39,11 @@ class LocCorrection:
             )
         return results
 
+    def cal_levenstein(self, word):
         # This recursive helper is used by the search function above. It assumes that
         # the previousRow has been filled in already.
+        return [distance(word.lower(), i.lower()) for i in self.loc_list]
+
 
     def _searchRecursive(self, node, letter, word, previousRow, results, cost, exclude_operations=None):
         columns = len(word) + 1
@@ -86,8 +90,9 @@ class LocCorrection:
         # if any entries in the row are less than the maximum cost, then
         # recursively search each branch of the trie
 
-
-
+import pandas as pd
+#df = pd.read_parquet(r"C:\Users\A111519951\PycharmProjects\correlaid\compgen-ii-cgv\data\deutsche-verlustlisten-1wk_preprocessed.parquet").head(100)
+#gov_df = pd.read_parquet(r"C:\Users\A111519951\PycharmProjects\correlaid\compgen-ii-cgv\data\gov_orte_v01_preprocessed.parquet").head(100)
 lC = LocCorrection(["aachen", "aaahen", "ahen"])
 #vague match input
 results = lC.search("aaashen", (1,4))
@@ -95,3 +100,4 @@ print('value search', results)
 # exact match input
 results = lC.search("aaashen", 1)
 print('exact search', results)
+
