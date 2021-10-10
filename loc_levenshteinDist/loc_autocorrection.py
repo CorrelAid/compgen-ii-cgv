@@ -57,7 +57,7 @@ class LocCorrection:
             if exclude_operations:
                 for op in exclude_operations:
                     del mode_dict[op]
-            currentRow.append(min(insertCost, deleteCost, replaceCost))
+            currentRow.append(min(list(mode_dict.values())))
         # if the last entry in the row indicates the optimal cost is less than the
         # defined cost, and there is a word in this trie node, then add it.
         # exact mode
@@ -89,7 +89,9 @@ class LocCorrection:
 
 
 lC = LocCorrection(["aachen", "aaahen", "ahen"])
-#exact match input
+#vague match input
 results = lC.search("aaashen", (1,4))
-# vague match input
-print(results)
+print('value search', results)
+# exact match input
+results = lC.search("aaashen", 1)
+print('exact search', results)
