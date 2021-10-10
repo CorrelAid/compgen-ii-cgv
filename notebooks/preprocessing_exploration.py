@@ -92,28 +92,29 @@ verlustliste = verlustliste.replace({'location' : { '\/' : ',',  '\;' : ','}}, r
 vl = verlustliste.copy()
 
 # %%
-vl = Preprocessing.prep_vl_multi_char(vl)
+vl = Preprocessing.prep_clean_brackets(vl)
+vl
 
 # %%
+vl = Preprocessing.prep_clean_korrigiert(vl)
 vl
 
 # %%
 # INFO: Zeige Einträge mit Sonderzeichen an 
 #char = r'\(.*?\)'
-#char = 'nicht'
-#char = r'(?i)korr'
-char = r'\Wverm.*'
+#char = r'\('
+#char = r'\Wnicht.*?'
+char = r'(?i)korr'
+#char = r'(?i)\Wverm.*?\.'  
 vl[vl.location.str.contains(char)]
 
 # %%
-vl = Preprocessing.prep_vl_single_char(vl)
-
-# %%
+vl = Preprocessing.prep_clean_characters(vl)
 vl
 
 # %%
 # INFO: Zeige Einträge mit Sonderzeichen an 
-char = "\]"
+char = "\'"
 vl[vl.location.str.contains(char)]
 
 # %%
