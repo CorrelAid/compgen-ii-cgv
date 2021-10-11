@@ -39,9 +39,6 @@ class GOV:
         types (pd.DataFrame): content of propertytypes.csv
         relations (pd.DataFrame): content of relation.csv
         type_names (pd.DataFrame): content of typenames.csv
-        items_by_id_raw (dict): A mapping between an item's id and its textual id. Unfiltered raw data.
-        types_by_id_raw (dict): A mapping between an item's id and its type. Unfiltered raw data.
-        names_by_id_raw (dict): A mapping between an item's id and its names. Unfiltered raw data.
         items_by_id (dict): A mapping between an item's id and its textual id.
         types_by_id (dict): A mapping between an item's id and its type.
         names_by_id (dict): A mapping between an item's id and its names.
@@ -63,12 +60,12 @@ class GOV:
         self.type_names = pd.DataFrame()
 
         # important search indices
-        self.items_by_id_raw = {}
-        self.types_by_id_raw = {}
-        self.names_by_id_raw = {}
+        self._items_by_id_raw = {}
+        self._types_by_id_raw = {}
+        self._names_by_id_raw = {}
         self.items_by_id = {}
-        self.types_by_id = {}
-        self.names_by_id = {}
+        self.types_by_id = defaultdict(set)
+        self.names_by_id = defaultdict(set)
         self.ids_by_name = {}
         self.all_relations = set()
         self.all_paths = set()
@@ -99,9 +96,9 @@ class GOV:
         """Build all relevant indices that are necessary for efficiently querying and working with GOV."""
         logger.info("Start building all relevant search indices ...")
         self.years = self.julian_years() 
-        self.items_by_id_raw = self._items_by_id()
-        self.names_by_id_raw = self._names_by_id()
-        self.types_by_id_raw = self._types_by_id()
+        self._items_by_id_raw = self._items_by_id()
+        self._names_by_id_raw = self._names_by_id()
+        self._types_by_id_raw = self._types_by_id()
         self.all_relations = self._all_relations()
         self.all_paths = self._all_paths()
         self.ids_by_name = self._ids_by_name()
@@ -122,12 +119,12 @@ class GOV:
         self.types = pd.DataFrame()
         self.relations = pd.DataFrame()
         self.type_names = pd.DataFrame()
-        self.items_by_id_raw = {}
-        self.types_by_id_raw = {}
-        self.names_by_id_raw = {}
+        self._items_by_id_raw = {}
+        self._types_by_id_raw = {}
+        self._names_by_id_raw = {}
         self.items_by_id = {}
-        self.types_by_id = {}
-        self.names_by_id = {}
+        self.types_by_id = defaultdict(set)
+        self.names_by_id = defaultdict(set)
         self.ids_by_name = {}
         self.all_relations = set()
         self.all_paths = set()
@@ -355,13 +352,13 @@ class GOV:
         paths = set()
         new_leaves_found = True
 
-        relevant_item_dict = dict()
-        relevant_type_dict = defaultdict(set)
-        relevant_name_dict = defaultdict(set)
+        self.items_by_id = dict()
+        self.types_by_id = defaultdict(set)
+        self.names_by_id = defaultdict(set)
         for k in SUPERNODES:
-            self._collect_items(relevant_item_dict, k)
-            self._collect_types(relevant_type_dict, k, T_BEGIN, T_END)
-            self._collect_names(relevant_name_dict, k, T_BEGIN, T_END)
+            self._collect_item(self.items_by_id, k)
+            self._collect_type(self.types_by_id, k, T_BEGIN, T_END)
+            self._collect_name(self.names_by_id, k, T_BEGIN, T_END)
 
         while new_leaves_found:
             leave_dict_next = defaultdict(set)
@@ -376,12 +373,12 @@ class GOV:
                             tmax = path[2]
                         if tmin > tmax:
                             continue
-                        if self._collect_types(relevant_type_dict, r[1], tmin, tmax):
+                        if self._collect_type(self.types_by_id, r[1], tmin, tmax):
                             leaves_updated.add(r[0])
                             path_updated = ((*path[0], r[1]), tmin, tmax)
                             leave_dict_next[r[1]] |= {path_updated}
-                            self._collect_items(relevant_item_dict, r[1])
-                            self._collect_names(relevant_name_dict, r[1], tmin, tmax)
+                            self._collect_item(self.items_by_id, r[1])
+                            self._collect_name(self.names_by_id, r[1], tmin, tmax)
             for l in leaves_updated:
                 del leave_dict_curr[l]
             # If no matching relation has been found for a path/leave, the path is final and can be moved to the final output.
@@ -392,37 +389,34 @@ class GOV:
                 f"Final paths: {len(paths)}, Updated paths: {len(set().union(*leave_dict_next.values()))}"
             )
             leave_dict_curr = leave_dict_next
-        relevant_type_dict.default_factory = None
-        relevant_name_dict.default_factory = None
-        self.items_by_id = relevant_item_dict
-        self.types_by_id = relevant_type_dict
-        self.names_by_id = relevant_name_dict
+        self.types_by_id.default_factory = None
+        self.names_by_id.default_factory = None
         paths = {p[0] for p in paths}  # Take path only. Without time_begin and time_end
         return paths
 
-    def _collect_items(self, relevant_item_dict, k):
+    def _collect_item(self, item_dict:dict(), k:int):
         """ 
-        Extends the relevant_item_dict by the provided id k and its textual-id.
+        Extends the item_dict by the provided id k and its textual-id.
         """
-        relevant_item_dict[k] = self.items_by_id_raw[k]
+        item_dict[k] = self._items_by_id_raw[k]
 
-    def _collect_types(self, relevant_type_dict, k, tmin, tmax):
+    def _collect_type(self, type_dict:defaultdict(set), k:int, tmin:int, tmax:int):
         """ 
-        Extends the relevant_type_dict if the type and the time-constraints are valid.
+        Extends the type_dict if the type and the time-constraints are valid.
         Returns:
             bool:
                 If at least one type was added (all conditions have been met) the method returns True. Else the method returns False.
         """
         valid_type_found = False
-        for t in self.types_by_id_raw[k]:
+        for t in self._types_by_id_raw[k]:
             if t[0] not in TUNDESIRED and ((t[1] <= tmax and t[2] >= tmin) or ((t[1],t[2]) in self.years and t[1] <= tmax)):
-                relevant_type_dict[k] |= {t[0]}
+                type_dict[k] |= {t[0]}
                 valid_type_found = True
         return valid_type_found
 
-    def _collect_names(self, relevant_name_dict, k, tmin, tmax):
+    def _collect_name(self, name_dict:defaultdict(set), k:int, tmin:int, tmax:int):
         """ 
-        Extends the relevant_name_dict with at least one name.
+        Extends the name_dict with at least one name.
         The method divides the name-candidates in six groups by priority.
         It picks the name(s) from the group with the highes priority. The other names are disregarded.
         * Group 1: Time constraint met + German
@@ -435,7 +429,7 @@ class GOV:
         valid_names_prio1 = set()
         valid_names_prio2 = set()
         valid_names_prio3 = set()
-        for n in self.names_by_id_raw[k]:
+        for n in self._names_by_id_raw[k]:
             if (n[1] <= tmax and n[2] >= tmin) or ((n[1],n[2]) in self.years and n[1] <= tmax):
                 if n[3] == 'deu':
                     valid_names_prio1.add(n[0])
@@ -445,15 +439,15 @@ class GOV:
                     valid_names_prio3.add(n[0])
         if len(valid_names_prio1) > 0:
             # group 1
-            relevant_name_dict[k] |= valid_names_prio1
+            name_dict[k] |= valid_names_prio1
         elif len(valid_names_prio1) > 0:
             # group 2
-            relevant_name_dict[k] |= valid_names_prio2
+            name_dict[k] |= valid_names_prio2
         elif len(valid_names_prio3) > 0:
             # group 3
-            relevant_name_dict[k] |= valid_names_prio3
+            name_dict[k] |= valid_names_prio3
         else:
-            for n in self.names_by_id_raw[k]:
+            for n in self._names_by_id_raw[k]:
                 if n[3] == 'deu':
                         valid_names_prio1.add(n[0])
                 elif n[3] in {'fre','pol', 'eng'}:
@@ -462,13 +456,13 @@ class GOV:
                     valid_names_prio3.add(n[0])
             if len(valid_names_prio1) > 0:
                 # group 4
-                relevant_name_dict[k] |= valid_names_prio1
+                name_dict[k] |= valid_names_prio1
             elif len(valid_names_prio2) > 0:
                 # group 5
-                relevant_name_dict[k] |= valid_names_prio2
+                name_dict[k] |= valid_names_prio2
             else:
                 # group 6
-                relevant_name_dict[k] |= valid_names_prio3
+                name_dict[k] |= valid_names_prio3
 
     def _all_reachable_nodes_by_id(self) -> dict[int, set[int]]:
         """Find all reachable nodes for a given node."""
