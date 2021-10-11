@@ -8,9 +8,14 @@ PROPERTY_TYPES = "gov_a_propertytypes.csv"
 VL_FILE = "deutsche-verlustlisten-1wk.tsv"
 LOG_PATH = "log/"
 
-# 2404429 = 1. Januar 1871, 2420342 = 28. Juli 1914, 2421909 = 11. November 1918
-T_BEGIN = 24219092
-T_END = 24044292
+# 2404429 = 1. Januar 1871
+# 2420342 = 28. Juli 1914
+# 2421594 = 31. Dezember 1917
+# 2421909 = 11. November 1918
+# -2147483648 = (-1)*2^31
+# 2147483647 = 2^31 - 1
+T_BEGIN = 2421594*10 + 2
+T_END = 2404429*10 + 2
 T_MIN = -2147483648
 T_MAX = 2147483647
 
@@ -54,9 +59,12 @@ TWOHNPLAETZE = {51, 55, 120, 230, 54, 39, 69, 129, 40, 54}  # unterste Wohnplät
 # - geographische Typen
 # - Zivilverwaltung
 # - Gericht
+# - Verkehrswesen
 # - Sonstige
-# Desired are therefore these two groups of GOV types:
-# - (politische) Verwaltung
+# - special cases:
+#   * politische Verwaltung: 223 Landgericht (älterer Ordnung)
+# Desired are therefore these groups of GOV types:
+# - politische Verwaltung
 # - Wohnplatz
 TUNDESIRED = {
     47,
@@ -117,4 +125,6 @@ TUNDESIRED = {
     103,
     172,
     242,
+    118,
+    223,
 }
