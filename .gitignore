@@ -138,4 +138,5 @@ dmypy.json
 # ipynb
 *.ipynb
 
+# log
 log/*.csv

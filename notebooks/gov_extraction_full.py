@@ -6,11 +6,11 @@
 #       extension: .py
 #       format_name: percent
 #       format_version: '1.3'
-#       jupytext_version: 1.11.5
+#       jupytext_version: 1.12.0
 #   kernelspec:
-#     display_name: Python 3.9 (compgen2)
+#     display_name: Python 3 (ipykernel)
 #     language: python
-#     name: compgen2
+#     name: python3
 # ---
 
 # %% [markdown]
@@ -26,7 +26,7 @@
 # %%
 import pandas as pd
 import numpy as np
-from compgen2 import GOV, Matcher
+from compgen2 import GOV, Matcher, const
 from pathlib import Path
 import sys
 
@@ -37,7 +37,7 @@ import sys
 data_root = "../data"
 gov = GOV(data_root)
 
-# %%
+# %% tags=[]
 gov.load_data()
 
 # %%
@@ -46,7 +46,7 @@ gov.build_indices()
 # %%
 #gov.clear_data() # needed when pickled in pipeline
 
-# %% [markdown]
+# %% [markdown] tags=[]
 # ### Attributes
 
 # %%
@@ -60,28 +60,22 @@ paths = gov.all_paths
 list(paths)[:10]
 
 
-# %% tags=[] jupyter={"outputs_hidden": true}
+# %% tags=[]
 gov.items_by_id
 
-# %% jupyter={"outputs_hidden": true} tags=[]
+# %% tags=[]
 gov.names_by_id
 
-# %% jupyter={"outputs_hidden": true} tags=[]
+# %% tags=[]
 gov.ids_by_name
 
-# %% jupyter={"outputs_hidden": true} tags=[]
+# %% tags=[]
 gov.types_by_id
 
-# %% jupyter={"outputs_hidden": true} tags=[]
-gov.all_relations
-
-# %% jupyter={"outputs_hidden": true} tags=[]
-gov.all_paths
-
-# %% jupyter={"outputs_hidden": true} tags=[]
+# %% tags=[]
 gov.all_reachable_nodes_by_id
 
-# %% [markdown]
+# %% [markdown] tags=[]
 # ## Using GOV instance
 
 # %%
@@ -98,6 +92,9 @@ gov.decode_paths_name({pmax})
 gov.decode_paths_id({pmax})
 
 # %%
+gov.names_by_id[190315]
+
+# %%
 gov.decode_paths_type({pmax})
 
 # %%
@@ -108,9 +105,6 @@ gov.decode_paths_id({pmin})
 
 # %%
 gov.decode_paths_type({pmin})
-
-# %%
-gov.extract_all_types_from_paths({pmax})
 
 # %%
 gov.ids_by_name["Krefeld"]
@@ -143,7 +137,7 @@ gov.decode_paths_name(matcher.find_relevant_paths("Blasdorf"))
 gov.ids_by_name["Landshut"]
 
 # %%
-# %lprun -f matcher.find_relevant_paths  matcher.find_relevant_paths("Aach, Freudenstadt")
+matcher.find_relevant_paths("Aach, Freudenstadt")
 
 # %%
 # with this command you can measure the runtime of each line in the function
@@ -155,19 +149,19 @@ gov.ids_by_name["Landshut"]
 # %%
 matcher.find_relevant_ids("Freudenstadt")
 
-# %%
+# %% tags=[]
 gov.decode_paths_name(matcher.find_relevant_paths("Aach, Freudenstadt"))
 
 # %%
 matcher.group_relevant_paths_by_query(matcher.find_relevant_paths("Aach, Freudenstadt"), "Aach, Freudenstadt")
 
-# %% tags=[] jupyter={"outputs_hidden": true}
+# %% tags=[]
 matcher.group_relevant_paths_by_query(matcher.find_relevant_paths("Freudenstadt"), "Freudenstadt")
 
-# %% jupyter={"outputs_hidden": true} tags=[]
+# %% tags=[]
 gov.all_reachable_nodes_by_id[1279230]
 
-# %% tags=[] jupyter={"outputs_hidden": true}
+# %% tags=[]
 matcher.group_relevant_paths_by_query(matcher.find_relevant_paths("Neustadt, Sachsen"), "Neustadt, Sachsen")
 
 # %% tags=[]
@@ -175,7 +169,3 @@ matcher.group_relevant_paths_by_query(matcher.find_relevant_paths("Neustadt, Sac
 
 # %%
 matcher.find_relevant_ids("Neustadt, Sachsen")
-
-# %%
-
-# %%
