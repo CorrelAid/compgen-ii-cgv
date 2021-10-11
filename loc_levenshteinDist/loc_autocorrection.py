@@ -3,6 +3,8 @@ import re
 from Levenshtein import distance
 
 class LocCorrection:
+    # To Do
+    # @lru_cache
     def __init__(self, loc_list):
         """
         :param loc_list:  list of string
@@ -78,6 +80,8 @@ class LocCorrection:
         elif isinstance(cost, tuple):
             defined_cost =range(cost[0],cost[1])
             for current_cost in defined_cost:
+                if len(results) > 0:
+                    return results
                 if currentRow[-1] ==current_cost and node.word != None:
                     results.append((node.word, currentRow[-1]))
                 if min(currentRow) <= current_cost:
@@ -93,11 +97,11 @@ class LocCorrection:
 import pandas as pd
 #df = pd.read_parquet(r"C:\Users\A111519951\PycharmProjects\correlaid\compgen-ii-cgv\data\deutsche-verlustlisten-1wk_preprocessed.parquet").head(100)
 #gov_df = pd.read_parquet(r"C:\Users\A111519951\PycharmProjects\correlaid\compgen-ii-cgv\data\gov_orte_v01_preprocessed.parquet").head(100)
-lC = LocCorrection(["aachen", "aaahen", "ahen"])
+lC = LocCorrection(["aachen", "preussen", "ahen"]) #groudtruth / gov
 #vague match input
 results = lC.search("aaashen", (1,4))
 print('value search', results)
 # exact match input
-results = lC.search("aaashen", 1)
+results = lC.search("aaashen", 3)
 print('exact search', results)
 
