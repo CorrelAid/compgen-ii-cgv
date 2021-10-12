@@ -1,10 +1,12 @@
 from trie_levenshtein import TrieNode
 import re
-from Levenshtein import distance
+#from Levenshtein import distance
+from functools import lru_cache
+
 
 class LocCorrection:
     # To Do
-    # @lru_cache
+    @lru_cache(1000000)
     def __init__(self, loc_list):
         """
         :param loc_list:  list of string
@@ -42,10 +44,10 @@ class LocCorrection:
             )
         return results
 
-    def cal_levenstein(self, word):
+    #def cal_levenstein(self, word):
         # This recursive helper is used by the search function above. It assumes that
         # the previousRow has been filled in already.
-        return [distance(word.lower(), i.lower()) for i in self.loc_list]
+    #    return [distance(word.lower(), i.lower()) for i in self.loc_list]
 
 
     def _searchRecursive(self, node, letter, word, previousRow, results, cost, exclude_operations=None):
@@ -97,7 +99,7 @@ class LocCorrection:
 import pandas as pd
 #df = pd.read_parquet(r"C:\Users\A111519951\PycharmProjects\correlaid\compgen-ii-cgv\data\deutsche-verlustlisten-1wk_preprocessed.parquet").head(100)
 #gov_df = pd.read_parquet(r"C:\Users\A111519951\PycharmProjects\correlaid\compgen-ii-cgv\data\gov_orte_v01_preprocessed.parquet").head(100)
-lC = LocCorrection(["neustatb", "neustata", "neustatttt", "neustattttt"]) #groudtruth / gov
+lC = LocCorrection(tuple(["neustatb", "neustata", "neustatttt", "neustattttt"])) #groudtruth / gov
 #vague match input
 results = lC.search("Neustatt", (1,4))
 print('value search', results)
