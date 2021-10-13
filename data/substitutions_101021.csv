@@ -31,8 +31,11 @@ Breisg.;Breisgau
 Bd.;Bad
 Bad.;Baden
 Beesk.;Beeskow
+Co.-G.;Coburg-Gotha
 Co.-Go.;Coburg-Gotha
 Cob.-Go.;Coburg-Gotha
+Co.-Gotha;Coburg-Gotha
+Cob.-Gotha;Coburg-Gotha
 Cob.;Coburg
 Cobg.;Coburg
 Dzg.;Danzig
@@ -41,8 +44,8 @@ Danzg.;Danzig
 Darmst.;Darmstadt
 Detm.;Detmold
 Dillkr.;Dillkreis
-Dithm.;Dithmarschen
 Diedenh.;Diedenhofen
+Dithm.;Dithmarschen
 Dresden-N.;Dresden-Neustadt
 Dresden-A.;Dresden-Altstadt
 Donaukr.;Donaukreis
@@ -60,6 +63,7 @@ Frankf.;Frankfurt
 Fehm.;Fehmarn
 Gelsenk.;Gelsenkirchen
 Gr.;Groß
+Geb.;Gebirgskreis
 Gebirgskr.;Gebirgskreis
 Goarsh.;Goarshausen
 Goldb.;Goldberg
@@ -122,16 +126,22 @@ M.-Gladbach;Mönchengladbach
 M. Gladbach;Mönchengladbach
 Mühlh.;Mühlheim
 Mkt. Oberdorf;Marktoberdorf
+Mfr.;Mittelfranken
 Mtlfr.;Mittelfranken
 Mittelfr.;Mittelfranken
+Mitelfr.;Mittelfranken
 MIttelfr.;Mittelfranken
 Mülh.;Mülheim
 Nass.;Nassau
 Neidenb.;Neidenburg
 Neidenbg.;Neidenburg
-Nd.;Nieder
-Ndr.;Nieder
-Nied.;Nieder
+Nd.;Niederung
+Ndr.;Niederung
+Ndrg.;Niederung
+Nied.;Niederung
+Nieder.;Niederung
+Niedrg.;Niederung
+Niederg.;Niederung
 Ndb.;Niederbayern
 Niederb.;Niederbayern
 NIederb.;Niederbayern
@@ -145,8 +155,10 @@ Norderdithm.;Norderdithmarschen
 Ob.;Ober
 Oberb.;Oberbayern
 Oberbarn.;Oberbarnim
-Oberfr.;Oberfranken
+Ofr.;Oberfranken
 Obfr.;Oberfranken
+Oberf.;Oberfranken
+Oberfr.;Oberfranken
 Oberlahnkr.;Oberlahnkreis
 Oberpf.;Oberpfalz
 Obpf.;Oberpfalz
@@ -179,7 +191,8 @@ Pomm.;Pommern
 Pos.;Posen
 Quedlinb.;Quedlinburg
 Quedlinbg.;Quedlinburg
-Rbge.;R�benberge
+Rbg.;Rübenberge
+Rbge.;Rübenberge
 Rappoltsw.;Rappoltsweiler
 Recklingh.;Recklinghausen
 Rheinpf.;Rheinland-Pfalz
@@ -188,6 +201,7 @@ Rhnl.;Rheinland
 Rhnld.;Rheinland
 Rheinl.;Rheinland
 Rheinld.;Rheinland
+Rheinpr.;Rheinprovinz
 Rheingaukr.;Rheingaukreis
 Rudol.;Rudolstadt
 Rudolst.;Rudolstadt
@@ -197,7 +211,6 @@ Schwieb.;Schwiebus
 Schaumb.;Schaumburg
 Schaumbg.;Schaumburg
 Schwab.;Schwaben
-Sa.-Cob.;Sachsen-Coburg
 Saarbr.;Saarbrücken
 Saargem.;Saargemünd
 Schwzb.;Schwarzburg
@@ -210,10 +223,11 @@ Schwarzw.;Schwarzwald
 Schwarzwaldkr.;Schwarzwaldkreis
 Schl.;Schlesien
 Schles.;Schlesien
-Sach.;Sachsen
-Sachs.;Sachsen
+Sa.-;Sachsen 
+Sa.;Sachsen 
+Sach.;Sachsen 
+Sachs.;Sachsen 
 Sa-A.;Sachsen-Anhalt
-Sa.-A.;Sachsen-Anhalt
 Sa-Anh.;Sachsen-Anhalt
 Sa.-Anh.;Sachsen-Anhalt
 Sach.-A.;Sachsen-Anhalt
@@ -222,12 +236,12 @@ Sachs.-A.;Sachsen-Anhalt
 Sachs.-Anh.;Sachsen-Anhalt
 Sachsen-A.;Sachsen-Anhalt
 Sachsen-Anh.;Sachsen-Anhalt
+Sachsen A.;Sachsen-Anhalt
+Sachsen Anh.;Sachsen-Anhalt
 Sa. Weimar;Sachsen-Weimar
 Sa.-Weimar;Sachsen-Weimar
 S. Weimar E.;Sachsen-Weimar-Eisenach
 S.-Weimar-E.;Sachsen-Weimar-Eisenach
-Sa.;Sachsen
-Sa.-M.;Sachsen-Meiningen
 Sachsen M.;Sachsen-Meiningen
 S.-Meiningen;Sachsen-Meiningen
 Sa.-Meiningen;Sachsen-Meiningen
@@ -239,9 +253,13 @@ Saalkrs.;Saalekreis
 Sangerh.;Sangerhausen
 Seekr.;Seekreis
 Siegkr.;Siegkreis
+Süd.-Ditm.;Süderdithmarschen
+Süd.-Dithm.;Süderdithmarschen
 Sd.-Dithm.;Süderdithmarschen
 Süd. Dithm.;Süderdithmarschen
 S. Dithmarschen;Süderdithmarschen
+Süd. Dithmarschen;Süderdithmarschen
+Süd.-Dithmarschen;Süderdithmarschen
 Süderdithmarsch.;Süderdithmarschen
 Süderdithm.;Süderdithmarschen
 Sond.;Sondershausen
@@ -266,7 +284,7 @@ Tauberbischofsh.;Tauberbischofsheim
 Taunuskr.;Taunuskreis
 Teckl.;Tecklenburg
 Tecklb.;Tecklenburg
-Tecklbg+.;Tecklenburg
+Tecklbg.;Tecklenburg
 Tecklenb.;Tecklenburg
 Tecklenbg.;Tecklenburg
 Th.;Thüringen
@@ -275,14 +293,15 @@ Thür.;Thüringen
 Thüring.;Thüringen
 Uckerm.;Uckermark
 Unt.;Unter
+Ufr.;Unterfranken
 Untfr.;Unterfranken
 Unterfr.;Unterfranken
 Unterlahnkr.;Unterlahnkreis
 Untertaunuskr.;Untertaunuskreis
-Unterwesterw.;Unterwesterwald
+Unterwesterw.;Unterwesterwaldkreis
 Unterwesterwaldkr.;Unterwesterwaldkreis
+U. Westerwald;Unterwesterwaldkreis
 Used.;Usedom
-U. Westerwald;Unterwesterwald
 Vgtl.;Vogtland
 Vgtld.;Vogtland
 Vogtl.;Vogtland
@@ -294,8 +313,10 @@ Wartenb.;Wartenberg
 Wartenbg.;Wartenberg
 Weim.;Weimar
 Weimar-E.;Weimar-Eisenach
+Wend.;Wendisch
 Westf.;Westfalen
 Westkr.;Westkreis
+Wpr.;Westpreußen
 Wstpr.;Westpreußen
 Westpr.;Westpreußen
 Westprign.;Westprignitz
@@ -414,8 +435,8 @@ v. Nordamerika;of America
 #;
 # # #  Irrelevante Informationen löschen;
 O.-A.; 
-O-A.; 
 O.-A; 
+O-A.; 
 Amtsh.; 
 A. H.; 
 A.-H.; 
@@ -426,10 +447,12 @@ Ab.;
 Abb.; 
 Altm.; 
 Bez.; 
+Bezirk; 
 Chât.; 
 Chat.; 
 Ch.-Salins; 
 Ev.; 
+Forsth.; 
 Fstt.; 
 Frstt.; 
 Fürst.; 
@@ -474,12 +497,10 @@ krs.;
 Kol.; 
 Kolon.; 
 Landkr.; 
-Niedrg.; 
-Niederg.; 
 Prov.; 
-Reg-Bez.; 
-Reg.-Bez.; 
-Reg.-Bezirk; 
+Reg-; 
+Reg.-; 
+Reg.; 
 Sdt.; 
 Städt.; 
 Stadtkr.; 
@@ -490,11 +511,7 @@ Adl.;
 Adlg.; 
 Adel.; 
 Adr.; 
- a. ; 
  j. L.; 
  ä. L.; 
- j.; 
  ä.; 
  wohnh.; 
- d.; 
- v.; 
