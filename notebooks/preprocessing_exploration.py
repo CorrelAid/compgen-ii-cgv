@@ -3,6 +3,7 @@
 import pandas as pd
 import numpy as np
 import re
+from preprocessing import Preprocessing
 
 # %% [markdown]
 # # Preprocessing
@@ -39,7 +40,7 @@ sorted(analysis_special_chars.items(), key=itemgetter(1), reverse=True)
 
 # %%
 # INFO: Zeige Einträge mit Sonderzeichen an 
-char = ':'
+char = '\Wnicht'
 verlustliste[verlustliste.location.str.contains(char)]
 
 # %%
@@ -49,10 +50,6 @@ verlustliste = verlustliste.replace({'location' : { '\´' : '\'', '\`' : '\''}},
 # %%
 # Sonderzeichen ? ^ _ " # * entfernen 
 verlustliste = verlustliste.replace({'location' : { '\?' : '', '\^' : '', '\_' : '', '\"' : '', '\#' : '', '\*' : '', '\\\\' : ''  }}, regex=True)
-
-# %%
-rep1 = '\''
-verlustliste = verlustliste.replace({'location' : { '\´' : rep1, '\`' : rep1}}, regex=True)
 
 # %%
 # Sonderzeichen () und [] kennzeichnen Korrekturen aus historischer Zeit -> inklusive Inhalt entfernen
@@ -87,6 +84,55 @@ verlustliste = verlustliste.replace({'location' : { 'korr.:' : ',', 'korr:' : ',
 # Sonderzeichen ; als Tippfehler für Komma 
 # -> beide durch , ersetzen
 verlustliste = verlustliste.replace({'location' : { '\/' : ',',  '\;' : ','}}, regex=True)
+
+# %% [markdown]
+# ### Test: Methoden aus Preprocessing
+
+# %%
+vl = verlustliste.copy()
+
+# %%
+vl = Preprocessing.prep_clean_brackets(vl)
+vl
+
+# %%
+vl = Preprocessing.prep_clean_korrigiert(vl)
+vl
+
+# %%
+# INFO: Zeige Einträge mit Sonderzeichen an 
+#char = r'\(.*?\)'
+#char = r'\('
+#char = r'\Wnicht.*?'
+char = r'(?i)korr'
+#char = r'(?i)\Wverm.*?\.'  
+vl[vl.location.str.contains(char)]
+
+# %%
+vl = Preprocessing.prep_clean_characters(vl)
+vl
+
+# %%
+# INFO: Zeige Einträge mit Sonderzeichen an 
+char = "\'"
+vl[vl.location.str.contains(char)]
+
+# %%
+vl = Preprocessing.prep_vl_abbreviations(vl)
+
+# %%
+# Check: Prozentzahl an weiterhin bestehenden Abkürzungen
+vl.location.str.count("[A-Za-zäöüßÄÖÜẞ]+\.").sum() / vl.shape[0]
+
+# %%
+# Check: Häufigste weiterhin bestehende Abkürzungen
+vl.location.str.extract("(?P<Abkürzung>[A-Za-zäöüßÄÖÜẞ]+\.)").dropna().value_counts(normalize = True)[0:50]
+
+# %%
+# INFO: Zeige Einträge mit Sonderzeichen an 
+char = "\."
+char = "Oberf\."
+vl[vl.location.str.contains(char)]
 
 # %% [markdown]
 # ## Abkürzungen erweitern
