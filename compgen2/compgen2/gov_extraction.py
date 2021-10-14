@@ -371,7 +371,7 @@ class GOV:
         """
         logger.info("Create all paths.")
         relations = self.all_relations
-        leave_dict_curr = {k: {((k,), T_MIN, T_MAX)} for k in SUPERNODES}
+        leave_dict_curr = {k: {((k,), T_BEGIN, T_END)} for k in SUPERNODES}
         paths = set()
         new_leaves_found = True
 
@@ -534,7 +534,7 @@ class GOV:
     @staticmethod
     def filter_time(data: pd.DataFrame) -> pd.DataFrame:
         data = data.query(
-            "time_begin < @T_BEGIN and time_end > @T_END"
+            "time_begin < @T_END and time_end > @T_BEGIN"
         )  # TODO: Introduce correct time constraints for julian date???
         return data
 

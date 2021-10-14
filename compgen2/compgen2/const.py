@@ -9,13 +9,15 @@ VL_FILE = "deutsche-verlustlisten-1wk.tsv"
 LOG_PATH = "log/"
 
 # 2404429 = 1. Januar 1871
+# 2404794 = 1. Januar 1872
+# 2415021 = 1. Januar 1900
 # 2420342 = 28. Juli 1914
 # 2421594 = 31. Dezember 1917
 # 2421909 = 11. November 1918
 # -2147483648 = (-1)*2^31
 # 2147483647 = 2^31 - 1
-T_BEGIN = 2421594*10 + 2
-T_END = 2404429*10 + 2
+T_BEGIN = 2404794*10 + 2
+T_END = 2421594*10 + 2
 T_MIN = -2147483648
 T_MAX = 2147483647
 
