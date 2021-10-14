@@ -2,7 +2,7 @@
 
 GOV_ITEMS = "gov_a_govitem.csv"
 GOV_RELATIONS = "gov_a_relation.csv"
-GOV_TYPENAMES = "gov_t_typenames.csv"
+GOV_TYPENAMES = "gov_a_typenames.csv"
 PROPERTY_NAMES = "gov_a_propertynames.csv"
 PROPERTY_TYPES = "gov_a_propertytypes.csv"
 VL_FILE = "deutsche-verlustlisten-1wk.tsv"
