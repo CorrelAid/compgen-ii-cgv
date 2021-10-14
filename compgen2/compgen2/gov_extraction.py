@@ -511,11 +511,6 @@ class GOV:
         }
         return paths_decoded
 
-    def extract_all_types_from_paths(self, paths: set) -> set:
-        """Return all unique type ids over all paths."""
-        types_relevant = set().union(*[self.types_by_id[n][0] for p in paths for n in p])
-        return types_relevant
-
     def decode_paths_type(self, paths: set) -> set:
         """Return the type display name for each node in a path."""
         paths_decoded = {
