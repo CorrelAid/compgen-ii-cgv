@@ -68,6 +68,7 @@ class GOV:
         self.types_by_id = defaultdict(set)
         self.names_by_id = defaultdict(set)
         self.ids_by_name = {}
+        self.ids_by_type = {}
         self.type_names_by_type = {}
         self.all_relations = set()
         self.all_paths = set()
@@ -104,6 +105,7 @@ class GOV:
         self.type_names_by_type = self._type_names_by_type()
         self.all_relations = self._all_relations()
         self.all_paths = self._all_paths()
+        self.ids_by_type = self._ids_by_type()
         self.ids_by_name = self._ids_by_name()
         self.all_reachable_nodes_by_id = self._all_reachable_nodes_by_id()
         self.fully_initialized = True
@@ -128,6 +130,7 @@ class GOV:
         self.items_by_id = {}
         self.types_by_id = defaultdict(set)
         self.names_by_id = defaultdict(set)
+        self.ids_by_type = {}
         self.ids_by_name = {}
         self.type_names_by_type = {}
         self.all_relations = set()
@@ -331,6 +334,20 @@ class GOV:
             type_dict[t[0]] |= {t[1:]}
         type_dict.default_factory = None
         return type_dict
+    
+    def _ids_by_type(self) -> dict[int, set[int]]:
+        """Create a mapping from types to ids. Based on the filtered types.
+
+        All ids associated with the same type are combined into a set.
+        """
+        logger.info("Create ids by type.")
+
+        ids_by_type = defaultdict(set)
+        for k, v in self.types_by_id.items():
+            for t in v:
+                ids_by_type[t] |= {k}
+        ids_by_type.default_factory = None
+        return ids_by_type
 
     def _type_names_by_type(self) -> dict[int, str]:
         """Create a mapping from the type-id to its type-name.
@@ -371,7 +388,7 @@ class GOV:
         """
         logger.info("Create all paths.")
         relations = self.all_relations
-        leave_dict_curr = {k: {((k,), T_BEGIN, T_END)} for k in SUPERNODES}
+        paths_by_leaf_curr = {k: {((k,), T_BEGIN, T_END)} for k in SUPERNODES}
         paths = set()
         new_leaves_found = True
 
@@ -384,11 +401,11 @@ class GOV:
             self._collect_name(self.names_by_id, k, T_BEGIN, T_END)
 
         while new_leaves_found:
-            leave_dict_next = defaultdict(set)
+            paths_by_leaf_next = defaultdict(set)
             leaves_updated = set()
             for r in relations:
-                if r[0] in leave_dict_curr:
-                    for path in leave_dict_curr[r[0]]:
+                if r[0] in paths_by_leaf_curr:
+                    for path in paths_by_leaf_curr[r[0]]:
                         # Track the time-constrains of the path
                         tmin = max(r[2], path[1])
                         tmax = min(r[3], path[2])
@@ -399,19 +416,19 @@ class GOV:
                         if self._collect_type(self.types_by_id, r[1], tmin, tmax):
                             leaves_updated.add(r[0])
                             path_updated = ((*path[0], r[1]), tmin, tmax)
-                            leave_dict_next[r[1]] |= {path_updated}
+                            paths_by_leaf_next[r[1]] |= {path_updated}
                             self._collect_item(self.items_by_id, r[1])
                             self._collect_name(self.names_by_id, r[1], tmin, tmax)
             for l in leaves_updated:
-                del leave_dict_curr[l]
+                del paths_by_leaf_curr[l]
             # If no matching relation has been found for a path/leave, the path is final and can be moved to the final output.
-            paths.update(*leave_dict_curr.values())
+            paths.update(*paths_by_leaf_curr.values())
             if len(leaves_updated) == 0:
                 new_leaves_found = False
             logger.debug(
-                f"Final paths: {len(paths)}, Updated paths: {len(set().union(*leave_dict_next.values()))}"
+                f"Final paths: {len(paths)}, Updated paths: {len(set().union(*paths_by_leaf_next.values()))}"
             )
-            leave_dict_curr = leave_dict_next
+            paths_by_leaf_curr = paths_by_leaf_next
         self.types_by_id.default_factory = None
         self.names_by_id.default_factory = None
         paths = {p[0] for p in paths}  # Take path only. Without time_begin and time_end
@@ -518,6 +535,9 @@ class GOV:
             for p in paths
         }
         return paths_decoded
+
+    def give_ids_kreis_or_higher(self) -> set:
+        return set().union(*[self.ids_by_type[t] for t in T_KREISUNDHOEHER])
 
     @staticmethod
     def convert_time(data: pd.DataFrame) -> pd.DataFrame:

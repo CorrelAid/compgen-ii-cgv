@@ -24,37 +24,87 @@ T_MAX = 2147483647
 # 190315=Deutches Reich, 191050=Schweiz, 306245=Österreich-Ungarn, 220100=Liechtenstein, 218129=Luxemburg
 SUPERNODES = {190315, 191050, 306245, 220100, 218129}
 
-TKREIS_DEUTSCHESREICH = {
+# Staatsähnliche Gebilde
+T_DEUTSCHESREICH_LVL0 = {
+    31,
+    61,
+    23,
+    60,
+    34,
+    16,
+    7,
+    45,
+}
+
+T_DEUTSCHESREICH_LVL1 = {
+    201,
+    45,
+}
+
+T_DEUTSCHESREICH_LVL2 = {
+    45,
+    32,
+}
+
+# Kreisähnliche Gebilde
+T_DEUTSCHESREICH_LVL3 = {
     5,
     32,
     36,
     37,
     110,
-    99,
     78,
-    2,
+    99,
     149,
-    211,
     212,
     95,
-}  # Kreisähnliche Gebilde
-TKREIS_ANDERE = {270, 25, 207, 134}  # Kreisähnlich Österreich-Ungarn, Schweiz
-TVERWALTUNG_DEUTSCHESREICH = {
-    1,
-    53,
-    95,
-    18,
-    85,
-    144,
-    150,
-    218,
-    97,
-}  # unterste Verwaltungseinheiten
-TVERWALTUNG_ANDERE = {
-    275,
-    136,
-}  # Unterste Verwaltungsseinheit Österreich-Ungarn, Schweiz
-TWOHNPLAETZE = {51, 55, 120, 230, 54, 39, 69, 129, 40, 54}  # unterste Wohnplätze
+}
+
+# Österreich-Ungarn
+T_OESTERREICHUNGARN_LVL0 = {
+    215,
+}
+
+T_OESTERREICHUNGARN_LVL1 = {
+    80,
+    23,
+    31,
+    188,
+    137,
+    62,
+    80,
+}
+
+T_OESTERREICHUNGARN_LVL2 = {
+    113,
+    146,
+    270,
+    190,
+}
+
+# Kreisähnlich Schweiz
+T_SCHWEIZ_LVL1 = {
+    25,
+    134,
+}
+
+# Kreisähnlich Luxemburg
+T_LUXEMBURG_LVL1 = {
+    170,
+    25,
+}
+
+T_KREISUNDHOEHER = set().union(
+    T_DEUTSCHESREICH_LVL0,
+    T_DEUTSCHESREICH_LVL1,
+    T_DEUTSCHESREICH_LVL2,
+    T_DEUTSCHESREICH_LVL3,
+    T_OESTERREICHUNGARN_LVL0,
+    T_OESTERREICHUNGARN_LVL1,
+    T_OESTERREICHUNGARN_LVL2,
+    T_LUXEMBURG_LVL1,
+    T_SCHWEIZ_LVL1,
+)
 
 # Undesired are thes groups of GOV types:
 # - Kirche
