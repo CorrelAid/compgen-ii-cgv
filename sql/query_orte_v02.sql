@@ -8,8 +8,8 @@ with recursive new_table as
     select o.child, o.parent , o.time_begin, o.time_end
     from relation o, new_table c 
     where o.parent = c.child
-    and (c.time_begin < 24219092 or c.time_begin is NULL) /* 2421909 = 11. November 1918*/
-    and (c.time_end   > 24044292 or c.time_end   is NUll) /* 2404429 = 1. Januar 1871, 2420342 = 28. Juli 1914*/
+    and (c.time_begin < 24215942 or c.time_begin is NULL) /* 2421594 = 31. Dezember 1917*/
+    and (c.time_end   > 24047942 or c.time_end   is NUll) /* 2404794 = 1. Januar 1872, 2415021 = 1. Januar 1900*/
 ) 
 select g1.textual_id, p1.content 
 from gov_item g1 
@@ -18,8 +18,8 @@ on g1.id = p1.gov_object
 where g1.deleted = 0 
 and p1.property_class = "n" 
 and p1.language = 'deu' 
-and (p1.time_begin < 24219092 or p1.time_begin is NULL) /* 2421909 = 11. November 1918*/
-and (p1.time_end   > 24044292 or p1.time_end   is NULL) /* 2404429 = 1. Januar 1871, 2420342 = 28. Juli 1914*/
+and (p1.time_begin < 24215942 or c.time_begin is NULL) /* 2421594 = 31. Dezember 1917*/
+and (p1.time_end   > 24047942 or c.time_end   is NUll) /* 2404794 = 1. Januar 1872, 2415021 = 1. Januar 1900*/
 and g1.id in
 (
     select n.child
@@ -30,19 +30,19 @@ and g1.id in
     select p2.gov_object 
     from property p2 
     where p2.property_class = "t" 
-    and (p2.time_begin < 24219092 or p2.time_begin is NULL) /* 2421909 = 11. November 1918*/
-    and (p2.time_end   > 24044292 or p2.time_end   is NUll) /* 2404429 = 1. Januar 1871, 2420342 = 28. Juli 1914*/
+    and (p2.time_begin < 24215942 or c.time_begin is NULL) /* 2421594 = 31. Dezember 1917*/
+    and (p2.time_end   > 24047942 or c.time_end   is NUll) /* 2404794 = 1. Januar 1872, 2415021 = 1. Januar 1900*/
     and 
     (
-        /*p2.type_object in ('5', '32', '36', '37', '110', '99', '78', '2', '149', '211', '212', '95') /* Kreisähnliche Gebilde */
-        /*or
-        /*p2.type_object in ('270', '25', '207', '134') /* Kreisähnlich Österreich-Ungarn, Schweiz*/
-        /*or*/
-        p2.type_object in ('275', '136') /* Unterste Verwaltungsseinheit Österreich-Ungarn, Schweiz */
+        p2.type_object in ('5', '32', '36', '37', '110', '99', '149', '212', '78', '95', '134') /* Kreisähnliche Gebilde */
         or
-        p2.type_object in ('1', '53', '95', '18', '85', '144', '150', '218') /* unterste Verwaltungseinheiten */
-        or 
-        p2.type_object in ('51', '55', '120', '230', '54', '39', '69', '129', '40', '54') /* unterste Wohnplätze */
+        p2.type_object in ('270', '146', '25', '134') /* Kreisähnlich Österreich-Ungarn, Schweiz*/
+        /*or*/
+        /*p2.type_object in ('275', '136') /* Unterste Verwaltungsseinheit Österreich-Ungarn, Schweiz */
+        /*or
+        /*p2.type_object in ('1', '53', '95', '18', '85', '144', '150', '218') /* unterste Verwaltungseinheiten */
+        /*or 
+        /*p2.type_object in ('51', '55', '120', '230', '54', '39', '69', '129', '40', '54') /* unterste Wohnplätze */
     )
 );
 
@@ -55,44 +55,94 @@ Fürstentum 60
 Land 34   (Lübeck)
 Freistaat 16  (Bremen
 Bundesland  7 (Hamburg)
-Provinz 45 (Elsaß-Lothringen und Untereinheiten von Preußen)
+Provinz 45 (Elsaß-Lothringen)
 */
 
 /* ------- Verwaltungsebene I
 ----- basierend auf https://upload.wikimedia.org/wikipedia/commons/1/17/Karte_Deutsches_Reich%2C_Verwaltungsgliederung_1900-01-01.png
-Landeskommissarbezirk (Untereinheiten von Baden)
+Landeskommissarbezirk (Untereinheiten von Baden) 201
+Provinz 45 (Untereinheiten von Preußen.)
 */
 
-
-/* ---- Verwaltungsebene II und Kreisähnliche Gebilde
+/* ---- Verwaltungsebene II
 ----- basierend auf https://upload.wikimedia.org/wikipedia/commons/1/17/Karte_Deutsches_Reich%2C_Verwaltungsgliederung_1900-01-01.png
-Regierungsbezirk    46 (Untereinheiten von Bayern. Im GOV anscheinend eher als Kreis bezeichnet)
+Regierungsbezirk    46 (Untereinheiten von Bayern. Im GOV anscheinend eher als Kreis bezeichnet. Außerdem Untereinheiten von Elsaß-Lothringen.)
 Kreishauptmannschaft    100 (Untereinheiten von Saschsen)
+Provinz 45 (Verwaltungsebene II in Großherzogtum Hessen)
+Kreis   32 (Verwaltungsebene II in Großherzogtum Baden und Königreich Württemberg)
+*/
+
+/* ---- Kreisähnliche Gebilde
+----- basierend auf https://upload.wikimedia.org/wikipedia/commons/1/17/Karte_Deutsches_Reich%2C_Verwaltungsgliederung_1900-01-01.png
 Bezirk  5
 Kreis   32
-Bezirk  5
 Landkreis 36
 Oberamt 37
 Bezirksamt  110
 Amtshauptmannschaft 99
 Aushebungsbezirk    nicht im GOV als Typ vorhanden
-Amt (kreisähnlich)  78
-Amtsbezirk  2
+Amt (kreisähnlich)  78 (Fehler im GOV)
 Landratsamt 149
-Landgebiet  211
+#Landgebiet  wird im GOV nicht benutzt. Sollte eigentlich die Unterebene von Lübeck sein.
 Landherrschaft  212
 Kreisfreie Stadt    95
-Stadtteil (Verwaltung)  262
-Bezirk (Österreich) 270
-Kanton (Schweiz)    25
-Oberamt/Oberamtsbezirk  207
-Arrondissement (Schweiz) 134
-Reichshälfte (Österreich)   215
-Besatzungszone (Österreich - Bosnien Herzigowina)
+Stadtteil (Verwaltung)  262 (Fehler im GOV)
+Arrondissement 134 (Elsaß-Lothringen)
 */
 
+/* ----- Reichshälfte Österreich-Ungarn
+Reichshälfte    215 {Cisleithanien, Transleithanien}
+*/
+
+/* ---- Verwaltungsebene I Ungarn
+Landschaft (Verwaltung) 80 Unterebenen von Ungarn
+*/
+
+/* ---- Verwaltungsebene I Österreich
+Herzogtum   23  
+Königreich  31 {Böhmen, Dalmatien, Galizien und Lodomerien}
+Ritterorden 188 {Deutscher Orden}
+Region  137 {Litorale/Küstenland}
+Markgrafschaft 62 {Mähren}
+Landschaft (Verwaltung) 80 {Slowenien}
+*/
+
+/* --- Verwaltungsebene II Österreich-Ungarn
+Komitat 113 In Ungarn unter den Landschaften
+Bezirkshauptmannschaft 146
+
+/* -----Kreisähnlich Österreich-Ungarn
+Bezirk (Österreich) 270
+Ballei 190  {Bozen}
+*/
+
+
+/* Luxemburg kreisähnlich
+# Ebene I
+Distrikt    170 {Grevenmacher, Diekirch, Luxembourg}
+# Ebene II
+Kanton  25
+*/
+
+
+/* Schweiz kreisähnlich
+Kanton (Schweiz)    25
+Arrondissement 134 (Schweiz)
+*/
+
+
+/* Liechtenstein kreisähnlich
+Entfällt. Nur Orte unterhalb von Liechtenstein
+*/
+
+
+
+
+
+
 /* ------ Unterste Verwaltungseinheiten
-Amt 1
+Amt 1 (Verwaltung)
+Amtsbezirk  2
 Stadtkreis  53
 Kreisfreie Stadt    95
 Gemeinde    18
