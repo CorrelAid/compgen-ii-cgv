@@ -2,20 +2,22 @@
 
 GOV_ITEMS = "gov_a_govitem.csv"
 GOV_RELATIONS = "gov_a_relation.csv"
-GOV_TYPENAMES = "gov_t_typenames.csv"
+GOV_TYPENAMES = "gov_a_typenames.csv"
 PROPERTY_NAMES = "gov_a_propertynames.csv"
 PROPERTY_TYPES = "gov_a_propertytypes.csv"
 VL_FILE = "deutsche-verlustlisten-1wk.tsv"
 LOG_PATH = "log/"
 
 # 2404429 = 1. Januar 1871
+# 2404794 = 1. Januar 1872
+# 2415021 = 1. Januar 1900
 # 2420342 = 28. Juli 1914
 # 2421594 = 31. Dezember 1917
 # 2421909 = 11. November 1918
 # -2147483648 = (-1)*2^31
 # 2147483647 = 2^31 - 1
-T_BEGIN = 2421594*10 + 2
-T_END = 2404429*10 + 2
+T_BEGIN = 2404794*10 + 2
+T_END = 2421594*10 + 2
 T_MIN = -2147483648
 T_MAX = 2147483647
 
