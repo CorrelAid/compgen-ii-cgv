@@ -70,7 +70,7 @@ Provinz 45 (Untereinheiten von Preußen.)
 
 /* ---- Verwaltungsebene II
 ----- basierend auf https://upload.wikimedia.org/wikipedia/commons/1/17/Karte_Deutsches_Reich%2C_Verwaltungsgliederung_1900-01-01.png
-Regierungsbezirk    46 (Untereinheiten von Bayern. Im GOV anscheinend eher als Kreis bezeichnet. Außerdem Untereinheiten von Elsaß-Lothringen.)
+Regierungsbezirk    46 (Untereinheiten von Bayern, im GOV anscheinend eher als Kreis bezeichnet. Außerdem Untereinheiten von Elsaß-Lothringen.)
 Kreishauptmannschaft    100 (Untereinheiten von Saschsen)
 Provinz 45 (Verwaltungsebene II in Großherzogtum Hessen)
 Kreis   32 (Verwaltungsebene II in Großherzogtum Baden und Königreich Württemberg)
@@ -118,6 +118,8 @@ Landschaft (Verwaltung) 80 {Slowenien}
 /* --- Verwaltungsebene II Österreich-Ungarn
 Komitat 113 In Ungarn unter den Landschaften
 Bezirkshauptmannschaft 146
+Gespanschaft    112 (Vukovar Srijem)
+*/
 
 /* -----Kreisähnlich Österreich-Ungarn
 Bezirk (Österreich) 270

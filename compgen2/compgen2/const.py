@@ -43,6 +43,8 @@ T_DEUTSCHESREICH_LVL2 = {
     45,
 }
 T_DEUTSCHESREICH_LVL3 = {
+    46,
+    100,
     45,
     32,
 }
@@ -79,6 +81,7 @@ T_OESTERREICHUNGARN_LVL2 = {
 T_OESTERREICHUNGARN_LVL3 = {
     113,
     146,
+    112,
     270,
     190,
 }
