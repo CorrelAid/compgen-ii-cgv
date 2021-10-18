@@ -46,14 +46,18 @@ and g1.id in
     )
 );
 
-/* ------ Bundesstaat
+/* ------ Deutsches Reich
+Bundesstaat 130
+*/
+
+/* ------ Bundesstaaten
 ----- basierend auf https://upload.wikimedia.org/wikipedia/commons/1/17/Karte_Deutsches_Reich%2C_Verwaltungsgliederung_1900-01-01.png
 Königreich  31
 Großherzogtum   61
 Herzogtum   23
 Fürstentum 60
 Land 34   (Lübeck)
-Freistaat 16  (Bremen
+Freistaat 16  (Bremen)
 Bundesland  7 (Hamburg)
 Provinz 45 (Elsaß-Lothringen)
 */
@@ -90,6 +94,10 @@ Stadtteil (Verwaltung)  262 (Fehler im GOV)
 Arrondissement 134 (Elsaß-Lothringen)
 */
 
+/* Österreich-Ungarn
+Staatenbund     71
+*/
+
 /* ----- Reichshälfte Österreich-Ungarn
 Reichshälfte    215 {Cisleithanien, Transleithanien}
 */
@@ -116,7 +124,9 @@ Bezirk (Österreich) 270
 Ballei 190  {Bozen}
 */
 
-
+/* Luxemburg
+Großherzogtum   61
+*/
 /* Luxemburg kreisähnlich
 # Ebene I
 Distrikt    170 {Grevenmacher, Diekirch, Luxembourg}
@@ -125,14 +135,17 @@ Kanton  25
 */
 
 
+/* Schweiz
+Staat   50
+*/
 /* Schweiz kreisähnlich
 Kanton (Schweiz)    25
 Arrondissement 134 (Schweiz)
 */
 
-
-/* Liechtenstein kreisähnlich
-Entfällt. Nur Orte unterhalb von Liechtenstein
+/* Liechtenstein 
+Fürstentum 60
+kreisähnlich: Entfällt. Nur Orte unterhalb von Liechtenstein
 */
 
 
