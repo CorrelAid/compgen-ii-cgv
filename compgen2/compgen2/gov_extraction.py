@@ -43,6 +43,7 @@ class GOV:
         types_by_id (dict): A mapping between an item's id and its type.
         names_by_id (dict): A mapping between an item's id and its names.
         ids_by_name (dict): A mapping between a name and its possible ids.
+        type_names_by_type (dict): A mapping from the type-id to its type-name.
         all_relations (set): A set of all relations in GOV
         all_paths (set): A set of all paths in GOV from SUPERNODES to their children.
         all_reachable_nodes_by_id (dict): A mapping between an item's id and its reachable nodes.
@@ -67,6 +68,7 @@ class GOV:
         self.types_by_id = defaultdict(set)
         self.names_by_id = defaultdict(set)
         self.ids_by_name = {}
+        self.type_names_by_type = {}
         self.all_relations = set()
         self.all_paths = set()
         self.all_reachable_nodes_by_id = {}
@@ -99,6 +101,7 @@ class GOV:
         self._items_by_id_raw = self._items_by_id()
         self._names_by_id_raw = self._names_by_id()
         self._types_by_id_raw = self._types_by_id()
+        self.type_names_by_type = self._type_names_by_type()
         self.all_relations = self._all_relations()
         self.all_paths = self._all_paths()
         self.ids_by_name = self._ids_by_name()
@@ -126,6 +129,7 @@ class GOV:
         self.types_by_id = defaultdict(set)
         self.names_by_id = defaultdict(set)
         self.ids_by_name = {}
+        self.type_names_by_type = {}
         self.all_relations = set()
         self.all_paths = set()
         self.all_reachable_nodes_by_id = {}
@@ -200,8 +204,9 @@ class GOV:
         type_names = pd.read_csv(
             self.data_root / GOV_TYPENAMES,
             sep="\t",
-            index_col=0,
             dtype={
+                "type_id": int,
+                "language": object,
                 "value": object,
             },
         )
@@ -327,6 +332,24 @@ class GOV:
         type_dict.default_factory = None
         return type_dict
 
+    def _type_names_by_type(self) -> dict[int, str]:
+        """Create a mapping from the type-id to its type-name.
+        """
+        logger.info("Create type_names by type.")
+        typenames = set(
+            zip(
+                self.type_names.type_id,
+                self.type_names.language,
+                self.type_names.value,
+            )
+        )
+        type_names_dict = dict()
+        for t in typenames:
+            if t[1] == "deu":
+                type_names_dict[t[0]] = t[2]
+        return type_names_dict
+
+
     def _all_relations(self) -> set[tuple[int, int, str, str]]:
         """Transform the relations to set of tuples.
         """
@@ -348,7 +371,7 @@ class GOV:
         """
         logger.info("Create all paths.")
         relations = self.all_relations
-        leave_dict_curr = {k: {((k,), T_MIN, T_MAX)} for k in SUPERNODES}
+        leave_dict_curr = {k: {((k,), T_BEGIN, T_END)} for k in SUPERNODES}
         paths = set()
         new_leaves_found = True
 
@@ -488,15 +511,10 @@ class GOV:
         }
         return paths_decoded
 
-    def extract_all_types_from_paths(self, paths: set) -> set:
-        """Return all unique type ids over all paths."""
-        types_relevant = set().union(*[self.types_by_id[n][0] for p in paths for n in p])
-        return types_relevant
-
     def decode_paths_type(self, paths: set) -> set:
         """Return the type display name for each node in a path."""
         paths_decoded = {
-            tuple(self.type_names.loc[_set_retrieve(self.types_by_id[o])][0] for o in p)
+            tuple(self.type_names_by_type[_set_retrieve(self.types_by_id[o])] for o in p)
             for p in paths
         }
         return paths_decoded
@@ -516,7 +534,7 @@ class GOV:
     @staticmethod
     def filter_time(data: pd.DataFrame) -> pd.DataFrame:
         data = data.query(
-            "time_begin < @T_BEGIN and time_end > @T_END"
+            "time_begin < @T_END and time_end > @T_BEGIN"
         )  # TODO: Introduce correct time constraints for julian date???
         return data
 
