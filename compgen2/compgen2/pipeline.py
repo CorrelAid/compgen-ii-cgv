@@ -17,6 +17,7 @@ import pandas as pd
 from .const import LOG_PATH, VL_FILE
 from .gov_extraction import GOV
 from .gov_matching import Matcher
+from .preprocessing import Preprocessing
 
 logger = logging.getLogger(__name__)
 
@@ -103,7 +104,10 @@ class Pipeline:
 
         Here you can alter self.vl, and all data stored in self.gov
         """
-        pass
+        self.vl = prep_clean_brackets(self.vl) # clean bracket
+        # optional:  self.vl = prep_clean_korrigiert(self.vl) 
+        self.vl = prep_clean_characters(self.vl) # clean characters  
+        self.vl = prep_vl_abbreviations(self.vl) # substitute abbreviations
 
     def get_matches(self) -> None:
         """Get match for each entry of self.vl
