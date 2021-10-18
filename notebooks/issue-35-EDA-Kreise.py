@@ -54,33 +54,17 @@ len(gov.all_paths)
 all_types_found_in_the_paths = set().union(*gov.types_by_id.values())
 len(all_types_found_in_the_paths)
 
+
 # %% [markdown]
 # ## Analyze types
 
-# %% tags=[]
-from operator import itemgetter
-
-data = gov.types_by_id.values()
-analysis_types = {}
-
-for types in gov.types_by_id.values():
-    occurence = 0
-    for t in types:
-        analysis_types[t] = analysis_types.get(t,0) + 1
-
-analysis_types = dict((k, (v, f"{v/len(data):.6f}", gov.type_names_by_type[k])) for k,v in analysis_types.items())
-    
-sorted(analysis_types.items(), key=itemgetter(1), reverse=True)
-
 # %%
-len(data)
-
-# %%
-len(analysis_types)
-
-
-# %%
-def give_all_type_instances(types:set):
+def find_all_items_based_on_types(types:set) -> list[tuple]:
+    """
+    Given a set of type-ids, the method returns all items having that type.
+    The output is presented in a readable fashion.
+    Objects may occur twice in the output, if they match 2 or more types of the given type-ids.
+    """
     result = []
     for k, v in gov.types_by_id.items():
         for t in types.intersection(v):
@@ -88,20 +72,39 @@ def give_all_type_instances(types:set):
     return sorted(result)
 
 
-# %%
-type_subset = {k for k,v in analysis_types.items() if v[0] <= 20}
+# %% [markdown]
+# Print the statistic of how often any type occurs in the GOV class:
 
 # %% tags=[]
-give_all_type_instances(type_subset)
+from operator import itemgetter
 
-# %% [raw]
-# len(analysis_types)
+all_type_values = gov.types_by_id.values()
+count_by_type = {}
+
+for types in gov.types_by_id.values():
+    occurence = 0
+    for t in types:
+        count_by_type[t] = count_by_type.get(t,0) + 1
+
+count_by_type = dict((k, (v, f"{v/len(all_type_values):.6f}", gov.type_names_by_type[k])) for k,v in count_by_type.items())
+    
+sorted(count_by_type.items(), key=itemgetter(1), reverse=True)
+
+# %%
+len(count_by_type) == len(all_types_found_in_the_paths)
 
 # %% [markdown]
-# ### Analyze Amt (Kreisähnlich)
+# ### Analyze all types with less than 20 occurences
 
-# %% tags=[] jupyter={"outputs_hidden": true}
-give_all_type_instances({78})
+# %% tags=[]
+type_subset = {k for k,v in count_by_type.items() if v[0] <= 20}
+find_all_items_based_on_types(type_subset)
+
+# %% [markdown]
+# ### Analyze Amt (Kreisähnlich) 78
+
+# %% tags=[]
+find_all_items_based_on_types({78})
 
 # %% [markdown]
 # ## Choice of T_BEGIN and T_END in class GOV
@@ -113,15 +116,10 @@ give_all_type_instances({78})
 # * https://de.wikipedia.org/wiki/Kreisreformen_in_Preußen
 
 # %% [markdown]
-# ## "Kreis-Method"
+# ## give_ids_kreis_or_higher()
 
 # %% tags=[]
-len(gov.give_ids_kreis_or_higher())
-
-# %% tags=[]
-gov.ids_by_type[KREISUNDHOEHER]
-
-# %% tags=[]
-gov.decode_paths_name({tuple(gov.ids_by_type[64])})
+high_lvl_items = gov.give_ids_kreis_or_higher()
+len(high_lvl_items)
 
 # %%

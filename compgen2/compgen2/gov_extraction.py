@@ -536,7 +536,10 @@ class GOV:
         }
         return paths_decoded
 
-    def give_ids_kreis_or_higher(self) -> set:
+    def give_ids_kreis_or_higher(self) -> set[int]:
+        """
+        Return the set of all gov-items that have a high type based on the hierarchy of types.
+        """
         return set().union(*[self.ids_by_type[t] for t in T_KREISUNDHOEHER])
 
     @staticmethod
