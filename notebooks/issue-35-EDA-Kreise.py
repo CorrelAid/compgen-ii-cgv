@@ -54,23 +54,8 @@ len(gov.all_paths)
 all_types_found_in_the_paths = set().union(*gov.types_by_id.values())
 len(all_types_found_in_the_paths)
 
-
-# %% [markdown]
+# %% [markdown] tags=[]
 # ## Analyze types
-
-# %%
-def find_all_items_based_on_types(types:set) -> list[tuple]:
-    """
-    Given a set of type-ids, the method returns all items having that type.
-    The output is presented in a readable fashion.
-    Objects may occur twice in the output, if they match 2 or more types of the given type-ids.
-    """
-    result = []
-    for k, v in gov.types_by_id.items():
-        for t in types.intersection(v):
-            result.append((gov.type_names_by_type[t], v, gov.items_by_id[k][0], gov.names_by_id[k],))
-    return sorted(result)
-
 
 # %% [markdown]
 # Print the statistic of how often any type occurs in the GOV class:
@@ -93,8 +78,23 @@ sorted(count_by_type.items(), key=itemgetter(1), reverse=True)
 # %%
 len(count_by_type) == len(all_types_found_in_the_paths)
 
+
 # %% [markdown]
 # ### Analyze all types with less than 20 occurences
+
+# %%
+def find_all_items_based_on_types(types:set) -> list[tuple]:
+    """
+    Given a set of type-ids, the method returns all items having that type.
+    The output is presented in a readable fashion.
+    Objects may occur twice in the output, if they match 2 or more types of the given type-ids.
+    """
+    result = []
+    for k, v in gov.types_by_id.items():
+        for t in types.intersection(v):
+            result.append((gov.type_names_by_type[t], v, gov.items_by_id[k][0], gov.names_by_id[k],))
+    return sorted(result)
+
 
 # %% tags=[]
 type_subset = {k for k,v in count_by_type.items() if v[0] <= 20}
