@@ -55,25 +55,13 @@ all_types_found_in_the_paths = set().union(*gov.types_by_id.values())
 len(all_types_found_in_the_paths)
 
 # %% [markdown] tags=[]
-# ## Analyze types
+# ## Type statistics
 
 # %% [markdown]
 # Print the statistic of how often any type occurs in the GOV class:
 
 # %% tags=[]
-from operator import itemgetter
-
-all_type_values = gov.types_by_id.values()
-count_by_type = {}
-
-for types in gov.types_by_id.values():
-    occurence = 0
-    for t in types:
-        count_by_type[t] = count_by_type.get(t,0) + 1
-
-count_by_type = dict((k, (v, f"{v/len(all_type_values):.6f}", gov.type_names_by_type[k])) for k,v in count_by_type.items())
-    
-sorted(count_by_type.items(), key=itemgetter(1), reverse=True)
+count_by_type = gov.type_statistic(return_dict = True)
 
 # %%
 len(count_by_type) == len(all_types_found_in_the_paths)
@@ -93,17 +81,18 @@ def find_all_items_based_on_types(types:set) -> list[tuple]:
     for k, v in gov.types_by_id.items():
         for t in types.intersection(v):
             result.append((gov.type_names_by_type[t], v, gov.items_by_id[k][0], gov.names_by_id[k],))
-    return sorted(result)
+    for o in sorted(result):
+        print(o)
 
 
 # %% tags=[]
 type_subset = {k for k,v in count_by_type.items() if v[0] <= 20}
 find_all_items_based_on_types(type_subset)
 
-# %% [markdown]
+# %% [markdown] tags=[]
 # ### Analyze Amt (Kreisähnlich) 78
 
-# %% tags=[]
+# %% tags=[] jupyter={"outputs_hidden": true}
 find_all_items_based_on_types({78})
 
 # %% [markdown]
@@ -116,10 +105,50 @@ find_all_items_based_on_types({78})
 # * https://de.wikipedia.org/wiki/Kreisreformen_in_Preußen
 
 # %% [markdown]
-# ## give_ids_kreis_or_higher()
+# ## Type hierarchies
+
+# %% [markdown]
+# ### Kreis oder höher
+
+# %%
+gov.type_statistic(const.T_KREISUNDHOEHER)
 
 # %% tags=[]
-high_lvl_items = gov.give_ids_kreis_or_higher()
-len(high_lvl_items)
+ids_kreis_or_higher = gov.get_ids_by_types(const.T_KREISUNDHOEHER)
+len(ids_kreis_or_higher)
+
+# %% [markdown]
+# ### Städte
+
+# %%
+gov.type_statistic(const.T_STADT)
+
+# %%
+ids_stadt = gov.get_ids_by_types(const.T_STADT)
+len(ids_stadt)
+
+# %% [markdown]
+# Gibt es noch etwas zwischen den Kreisen und den Städten?
+
+# %%
+from collections import defaultdict
+diff_dict = defaultdict(set)
+for p in gov.all_paths:
+    max_kreis = (0,0)
+    min_stadt = (-1,0)
+    for i, o in enumerate(p):
+        t = gov.types_by_id[o]
+        if t & const.T_KREISUNDHOEHER:
+            max_kreis = (i, o)
+        elif t & const.T_STADT and min_stadt[0] < 0:
+            min_stadt = (i, o)
+        if min_stadt[0] >= 0:
+            diff_dict[max_kreis[0]-min_stadt[0]] |= {(max_kreis[1], min_stadt[1], )}
+
+# %%
+diff_dict.keys()
+
+# %%
+gov.decode_paths_id(diff_dict[1])
 
 # %%

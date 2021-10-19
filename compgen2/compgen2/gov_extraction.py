@@ -449,7 +449,7 @@ class GOV:
         """
         valid_type_found = False
         for t in self._types_by_id_raw[k]:
-            if t[0] not in TUNDESIRED and ((t[1] <= tmax and t[2] >= tmin) or ((t[1],t[2]) in self.years and t[1] <= tmax)):
+            if t[0] not in T_UNDESIRED and ((t[1] <= tmax and t[2] >= tmin) or ((t[1],t[2]) in self.years and t[1] <= tmax)):
                 type_dict[k] |= {t[0]}
                 valid_type_found = True
         return valid_type_found
@@ -515,12 +515,12 @@ class GOV:
 
         return reachable_nodes
 
-    def decode_paths_id(self, paths: set) -> set:
+    def decode_paths_id(self, paths: set[tuple[int]]) -> set[tuple[int]]:
         """Return the gov textual id for each node in a path."""
         paths_decoded = {tuple(self.items_by_id[o][0] for o in p) for p in paths}
         return paths_decoded
 
-    def decode_paths_name(self, paths: set) -> set:
+    def decode_paths_name(self, paths: set[tuple[int]]) -> set[tuple[int]]:
         """Return the gov display name for each node in a path."""
         paths_decoded = {
             tuple(_set_retrieve(self.names_by_id[o]) for o in p)
@@ -528,7 +528,7 @@ class GOV:
         }
         return paths_decoded
 
-    def decode_paths_type(self, paths: set) -> set:
+    def decode_paths_type(self, paths: set[tuple[int]]) -> set[tuple[int]]:
         """Return the type display name for each node in a path."""
         paths_decoded = {
             tuple(self.type_names_by_type[_set_retrieve(self.types_by_id[o])] for o in p)
@@ -536,11 +536,25 @@ class GOV:
         }
         return paths_decoded
 
-    def give_ids_kreis_or_higher(self) -> set[int]:
+    def get_ids_by_types(self, type_ids:set[int]) -> set[int]:
         """
-        Return the set of all gov-items that have a high type based on the hierarchy of types.
+        Get the set of gov-ids based on a set of type-ids.
         """
-        return set().union(*[self.ids_by_type[t] for t in T_KREISUNDHOEHER])
+        gov_ids = set()
+        for t in type_ids:
+            if t in self.ids_by_type.keys():
+                gov_ids.update(self.ids_by_type[t])
+        return gov_ids
+    
+    def get_names_by_ids(self, gov_ids:set[int]) -> set[str]:
+        """
+        Get the set of names based on a set of gov-ids.
+        """
+        names = set()
+        for i in gov_ids:
+            if i in self.names_by_id.keys():
+                names.update(self.names_by_id[i])
+        return names
 
     @staticmethod
     def convert_time(data: pd.DataFrame) -> pd.DataFrame:
@@ -572,3 +586,27 @@ class GOV:
             years.add((new_years_day*10,new_years_eve*10))
             new_years_day = new_years_eve + 1
         return years
+
+    def type_statistic(self, type_subset:set = set(), markdown_style_output = False, return_dict = False) -> list[tuple]:
+        """
+        Print the statistic of all types in the gov class
+        Args:
+            type_subset (set): Limit the statistic to a specific subset of types (optional)
+            markdown_style_output (bool): If True, the method will print the output such that it can be used as a markdown table
+            return_dict (bool): If True, the count_by_type dictionary is returned
+        """
+        from operator import itemgetter
+        all_type_values = self.types_by_id.values()
+        count_by_type = {}
+        for types in self.types_by_id.values():
+            for t in types:
+                if t in type_subset or len(type_subset) == 0:
+                    count_by_type[t] = count_by_type.get(t,0) + 1
+        count_by_type = dict((k, (v, f"{v/len(all_type_values):.6f}", self.type_names_by_type[k])) for k,v in count_by_type.items())
+        for o in sorted(count_by_type.items(), key=itemgetter(1), reverse=True):
+            if markdown_style_output:
+                print(f"|[{o[0]}](http://wiki-de.genealogy.net/GOV/Objekttyp_{o[0]}) | {o[1][0]} | {o[1][1]} | {o[1][2]}|")
+            else:
+                print(o)
+        if return_dict:
+            return count_by_type
