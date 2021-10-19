@@ -80,18 +80,23 @@ Kreis   32 (Verwaltungsebene II in Großherzogtum Baden und Königreich Württem
 ----- basierend auf https://upload.wikimedia.org/wikipedia/commons/1/17/Karte_Deutsches_Reich%2C_Verwaltungsgliederung_1900-01-01.png
 Bezirk  5
 Kreis   32
+Kreis (mittlere Verwaltungsebene) 222
 Landkreis 36
 Oberamt 37
 Bezirksamt  110
 Amtshauptmannschaft 99
 Aushebungsbezirk    nicht im GOV als Typ vorhanden
-Amt (kreisähnlich)  78 (Fehler im GOV)
+Amt (kreisähnlich)  78 (Beachte zugehörige Fehler im GOV)
 Landratsamt 149
 #Landgebiet  wird im GOV nicht benutzt. Sollte eigentlich die Unterebene von Lübeck sein.
 Landherrschaft  212
 Kreisfreie Stadt    95
-Stadtteil (Verwaltung)  262 (Fehler im GOV)
-Arrondissement 134 (Elsaß-Lothringen)
+Stadtkreis  53
+Stadtteil (Verwaltung)  262 (Beachte zugehörige Fehler im GOV)
+Herrschaft  22  {Schwarzburg-Sondershausen}
+Verwaltungsbezirk 161
+Teilprovinz 86  {Neumark}
+Landdrostei 73  {Hildesheim, Hannover, Aurich, Osnabrück, Lüneburg, Stade}
 */
 
 /* Österreich-Ungarn
@@ -104,6 +109,7 @@ Reichshälfte    215 {Cisleithanien, Transleithanien}
 
 /* ---- Verwaltungsebene I Ungarn
 Landschaft (Verwaltung) 80 Unterebenen von Ungarn
+Besatzungszone 192 {Bosnien und Herzegowina}
 */
 
 /* ---- Verwaltungsebene I Österreich
