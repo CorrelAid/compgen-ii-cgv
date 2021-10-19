@@ -24,37 +24,212 @@ T_MAX = 2147483647
 # 190315=Deutches Reich, 191050=Schweiz, 306245=Österreich-Ungarn, 220100=Liechtenstein, 218129=Luxemburg
 SUPERNODES = {190315, 191050, 306245, 220100, 218129}
 
-TKREIS_DEUTSCHESREICH = {
+# Deutsches Reich
+T_DEUTSCHESREICH_LVL0 = {
+    130,
+}
+T_DEUTSCHESREICH_LVL1 = {
+    31,
+    61,
+    23,
+    60,
+    34,
+    16,
+    7,
+    45,
+}
+T_DEUTSCHESREICH_LVL2 = {
+    201,
+    45,
+}
+T_DEUTSCHESREICH_LVL3 = {
+    46,
+    100,
+    45,
+    32,
+}
+# Kreisähnliche Gebilde
+T_DEUTSCHESREICH_LVL4 = {
     5,
     32,
+    222,
     36,
     37,
     110,
-    99,
     78,
-    2,
+    99,
     149,
-    211,
     212,
     95,
-}  # Kreisähnliche Gebilde
-TKREIS_ANDERE = {270, 25, 207, 134}  # Kreisähnlich Österreich-Ungarn, Schweiz
-TVERWALTUNG_DEUTSCHESREICH = {
-    1,
     53,
-    95,
-    18,
-    85,
-    144,
+    22,
+    161,
+    86,
+    73,
+}
+# Städte
+T_DEUTSCHESREICH_STADT = {
     150,
-    218,
-    97,
-}  # unterste Verwaltungseinheiten
-TVERWALTUNG_ANDERE = {
-    275,
-    136,
-}  # Unterste Verwaltungsseinheit Österreich-Ungarn, Schweiz
-TWOHNPLAETZE = {51, 55, 120, 230, 54, 39, 69, 129, 40, 54}  # unterste Wohnplätze
+    51,
+}
+
+# Österreich-Ungarn
+T_OESTERREICHUNGARN_LVL0 = {
+    71,
+}
+T_OESTERREICHUNGARN_LVL1 = {
+    215,
+}
+T_OESTERREICHUNGARN_LVL2 = {
+    80,
+    192,
+    23,
+    31,
+    188,
+    137,
+    62,
+    80,
+}
+T_OESTERREICHUNGARN_LVL3 = {
+    113,
+    146,
+    112,
+    270,
+    190,
+}
+T_OESTERREICHUNGARN_STADT = {
+    150,
+    273,
+    51,
+}
+
+# Schweiz
+T_SCHWEIZ_LVL0 = {
+    50,
+}
+T_SCHWEIZ_LVL1 = {
+    25,
+    134,
+}
+
+# Luxemburg
+T_LUXEMBURG_LVL0 = {
+    61,
+}
+T_LUXEMBURG_LVL1 = {
+    170,
+    25,
+}
+
+# Liechtenstein
+T_LIECHTENSTEIN_LVL_0 = {
+    60,
+}
+
+T_KREISUNDHOEHER = set().union(
+    T_DEUTSCHESREICH_LVL0,
+    T_DEUTSCHESREICH_LVL1,
+    T_DEUTSCHESREICH_LVL2,
+    T_DEUTSCHESREICH_LVL3,
+    T_DEUTSCHESREICH_LVL4,
+    T_OESTERREICHUNGARN_LVL0,
+    T_OESTERREICHUNGARN_LVL1,
+    T_OESTERREICHUNGARN_LVL2,
+    T_OESTERREICHUNGARN_LVL3,
+    T_LUXEMBURG_LVL0,
+    T_LUXEMBURG_LVL1,
+    T_SCHWEIZ_LVL0,
+    T_SCHWEIZ_LVL1,
+    T_LIECHTENSTEIN_LVL_0,
+)
+
+T_STADT = set().union(
+    T_DEUTSCHESREICH_STADT,
+    T_OESTERREICHUNGARN_STADT,
+)
+
+T_GEOGRAPHISCH = {
+    47,
+    107,
+    15,
+    89,
+    166,
+}
+
+T_ZIVIL = {
+    242,
+    172,
+    103,
+}
+
+T_GERICHT = {
+    3,
+    202,
+    228,
+    19,
+    105,
+    151,
+}
+
+T_VERKEHR = {
+    118,
+    119,
+}
+
+T_SONSTIGE = {
+    98,
+    195,
+    198,
+    199,
+    200,
+    74,
+    196,
+    147,
+    104,
+    197,
+    187,
+}
+
+T_UNDEFINED = {
+    276,
+    278,
+}
+
+T_KIRCHE = {
+    124,
+    250,
+    6,
+    91,
+    9,
+    260,
+    11,
+    12,
+    249,
+    96,
+    219,
+    13,
+    245,
+    26,
+    210,
+    92,
+    27,
+    28,
+    29,
+    30,
+    153,
+    35,
+    244,
+    41,
+    42,
+    43,
+    44,
+    243,
+    155,
+    206,
+    253,
+    49,
+    263,
+}
 
 # Undesired are thes groups of GOV types:
 # - Kirche
@@ -65,68 +240,17 @@ TWOHNPLAETZE = {51, 55, 120, 230, 54, 39, 69, 129, 40, 54}  # unterste Wohnplät
 # - Sonstige
 # - special cases:
 #   * politische Verwaltung: 223 Landgericht (älterer Ordnung)
+#   * politische Verwaltung: 10 Departement (Aschaffenburg ist fälschlicherweise als Departement eingetragen)
+#   * undefined type: 278 Munizipium
 # Desired are therefore these groups of GOV types:
 # - politische Verwaltung
 # - Wohnplatz
-TUNDESIRED = {
-    47,
-    107,
-    3,
-    19,
-    10,
-    151,
-    202,
-    228,
-    6,
-    9,
-    11,
-    12,
-    13,
-    26,
-    27,
-    28,
-    29,
-    35,
-    41,
-    42,
-    43,
-    44,
-    49,
-    91,
-    92,
-    96,
-    124,
-    153,
-    155,
-    206,
-    210,
-    219,
-    243,
-    244,
-    245,
-    249,
-    250,
-    253,
-    260,
-    263,
-    15,
-    89,
-    119,
-    166,
-    74,
-    98,
-    104,
-    147,
-    187,
-    195,
-    196,
-    197,
-    198,
-    199,
-    200,
-    103,
-    172,
-    242,
-    118,
-    223,
-}
+T_UNDESIRED = set().union(
+    T_GEOGRAPHISCH,
+    T_GERICHT,
+    T_VERKEHR,
+    T_KIRCHE,
+    T_ZIVIL,
+    T_SONSTIGE,
+    {223,10,278,},
+)
