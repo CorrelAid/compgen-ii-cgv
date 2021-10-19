@@ -34,9 +34,7 @@ and g1.id in
     and (p2.time_end   > 24047942 or c.time_end   is NUll) /* 2404794 = 1. Januar 1872, 2415021 = 1. Januar 1900*/
     and 
     (
-        p2.type_object in ('5', '32', '36', '37', '110', '99', '149', '212', '78', '95', '134') /* Kreisähnliche Gebilde */
-        or
-        p2.type_object in ('270', '146', '25', '134') /* Kreisähnlich Österreich-Ungarn, Schweiz*/
+        p2.type_object in ('5', '7', '16', '22', '23', '25', '31', '32', '34', '36', '37', '45', '46', '50', '53', '60', '61', '62', '71', '73', '78', '80', '86', '95', '99', '100', '110', '112', '113', '130', '134', '137', '146', '149', '161', '170', '188', '190', '192', '201', '212', '215', '222', '270') /* Kreisähnliche Gebilde */
         /*or*/
         /*p2.type_object in ('275', '136') /* Unterste Verwaltungsseinheit Österreich-Ungarn, Schweiz */
         /*or
