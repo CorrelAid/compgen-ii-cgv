@@ -7,7 +7,7 @@
 #       extension: .py
 #       format_name: percent
 #       format_version: '1.3'
-#       jupytext_version: 1.12.0
+#       jupytext_version: 1.11.4
 #   kernelspec:
 #     display_name: Python 3 (ipykernel)
 #     language: python
@@ -88,11 +88,14 @@ def decompose(s:str) -> str:
 decompose("Hallo was ist das. (((genau)))...")
 
 # %% [markdown]
-# ## Shorten string
+# ## String manipulator 1: Shorten string
 
 # %%
 import random
 random.seed('compgen')
+
+
+# %%
 def shorten(l:list) -> list:
     sub = [i for i,n in enumerate(l) if len(n) > 1 and give_type(n[0])==0]
     if len(sub) > 0:
@@ -118,7 +121,7 @@ data_shorten
 
 
 # %% [markdown]
-# ## Drop characters
+# ## String manipulator 2: Drop characters
 
 # %%
 def drop(l:list) -> list:
@@ -135,20 +138,22 @@ drop(decompose('Hallo und guten Tag Michael'))
 
 # %%
 s = decompose("""Very nicely written. In addition, the example chosen was itself lovely to play with.""")
-for i in range(200):
+for i in range(5):
     s = shorten(drop(s))
 "".join(s)
 
 # %% [markdown]
-# ## Kölner Phonetik
+# ## String manipulator 3: Phonetic distortion
+
+# %% [markdown]
+# ### Kölner Phonetik
 
 # %%
 import collections
 import re
 
 
-RULES = collections.OrderedDict() \
-        # type: typing.collections.OrderedDict[typing.Pattern[str], str]
+RULES = collections.OrderedDict()
 RULES[re.compile(r".[AEIJOUYÄÖÜ].", re.I)]    = "0"
 RULES[re.compile(r".[B].", re.I)]             = "1"
 RULES[re.compile(r".[P][^H]", re.I)]          = "1"
@@ -207,11 +212,15 @@ def encode(inputstring):  # type: (str) -> str
 
     return encoded
 
-# %%
+# %% [markdown]
+# ## String manipulator 4: Linotype typing errors
 
 # %%
 
 # %%
+
+# %% [markdown]
+# ## String manipulator 5: Fractal reading confusion errors
 
 # %%
 
