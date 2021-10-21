@@ -72,7 +72,7 @@ class LocCorrection:
         # defined cost, and there is a word in this trie node, then add it.
         if currentRow[-1] <= maxCost and node.word != None:
             if len(results)!=0 and currentRow[-1] > results[-1][1]:
-                return results
+                pass
             else:
                 results.append((node.word, currentRow[-1]))
         # recursively search each branch of the trie
