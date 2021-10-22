@@ -5,6 +5,7 @@ from .gov_extraction import GOV
 from .gov_matching import Matcher
 from .pipeline import Pipeline
 from .loc_autocorrection import LocCorrection
+from .phonetic import Phonetic
 
 
 logger = logging.getLogger(__name__)
