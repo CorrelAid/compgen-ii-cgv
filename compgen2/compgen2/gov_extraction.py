@@ -3,12 +3,12 @@
 # Issue link: https://github.com/CorrelAid/compgen-ii-cgv/issues/10
 
 import logging
+import pickle
 from collections import defaultdict
-from os import kill
+from functools import lru_cache
 
 ## Imports
 from pathlib import Path
-from typing import DefaultDict
 
 import numpy as np
 import pandas as pd
@@ -16,6 +16,7 @@ import pandas as pd
 from .const import *
 
 logger = logging.getLogger(__name__)
+
 
 def _set_retrieve(s: set):
     return next(iter(s))
@@ -73,12 +74,21 @@ class GOV:
         self.all_relations = set()
         self.all_paths = set()
         self.all_reachable_nodes_by_id = {}
-        self.years= {}
-
+        self.years = {}
 
         logger.info("Initialized empty gov instance. Please call `load_data()` next.")
 
+    @staticmethod
+    def from_file(file: str):
+        """Load serialized GOV object."""
+        with open(file, "rb") as stream:
+            gov = pickle.load(stream)
+        return gov
+
     def load_data(self):
+        if self.fully_initialized:
+            return
+
         logger.info("Start loading all relevant GOV tables ...")
         self.items = self._read_item()
         self.names = self._read_names()
@@ -91,14 +101,15 @@ class GOV:
         self._prefilter_relations()
         self._prefilter_types()
 
-        logger.info(
-            "Finished loading all relevant GOV tables. Please call `build_indices()` next."
-        )
+        logger.info("Finished loading all relevant GOV tables. Please call `build_indices()` next.")
 
     def build_indices(self):
         """Build all relevant indices that are necessary for efficiently querying and working with GOV."""
+        if self.fully_initialized:
+            return
+
         logger.info("Start building all relevant search indices ...")
-        self.years = self.julian_years() 
+        self.years = self.julian_years()
         self._items_by_id_raw = self._items_by_id()
         self._names_by_id_raw = self._names_by_id()
         self._types_by_id_raw = self._types_by_id()
@@ -110,9 +121,7 @@ class GOV:
         self.all_reachable_nodes_by_id = self._all_reachable_nodes_by_id()
         self.fully_initialized = True
 
-        logger.info(
-            "Finished building all relevant search indices. You can now start working with GOV data."
-        )
+        logger.info("Finished building all relevant search indices. You can now start working with GOV data.")
 
     def clear_data(self):
         """Necessary step to pickle model so that its size its manageable.
@@ -136,10 +145,21 @@ class GOV:
         self.all_relations = set()
         self.all_paths = set()
         self.all_reachable_nodes_by_id = {}
-        self.fully_initialized = False
         self.years = {}
 
+        self.fully_initialized = False
+
         logger.info("Cleared all data and attributes.")
+
+    @lru_cache
+    def get_loc_names(self) -> set[str]:
+        """Return all location names stored in GOV
+
+        Returns:
+            set[str]: set of names
+        """
+        loc_names = set().union(*self.names_by_id.values())
+        return loc_names
 
     def _read_item(self) -> pd.DataFrame:
         """Read in govitems.csv"""
@@ -216,48 +236,41 @@ class GOV:
         return type_names
 
     def _prefilter_names(self):
-        """ Removes any data from the DataFrame that is tagged as deleted.
-        """
+        """Removes any data from the DataFrame that is tagged as deleted."""
         logger.info(f"Pre-filtering raw names.")
         logger.debug(f"Shape of names before filtering: {self.names.shape}")
         names_filtered = self.names.merge(
-            self.items[["id", "deleted"]], left_on="id", right_on="id",
+            self.items[["id", "deleted"]],
+            left_on="id",
+            right_on="id",
         )
-        self.names = names_filtered.query("~deleted").drop(
-            columns=["deleted"]
-        )
+        self.names = names_filtered.query("~deleted").drop(columns=["deleted"])
         logger.debug(f"Shape of names after filtering: {self.names.shape}")
 
     def _prefilter_relations(self):
-        """ Removes any data from the DataFrame that is tagged as deleted.
-        """
+        """Removes any data from the DataFrame that is tagged as deleted."""
         logger.info(f"Pre-filtering raw relations.")
         logger.debug(f"Shape of relations before filtering: {self.relations.shape}")
         # Filter relations DataFrame based on time
         relations_filtered = self.filter_time(self.relations)
         # Filter relations DataFrame based on deleted
-        relations_filtered = relations_filtered.merge(
-            self.items[["id", "deleted"]], left_on="child", right_on="id"
-        )
-        relations_filtered = relations_filtered.merge(
-            self.items[["id", "deleted"]], left_on="parent", right_on="id"
-        )
+        relations_filtered = relations_filtered.merge(self.items[["id", "deleted"]], left_on="child", right_on="id")
+        relations_filtered = relations_filtered.merge(self.items[["id", "deleted"]], left_on="parent", right_on="id")
         self.relations = relations_filtered.query("~deleted_x and ~deleted_y").drop(
             columns=["id_x", "id_y", "deleted_x", "deleted_y"]
         )
         logger.debug(f"Shape of relations after filtering: {self.relations.shape}")
 
     def _prefilter_types(self):
-        """ Removes any data from the DataFrame that is tagged as deleted.
-        """
+        """Removes any data from the DataFrame that is tagged as deleted."""
         logger.info(f"Pre-filtering raw types.")
         logger.debug(f"Shape of types before filtering: {self.types.shape}")
         types_filtered = self.types.merge(
-            self.items[["id", "deleted"]], left_on="id", right_on="id",
+            self.items[["id", "deleted"]],
+            left_on="id",
+            right_on="id",
         )
-        self.types = types_filtered.query("~deleted").drop(
-            columns=["deleted"]
-        )
+        self.types = types_filtered.query("~deleted").drop(columns=["deleted"])
         logger.debug(f"Shape of types after filtering: {self.types.shape}")
 
     def _items_by_id(self) -> dict[int, tuple[str, bool]]:
@@ -288,7 +301,7 @@ class GOV:
         names = set(
             zip(
                 self.names.id,
-                self.names.content,
+                self.names.content.str.lower(),
                 self.names.time_begin,
                 self.names.time_end,
                 self.names.language,
@@ -334,7 +347,7 @@ class GOV:
             type_dict[t[0]] |= {t[1:]}
         type_dict.default_factory = None
         return type_dict
-    
+
     def _ids_by_type(self) -> dict[int, set[int]]:
         """Create a mapping from types to ids. Based on the filtered types.
 
@@ -350,8 +363,7 @@ class GOV:
         return ids_by_type
 
     def _type_names_by_type(self) -> dict[int, str]:
-        """Create a mapping from the type-id to its type-name.
-        """
+        """Create a mapping from the type-id to its type-name."""
         logger.info("Create type_names by type.")
         typenames = set(
             zip(
@@ -366,10 +378,8 @@ class GOV:
                 type_names_dict[t[0]] = t[2]
         return type_names_dict
 
-
     def _all_relations(self) -> set[tuple[int, int, str, str]]:
-        """Transform the relations to set of tuples.
-        """
+        """Transform the relations to set of tuples."""
         logger.info("Create all relations.")
         relations = set(
             zip(
@@ -409,7 +419,10 @@ class GOV:
                         # Track the time-constrains of the path
                         tmin = max(r[2], path[1])
                         tmax = min(r[3], path[2])
-                        if (r[2],r[3]) in self.years: # Special case: When the time-validity of the relation is exactly one year from January 1 to December 31, the constraint is meant as a lower limit only.
+                        if (
+                            r[2],
+                            r[3],
+                        ) in self.years:  # Special case: When the time-validity of the relation is exactly one year from January 1 to December 31, the constraint is meant as a lower limit only.
                             tmax = path[2]
                         if tmin > tmax:
                             continue
@@ -425,23 +438,21 @@ class GOV:
             paths.update(*paths_by_leaf_curr.values())
             if len(leaves_updated) == 0:
                 new_leaves_found = False
-            logger.debug(
-                f"Final paths: {len(paths)}, Updated paths: {len(set().union(*paths_by_leaf_next.values()))}"
-            )
+            logger.debug(f"Final paths: {len(paths)}, Updated paths: {len(set().union(*paths_by_leaf_next.values()))}")
             paths_by_leaf_curr = paths_by_leaf_next
         self.types_by_id.default_factory = None
         self.names_by_id.default_factory = None
         paths = {p[0] for p in paths}  # Take path only. Without time_begin and time_end
         return paths
 
-    def _collect_item(self, item_dict:dict(), k:int):
-        """ 
+    def _collect_item(self, item_dict: dict(), k: int):
+        """
         Extends the item_dict by the provided id k and its textual-id.
         """
         item_dict[k] = self._items_by_id_raw[k]
 
-    def _collect_type(self, type_dict:defaultdict(set), k:int, tmin:int, tmax:int):
-        """ 
+    def _collect_type(self, type_dict: defaultdict(set), k: int, tmin: int, tmax: int):
+        """
         Extends the type_dict if the type and the time-constraints are valid.
         Returns:
             bool:
@@ -449,13 +460,15 @@ class GOV:
         """
         valid_type_found = False
         for t in self._types_by_id_raw[k]:
-            if t[0] not in T_UNDESIRED and ((t[1] <= tmax and t[2] >= tmin) or ((t[1],t[2]) in self.years and t[1] <= tmax)):
+            if t[0] not in T_UNDESIRED and (
+                (t[1] <= tmax and t[2] >= tmin) or ((t[1], t[2]) in self.years and t[1] <= tmax)
+            ):
                 type_dict[k] |= {t[0]}
                 valid_type_found = True
         return valid_type_found
 
-    def _collect_name(self, name_dict:defaultdict(set), k:int, tmin:int, tmax:int):
-        """ 
+    def _collect_name(self, name_dict: defaultdict(set), k: int, tmin: int, tmax: int):
+        """
         Extends the name_dict with at least one name.
         The method divides the name-candidates in six groups by priority.
         It picks the name(s) from the group with the highes priority. The other names are disregarded.
@@ -470,10 +483,10 @@ class GOV:
         valid_names_prio2 = set()
         valid_names_prio3 = set()
         for n in self._names_by_id_raw[k]:
-            if (n[1] <= tmax and n[2] >= tmin) or ((n[1],n[2]) in self.years and n[1] <= tmax):
-                if n[3] == 'deu':
+            if (n[1] <= tmax and n[2] >= tmin) or ((n[1], n[2]) in self.years and n[1] <= tmax):
+                if n[3] == "deu":
                     valid_names_prio1.add(n[0])
-                elif n[3] in {'fre','pol', 'eng'}:
+                elif n[3] in {"fre", "pol", "eng"}:
                     valid_names_prio2.add(n[0])
                 else:
                     valid_names_prio3.add(n[0])
@@ -488,10 +501,10 @@ class GOV:
             name_dict[k] |= valid_names_prio3
         else:
             for n in self._names_by_id_raw[k]:
-                if n[3] == 'deu':
-                        valid_names_prio1.add(n[0])
-                elif n[3] in {'fre','pol', 'eng'}:
-                        valid_names_prio2.add(n[0])
+                if n[3] == "deu":
+                    valid_names_prio1.add(n[0])
+                elif n[3] in {"fre", "pol", "eng"}:
+                    valid_names_prio2.add(n[0])
                 else:
                     valid_names_prio3.add(n[0])
             if len(valid_names_prio1) > 0:
@@ -522,45 +535,39 @@ class GOV:
 
     def decode_paths_name(self, paths: set[tuple[int]]) -> set[tuple[int]]:
         """Return the gov display name for each node in a path."""
-        paths_decoded = {
-            tuple(_set_retrieve(self.names_by_id[o]) for o in p)
-            for p in paths
-        }
+        paths_decoded = {tuple(_set_retrieve(self.names_by_id[o]) for o in p) for p in paths}
         return paths_decoded
 
     def decode_paths_type(self, paths: set[tuple[int]]) -> set[tuple[int]]:
         """Return the type display name for each node in a path."""
-        paths_decoded = {
-            tuple(self.type_names_by_type[_set_retrieve(self.types_by_id[o])] for o in p)
-            for p in paths
-        }
+        paths_decoded = {tuple(self.type_names_by_type[_set_retrieve(self.types_by_id[o])] for o in p) for p in paths}
         return paths_decoded
 
-    def get_ids_by_types(self, type_ids:set[int]) -> set[int]:
+    def get_ids_by_types(self, type_ids: set[int]) -> set[int]:
         """
         Get the set of gov-ids based on a set of type-ids.
         """
-        gov_ids = set()
-        for t in type_ids:
-            if t in self.ids_by_type.keys():
-                gov_ids.update(self.ids_by_type[t])
+        gov_ids = set().union(*(self.ids_by_type.get(t, set()) for t in type_ids))
         return gov_ids
-    
-    def get_names_by_ids(self, gov_ids:set[int]) -> set[str]:
+
+    def get_names_by_ids(self, gov_ids: set[int]) -> set[str]:
         """
         Get the set of names based on a set of gov-ids.
         """
-        names = set()
-        for i in gov_ids:
-            if i in self.names_by_id.keys():
-                names.update(self.names_by_id[i])
+        names = set().union(*(self.names_by_id.get(i, set()) for i in gov_ids))
         return names
+
+    def get_ids_by_names(self, names: set[str]) -> set[int]:
+        ids = set().union(*(self.ids_by_name.get(name, set()) for name in names))
+        return ids
+
+    def get_reachable_nodes_by_id(self, gov_ids: set[int]) -> set[int]:
+        ids = set().union(*(self.all_reachable_nodes_by_id.get(id_, set()) for id_ in gov_ids))
+        return ids
 
     @staticmethod
     def convert_time(data: pd.DataFrame) -> pd.DataFrame:
-        data = data.replace(
-            {"time_begin": {np.NaN: T_MIN}, "time_end": {np.NaN: T_MAX}},
-        ).astype(
+        data = data.replace({"time_begin": {np.NaN: T_MIN}, "time_end": {np.NaN: T_MAX}},).astype(
             {
                 "time_begin": np.int64,
                 "time_end": np.int64,
@@ -575,19 +582,18 @@ class GOV:
         )  # TODO: Introduce correct time constraints for julian date???
         return data
 
-    def julian_years(self) -> set[tuple[int,int]]:
-        """ Compute the tuple (1st of January, 31st of December) in julian date format for all years from 1 A.D. to 3000 A.D.
-        """
-        new_years_day = 1721426 # 1721426 is 0001-01-01 12:00:00
+    def julian_years(self) -> set[tuple[int, int]]:
+        """Compute the tuple (1st of January, 31st of December) in julian date format for all years from 1 A.D. to 3000 A.D."""
+        new_years_day = 1721426  # 1721426 is 0001-01-01 12:00:00
         new_years_eve = 0
         years = set()
-        for y in range(1,3001): # From year 1 A.D. to 3000 A.D.
-            new_years_eve = new_years_day + 364 + int( y%4 == 0 and (y%100 !=0 or y%400 == 0) )
-            years.add((new_years_day*10,new_years_eve*10))
+        for y in range(1, 3001):  # From year 1 A.D. to 3000 A.D.
+            new_years_eve = new_years_day + 364 + int(y % 4 == 0 and (y % 100 != 0 or y % 400 == 0))
+            years.add((new_years_day * 10, new_years_eve * 10))
             new_years_day = new_years_eve + 1
         return years
 
-    def type_statistic(self, type_subset:set = set(), markdown_style_output = False, return_dict = False) -> list[tuple]:
+    def type_statistic(self, type_subset: set = set(), markdown_style_output=False, return_dict=False) -> list[tuple]:
         """
         Print the statistic of all types in the gov class
         Args:
@@ -596,16 +602,21 @@ class GOV:
             return_dict (bool): If True, the count_by_type dictionary is returned
         """
         from operator import itemgetter
+
         all_type_values = self.types_by_id.values()
         count_by_type = {}
         for types in self.types_by_id.values():
             for t in types:
                 if t in type_subset or len(type_subset) == 0:
-                    count_by_type[t] = count_by_type.get(t,0) + 1
-        count_by_type = dict((k, (v, f"{v/len(all_type_values):.6f}", self.type_names_by_type[k])) for k,v in count_by_type.items())
+                    count_by_type[t] = count_by_type.get(t, 0) + 1
+        count_by_type = dict(
+            (k, (v, f"{v/len(all_type_values):.6f}", self.type_names_by_type[k])) for k, v in count_by_type.items()
+        )
         for o in sorted(count_by_type.items(), key=itemgetter(1), reverse=True):
             if markdown_style_output:
-                print(f"|[{o[0]}](http://wiki-de.genealogy.net/GOV/Objekttyp_{o[0]}) | {o[1][0]} | {o[1][1]} | {o[1][2]}|")
+                print(
+                    f"|[{o[0]}](http://wiki-de.genealogy.net/GOV/Objekttyp_{o[0]}) | {o[1][0]} | {o[1][1]} | {o[1][2]}|"
+                )
             else:
                 print(o)
         if return_dict:
