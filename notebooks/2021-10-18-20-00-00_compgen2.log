@@ -1,0 +1,38 @@
+20:00:01 | INFO     | 0079 | Initialized empty gov instance. Please call `load_data()` next.
+20:00:01 | INFO     | 0092 | Start loading all relevant GOV tables ...
+20:00:01 | INFO     | 0173 | Reading in govitems.csv.
+20:00:01 | INFO     | 0184 | Reading in propertynames.csv.
+20:00:02 | INFO     | 0201 | Reading in propertytypes.csv.
+20:00:03 | INFO     | 0217 | Reading in relation.csv.
+20:00:04 | INFO     | 0233 | Reading in typenames.csv.
+20:00:04 | INFO     | 0247 | Pre-filtering raw names.
+20:00:04 | DEBUG    | 0248 | Shape of names before filtering: (1396968, 5)
+20:00:04 | DEBUG    | 0255 | Shape of names after filtering: (1396889, 5)
+20:00:04 | INFO     | 0259 | Pre-filtering raw relations.
+20:00:04 | DEBUG    | 0260 | Shape of relations before filtering: (1703349, 4)
+20:00:05 | DEBUG    | 0273 | Shape of relations after filtering: (1402966, 4)
+20:00:05 | INFO     | 0277 | Pre-filtering raw types.
+20:00:05 | DEBUG    | 0278 | Shape of types before filtering: (1303669, 4)
+20:00:05 | DEBUG    | 0285 | Shape of types after filtering: (1303601, 4)
+20:00:05 | INFO     | 0104 | Finished loading all relevant GOV tables. Please call `build_indices()` next.
+20:00:05 | INFO     | 0113 | Start building all relevant search indices ...
+20:00:05 | INFO     | 0289 | Create items by id.
+20:00:07 | INFO     | 0311 | Create names by id.
+20:00:13 | INFO     | 0347 | Create types by id.
+20:00:17 | INFO     | 0379 | Create type_names by type.
+20:00:17 | INFO     | 0396 | Create all relations.
+20:00:18 | INFO     | 0412 | Create all paths.
+20:00:18 | DEBUG    | 0454 | Final paths: 0, Updated paths: 139
+20:00:18 | DEBUG    | 0454 | Final paths: 66, Updated paths: 1116
+20:00:19 | DEBUG    | 0454 | Final paths: 616, Updated paths: 10175
+20:00:20 | DEBUG    | 0454 | Final paths: 7404, Updated paths: 72608
+20:00:23 | DEBUG    | 0454 | Final paths: 61102, Updated paths: 208042
+20:00:25 | DEBUG    | 0454 | Final paths: 222719, Updated paths: 141827
+20:00:26 | DEBUG    | 0454 | Final paths: 350853, Updated paths: 36012
+20:00:27 | DEBUG    | 0454 | Final paths: 386156, Updated paths: 3284
+20:00:27 | DEBUG    | 0454 | Final paths: 389398, Updated paths: 91
+20:00:28 | DEBUG    | 0454 | Final paths: 389489, Updated paths: 0
+20:00:28 | INFO     | 0367 | Create ids by type.
+20:00:28 | INFO     | 0333 | Create ids by name
+20:00:29 | INFO     | 0540 | Create all reachable nodes by id.
+20:00:34 | INFO     | 0126 | Finished building all relevant search indices. You can now start working with GOV data.
