@@ -1,4 +1,4 @@
-#from Levenshtein import distance
+# from Levenshtein import distance
 from functools import lru_cache
 
 from trie_levenshtein import TrieNode
@@ -24,12 +24,11 @@ class LocCorrection:
         # The search function returns a list of all words that are less than the given
         # maximum distance from the target word
 
-    def search(self, word, maxCost):
-        """
+    def search(self, word: str, maxCost: int) -> list[tuple[str, int]]:
+        """Return all words that are within max cost of word
 
         :param word: string
-        :param cost: supports int, range, or dictionary (key: regex, value: range/int)
-        param exclude_operations: None / subset of ["insert", "delete", "replace"]
+        :param maxCost: only return candidates that have a distance to `word` less or equal to max cost.
         :return:
         """
         # build first row
@@ -39,22 +38,16 @@ class LocCorrection:
         # recursively search each branch of the trie
         for letter in self.trie.children:
             self._searchRecursive(
-                self.trie.children[letter],
-                letter,
-                word,
-                currentRow,
-                results,
-                maxCost
+                self.trie.children[letter], letter, word, currentRow, results, maxCost
             )
         return results
 
-    #def cal_levenstein(self, word):
-        # This recursive helper is used by the search function above. It assumes that
-        # the previousRow has been filled in already.
+    # def cal_levenstein(self, word):
+    # This recursive helper is used by the search function above. It assumes that
+    # the previousRow has been filled in already.
     #    return [distance(word.lower(), i.lower()) for i in self.loc_list]
 
-    def _searchRecursive(
-        self, node, letter, word, previousRow, results, maxCost):
+    def _searchRecursive(self, node, letter, word, previousRow, results, maxCost):
         columns = len(word) + 1
         currentRow = [previousRow[0] + 1]
         # Build one row for the letter, with a column for each letter in the target
@@ -67,33 +60,36 @@ class LocCorrection:
             else:
                 replaceCost = previousRow[column - 1]
 
-            currentRow.append(min(insertCost, deleteCost,replaceCost ))
+            currentRow.append(min(insertCost, deleteCost, replaceCost))
         # if the last entry in the row indicates the optimal cost is less than the
         # defined cost, and there is a word in this trie node, then add it.
         if currentRow[-1] <= maxCost and node.word != None:
-            if len(results)!=0 and currentRow[-1] > results[-1][1]:
+            if len(results) != 0 and currentRow[-1] > results[-1][1]:
                 pass
             else:
                 results.append((node.word, currentRow[-1]))
         # recursively search each branch of the trie
         if min(currentRow) <= maxCost:
             for letter in node.children:
-                self._searchRecursive(node.children[letter], letter, word, currentRow,
-                                results, maxCost)
+                self._searchRecursive(
+                    node.children[letter], letter, word, currentRow, results, maxCost
+                )
         # if any entries in the row are less than the maximum cost, then
         # recursively search each branch of the trie
 
 
-lC = LocCorrection(("aachen", "preussen", "ahen")) #groudtruth / gov
-#vague match input
+lC = LocCorrection(("aachen", "preussen", "ahen"))  # groudtruth / gov
+# vague match input
 results = lC.search("aaashen", 5)
-print('value search', results)
+print("value search", results)
 
 import pandas as pd
-#df = pd.read_parquet(r"C:\Users\A111519951\PycharmProjects\correlaid\compgen-ii-cgv\data\deutsche-verlustlisten-1wk_preprocessed.parquet").head(100)
-#gov_df = pd.read_parquet(r"C:\Users\A111519951\PycharmProjects\correlaid\compgen-ii-cgv\data\gov_orte_v01_preprocessed.parquet").head(100)
-lC = LocCorrection(tuple(["neustatb", "neustata", "neustatttt", "neustattttt"])) #groudtruth / gov
-#vague match input
-results = lC.search("Neustatt", 8)
-print('value search', results)
 
+# df = pd.read_parquet(r"C:\Users\A111519951\PycharmProjects\correlaid\compgen-ii-cgv\data\deutsche-verlustlisten-1wk_preprocessed.parquet").head(100)
+# gov_df = pd.read_parquet(r"C:\Users\A111519951\PycharmProjects\correlaid\compgen-ii-cgv\data\gov_orte_v01_preprocessed.parquet").head(100)
+lC = LocCorrection(
+    tuple(["neustatb", "neustata", "neustatttt", "neustattttt"])
+)  # groudtruth / gov
+# vague match input
+results = lC.search("Neustatt", 8)
+print("value search", results)
