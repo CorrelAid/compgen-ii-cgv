@@ -449,7 +449,7 @@ class GOV:
         """
         Extends the item_dict by the provided id k and its textual-id.
         """
-        item_dict[k] = self._items_by_id_raw[k]
+        item_dict[k] = self._items_by_id_raw[k][0]
 
     def _collect_type(self, type_dict: defaultdict(set), k: int, tmin: int, tmax: int):
         """
@@ -530,7 +530,7 @@ class GOV:
 
     def decode_paths_id(self, paths: set[tuple[int]]) -> set[tuple[int]]:
         """Return the gov textual id for each node in a path."""
-        paths_decoded = {tuple(self.items_by_id[o][0] for o in p) for p in paths}
+        paths_decoded = {tuple(self.items_by_id[o] for o in p) for p in paths}
         return paths_decoded
 
     def decode_paths_name(self, paths: set[tuple[int]]) -> set[tuple[int]]:
