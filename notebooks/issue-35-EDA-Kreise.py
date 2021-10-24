@@ -80,7 +80,7 @@ def find_all_items_based_on_types(types:set) -> list[tuple]:
     result = []
     for k, v in gov.types_by_id.items():
         for t in types.intersection(v):
-            result.append((gov.type_names_by_type[t], v, gov.items_by_id[k][0], gov.names_by_id[k],))
+            result.append((gov.type_names_by_type[t], v, gov.items_by_id[k], gov.names_by_id[k],))
     for o in sorted(result):
         print(o)
 
