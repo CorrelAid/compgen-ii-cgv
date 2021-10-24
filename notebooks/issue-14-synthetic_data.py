@@ -7,7 +7,7 @@
 #       extension: .py
 #       format_name: percent
 #       format_version: '1.3'
-#       jupytext_version: 1.11.4
+#       jupytext_version: 1.12.0
 #   kernelspec:
 #     display_name: Python 3 (ipykernel)
 #     language: python
@@ -21,6 +21,7 @@
 # %%
 import pandas as pd
 from compgen2 import GOV, Matcher, const
+import numpy as np
 
 # %%
 data_root = "../data"
@@ -59,13 +60,13 @@ sorted(analysis_special_chars.items(), key=itemgetter(1), reverse=True)
 # ## Decompose string
 
 # %%
-def give_type(s:str) -> int:
+def type_code(s:str) -> int:
     if (s in string.punctuation or s in string.whitespace) and s != ".":
-        return 2
+        return "punct"
     elif s == ".":
-        return 1
+        return "."
     else:
-        return 0
+        return "char"
     return 
 
 
@@ -87,7 +88,7 @@ def decompose(s:str) -> str:
 # %%
 decompose("Hallo was ist das. (((genau)))...")
 
-# %% [markdown]
+# %% [markdown] tags=[]
 # ## String manipulator 1: Shorten string
 
 # %%
@@ -97,21 +98,15 @@ random.seed('compgen')
 
 # %%
 def shorten(l:list) -> list:
-    sub = [i for i,n in enumerate(l) if len(n) > 1 and give_type(n[0])==0]
-    if len(sub) > 0:
-        r = random.choice(sub)
+    l_char_ix = [i for i,n in enumerate(l) if len(n) > 1 and type_code(n[0])=="char"]
+    if len(l_char_ix) > 0:
+        r = random.choice(l_char_ix)
         c = random.randint(1,len(l[r])-1)
         l[r] = l[r][0:c]
         if r+1 == len(l) or l[r+1] != ".":
             l.insert(r+1,".")            
     return l
 
-
-# %%
-shorten(decompose('Hallo und guten Tag Michael'))
-
-# %%
-"".join(shorten(decompose('(((a b cd.)))')))
 
 # %%
 data_shorten = {"".join(shorten(decompose(n))) for n in data}
@@ -125,112 +120,115 @@ data_shorten
 
 # %%
 def drop(l:list) -> list:
-    sub = [i for i,n in enumerate(l) if len(n) > 1 and give_type(n[0])==0]
-    if len(sub) > 0:
-        r = random.choice(sub)
-        c = random.randint(0,len(l[r])-1)
+    l_char_ix = [i for i,n in enumerate(l) if len(n) > 1 and type_code(n[0])=="char"]
+    if len(l_char_ix) > 0:
+        r = random.choice(l_char_ix)
+        c = random.randint(1,len(l[r])-1)
         l[r] = l[r][0:c]+l[r][c+1:]
     return l
 
 
+# %% [markdown]
+# ## String manipulator 3: Linotype typing errors
+
 # %%
-drop(decompose('Hallo und guten Tag Michael'))
+from collections import defaultdict
+
+# %% tags=[]
+key_matrix_linotype = np.array([
+    ['e', 'r', 'u', 'b',  '@', 'fl', '.', ',', '-',   '1', '6', 'E', 'R', 'U', 'B',],
+    ['n', 'd', 'm', 'f',  '@', 'en', 'ä', '?', ':',   '2', '7', 'N', 'D', 'M', 'F',],
+    ['i', 'g', 'l', 's',  '@', 'fi', 'ö', '@', '‘',   '3', '8', 'I', 'G', 'L', 'S',],
+    ['a', 'o', 'h', 'k',  'ch', '”', 'ü', '@', '@',   '4', '9', 'A', 'O', 'H', 'K',],
+    ['t', 'v', 'w', 'p',  'ck', 'ß', '“', '(', ')',   '5', '0', 'T', 'V', 'W', 'P',],
+    ['x', 'c', 'y', 'z',  'j', 'q', 'J', '!', ';',    '@', '_', 'X', 'C', 'Y', 'Z',],
+])
+
+# %% tags=[]
+key_matrix_linotype_reduced = np.array([
+    ['e', 'r', 'u', 'b',  '@', 'fl', '@', '@', '@',   '1', '6', 'E', 'R', 'U', 'B',],
+    ['n', 'd', 'm', 'f',  '@', 'en', 'ä', '@', '@',   '2', '7', 'N', 'D', 'M', 'F',],
+    ['i', 'g', 'l', 's',  '@', 'fi', 'ö', '@', '@',   '3', '8', 'I', 'G', 'L', 'S',],
+    ['a', 'o', 'h', 'k',  'ch', '@', 'ü', '@', '@',   '4', '9', 'A', 'O', 'H', 'K',],
+    ['t', 'v', 'w', 'p',  'ck', '@', '@', '@', '@',   '5', '0', 'T', 'V', 'W', 'P',],
+    ['x', 'c', 'y', 'z',  'j', 'q', 'J', '@', '@',    '@', '@', 'X', 'C', 'Y', 'Z',],
+])
+
+# %% tags=[] jupyter={"outputs_hidden": true}
+neighbours_by_key = defaultdict(set)
+rows = len(key_matrix_linotype_reduced)
+cols = len(key_matrix_linotype_reduced[0])
+for i in range (rows):
+    for j in range (cols):
+        c = key_matrix_linotype_reduced[i][j]
+        if i > 0:    neighbours_by_key[c] |= {key_matrix_linotype[i-1][j]}
+        if j > 0:    neighbours_by_key[c] |= {key_matrix_linotype[i][j-1]}
+        if j < cols-1: neighbours_by_key[c] |= {key_matrix_linotype[i][j+1]}
+        if i < rows-1: neighbours_by_key[c] |= {key_matrix_linotype[i+1][j]}
+        neighbours_by_key[c].difference_update({'@'})
+        digits = {str(n) for n in range(10)}
+        if c in digits:
+            neighbours_by_key[c].intersection_update(digits)
+        else:
+            neighbours_by_key[c].difference_update(digits)
+del(neighbours_by_key['@'])
+neighbours_by_key.default_factory = None
+neighbours_by_key
+
+
+# %% tags=[]
+def lino(l:list) -> list:
+    l_char_ix = [i for i,n in enumerate(l) if len(n) > 1 and type_code(n[0])=="char"]
+    if len(l_char_ix) > 0:
+        r = random.choice(l_char_ix)
+        c = random.randint(1,len(l[r])-1)
+        f = random.choice(list(neighbours_by_key[l[r][c]])) ## choose a random neighboured key
+        l[r] = l[r][0:c]+f+l[r][c+1:]
+    return l
+
 
 # %%
 s = decompose("""Very nicely written. In addition, the example chosen was itself lovely to play with.""")
-for i in range(5):
-    s = shorten(drop(s))
+for i in range(3):
+    s = lino(shorten(drop(s)))
 "".join(s)
 
+
 # %% [markdown]
+# ### Currying
+
+# %% tags=[]
+def w(l:list,f) -> list:
+    l_char_ix = [i for i,n in enumerate(l) if len(n) > 1 and type_code(n[0])=="char"]
+    if len(l_char_ix) > 0:
+        r = random.choice(l_char_ix)
+        l[r] = f(l[r])
+    return l
+
+
+# %% tags=[]
+def lino(s:str):
+    c = random.randint(1,len(s)-1)
+    f = random.choice(list(neighbours_by_key[s[c]])) ## choose a random neighboured key
+    return s[0:c]+f+s[c+1:]
+
+
+# %%
+s = decompose("""Very nicely written. In addition, the example chosen was itself lovely to play with.""")
+"".join(w(decompose(s), lino))
+
+# %% [markdown] tags=[]
+# ## String manipulator 4: Fractal reading confusion errors
+
+# %%
+
+# %% [markdown] tags=[]
 # ## String manipulator 3: Phonetic distortion
 
 # %% [markdown]
 # ### Kölner Phonetik
 
 # %%
-import collections
-import re
-
-
-RULES = collections.OrderedDict()
-RULES[re.compile(r".[AEIJOUYÄÖÜ].", re.I)]    = "0"
-RULES[re.compile(r".[B].", re.I)]             = "1"
-RULES[re.compile(r".[P][^H]", re.I)]          = "1"
-RULES[re.compile(r".[DT][^CSZ]", re.I)]       = "2"
-RULES[re.compile(r".[FVW].", re.I)]           = "3"
-RULES[re.compile(r".[P][H]", re.I)]           = "3"
-RULES[re.compile(r".[GKQ].", re.I)]           = "4"
-RULES[re.compile(r"\s[C][AHKLOQRUX]", re.I)]  = "4"
-RULES[re.compile(r"[^SZ][C][AHKOQUX]", re.I)] = "4"
-RULES[re.compile(r"[^CKQ][X].", re.I)]        = "48"
-RULES[re.compile(r".[L].", re.I)]             = "5"
-RULES[re.compile(r".[MN].", re.I)]            = "6"
-RULES[re.compile(r".[R].", re.I)]             = "7"
-RULES[re.compile(r".[SZß].", re.I)]           = "8"
-RULES[re.compile(r"[SZ][C].", re.I)]          = "8"
-RULES[re.compile(r"\s[C][^AHKLOQRUX]", re.I)] = "8"
-RULES[re.compile(r"[C][^AHKOQUX]", re.I)]     = "8"
-RULES[re.compile(r".[DT][CSZ]", re.I)]        = "8"
-RULES[re.compile(r"[CKQ][X].", re.I)]         = "8"
-
-SPECIAL_CHARACTER = re.compile(r"[^a-zäöüß\s]", re.I)
-
-
-def encode(inputstring):  # type: (str) -> str
-    """
-    encode(string inputstring) -> string
-      Returns the phonetic code of given inputstring.
-    """
-
-    # remove anything except characters and whitespace
-    inputstring = SPECIAL_CHARACTER.sub("", inputstring)
-
-    encoded = ""
-    for i in range(len(inputstring)):
-        part = inputstring[i-1 : i+2]
-        # The RULES always expect 3 characters. Hence the first and the last character of the string get extendend by a space.
-        if len(inputstring) == 1:
-            part = f" {inputstring[0]} "
-        elif i == 0:
-            part = f" {inputstring[:2]}"
-        elif i == len(inputstring) - 1:
-            part = f"{inputstring[i - 1:]} "
-
-        for rule, code in RULES.items():
-            if rule.match(part):
-                encoded += code
-                break
-
-    # remove immediately repeated occurrences of phonetic codes
-    while [v for v in RULES.values() if encoded.find(v*2) != -1]:
-        for v in RULES.values():
-            encoded = encoded.replace(v*2, v)
-
-    if encoded:
-        encoded = encoded[0] + encoded[1:].replace("0", "")
-
-    return encoded
-
-# %% [markdown]
-# ## String manipulator 4: Linotype typing errors
+from compgen2 import Phonetic
 
 # %%
-
-# %%
-
-# %% [markdown]
-# ## String manipulator 5: Fractal reading confusion errors
-
-# %%
-
-# %%
-# Abkürzungen
-# St. -> Sankt
-# b. -> bei
-# O.S. -> Oberschlesien
-# a./ -> an der
-# i. Pr. -> in Preußen
-# Herzugtum -> ['Hgt', 'Hzt', 'Hzgt', 'Hzgtm', 'Hrzg', 'Hrzgt', 'Herz', 'H']
-# Großherzogtum -> ['Großh'
-
