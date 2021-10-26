@@ -7,7 +7,7 @@ import pandas as pd
 class Preprocessing:
     
     @staticmethod
-    def prep_clean_brackets(data):
+    def prep_clean_brackets(column: pd.Series):
         """Function for removing historical corrections
         1. brackets including their content 
         2. the word 'nicht' plus the following content
@@ -27,13 +27,11 @@ class Preprocessing:
         rep = ''
     
         # replace with remove 
-        data['location'] = data['location'].replace(
+        return column.replace(
             to_replace=[str_01, str_02, str_03, str_04, str_05, str_06, str_07, str_08, str_09], value=rep, regex=True)
-        
-        return data
 
     @staticmethod
-    def prep_clean_korrigiert(data): 
+    def prep_clean_korrigiert(column: pd.Series): 
         """Function for integrating modern-day corrections by replacing it with a comma
         1. word 'korrigiert' and its variants
         2. word 'vermutlich' and its variants
@@ -50,12 +48,10 @@ class Preprocessing:
         rep = ','
 
         # replace with comma 
-        data['location'] = data['location'].replace(to_replace=[str_01, str_02, str_03, str_04, str_05, str_06], value=rep, regex=True)
-        
-        return data
+        return column.replace(to_replace=[str_01, str_02, str_03, str_04, str_05, str_06], value=rep, regex=True)
     
     @staticmethod        
-    def prep_clean_characters(data): 
+    def prep_clean_characters(column: pd.Series): 
         """Function for removing special characters: 
         1. simply removed: ?^_"#*\:{}()[]!
         2. replaced with comma: /;
@@ -75,12 +71,10 @@ class Preprocessing:
         rep_3 = '\''
         
         # do replacement 
-        data['location'] = data['location'].replace(to_replace=[char_1, char_2, char_3], value=[rep_1, rep_2, rep_3], regex=True)
-        
-        return data
+        return column.replace(to_replace=[char_1, char_2, char_3], value=[rep_1, rep_2, rep_3], regex=True)
     
     @staticmethod      
-    def prep_vl_abbreviations(data): 
+    def prep_vl_abbreviations(column: pd.Series): 
         """Function for substituting abbreviations with predefined content"""
         
         # load defined abbreviations 
@@ -90,7 +84,4 @@ class Preprocessing:
         subst_dict = dict(zip(substitutions.abbreviation, substitutions.expansion))
         
         # do replacement 
-        data['location'] = data['location'].replace(to_replace=subst_dict, regex=False)
-
-        return data
-
+        return column.replace(to_replace=subst_dict, regex=False)
