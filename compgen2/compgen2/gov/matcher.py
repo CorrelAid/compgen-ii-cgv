@@ -1,14 +1,14 @@
 import logging
 from itertools import product
 from operator import itemgetter
-from types import ClassMethodDescriptorType
+
 from typing import Optional
 
 from tqdm import tqdm
 
-from .const import T_KREISUNDHOEHER, T_STADT
-from .gov_extraction import GOV
-from .loc_autocorrection import LocCorrection
+from ..const import T_KREISUNDHOEHER, T_STADT
+from . import GOV
+from .. import LocCorrection
 
 logger = logging.getLogger(__name__)
 
