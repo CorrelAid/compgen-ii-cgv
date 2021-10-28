@@ -6,6 +6,9 @@ from .gov_matching import Matcher
 from .pipeline import Pipeline
 from .loc_autocorrection import LocCorrection
 from .phonetic import Phonetic
+from .linguistic import StringEnriched
+from .manipulator import Manipulator
+from .synthetic import Synthetic
 
 
 logger = logging.getLogger(__name__)
