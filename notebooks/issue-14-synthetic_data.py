@@ -7,7 +7,7 @@
 #       extension: .py
 #       format_name: percent
 #       format_version: '1.3'
-#       jupytext_version: 1.12.0
+#       jupytext_version: 1.11.4
 #   kernelspec:
 #     display_name: Python 3 (ipykernel)
 #     language: python
@@ -40,40 +40,14 @@
 
 # %%
 import pandas as pd
-from compgen2 import GOV, Matcher, const
+from compgen2 import GOV, Matcher, const, Synthetic
+import pickle
 import numpy as np
-
-# %%
-data_root = "../data"
-gov = GOV(data_root)
-
-# %% tags=[]
-gov.load_data()
-
-# %% tags=[]
-gov.build_indices()
-
-# %% [markdown]
-# ## Special characters in the GOV (EDA)
-
-# %%
-data = gov.ids_by_name.keys()
-
-# %%
-# Code von Michael aus data_exploration 
-
 import string
-from operator import itemgetter
 
-analysis_special_chars = {}
-
-for char in string.punctuation + '´' + string.digits:
-    occurence = 0
-    for n in data:
-        if n.find(char) > 0: occurence +=1
-        analysis_special_chars[char] = (occurence, occurence / len(data))
-    
-sorted(analysis_special_chars.items(), key=itemgetter(1), reverse=True)
+# %%
+with open("../data/gov.pickle", "rb") as stream:
+    gov = pickle.load(stream)
 
 
 # %% [markdown]
@@ -91,7 +65,7 @@ def type_code(s:str) -> int:
 
 
 # %%
-def decompose(s:str) -> str:
+def decompose(s:str) -> list[str]:
     l = []
     t_curr = None
     t_prev = None
@@ -131,10 +105,7 @@ def shorten(l:list) -> list:
 
 
 # %%
-data_shorten = {"".join(shorten(decompose(n))) for n in data}
-
-# %% tags=[] jupyter={"outputs_hidden": true}
-data_shorten
+shorten(decompose("Hallo! Du. was"))
 
 
 # %% [markdown]
@@ -143,14 +114,13 @@ data_shorten
 # - Repetitive application to a letter: Not applicable
 
 # %%
-def drop(l:list) -> list:
-    l_char_ix = [i for i,n in enumerate(l) if len(n) > 1 and type_code(n[0])=="char"]
-    if len(l_char_ix) > 0:
-        r = random.choice(l_char_ix)
-        c = random.randint(1,len(l[r])-1)
-        l[r] = l[r][0:c]+l[r][c+1:]
-    return l
+def drop(s:str) -> str:
+    c = random.randint(1,len(s)-1)
+    return s[0:c]+s[c+1:]
 
+
+# %%
+drop(decompose("Hallo! typing errors and other things."))
 
 # %% [markdown]
 # ## String manipulator 3: Linotype typing errors
@@ -180,17 +150,17 @@ key_matrix_linotype_reduced = np.array([
     ['x', 'c', 'y', 'z',  'j', 'q', 'J', '@', '@',    '@', '@', 'X', 'C', 'Y', 'Z',],
 ])
 
-# %% tags=[] jupyter={"outputs_hidden": true}
+# %% tags=[]
 neighbours_by_key = defaultdict(set)
 rows = len(key_matrix_linotype_reduced)
 cols = len(key_matrix_linotype_reduced[0])
 for i in range (rows):
     for j in range (cols):
         c = key_matrix_linotype_reduced[i][j]
-        if i > 0:    neighbours_by_key[c] |= {key_matrix_linotype[i-1][j]}
-        if j > 0:    neighbours_by_key[c] |= {key_matrix_linotype[i][j-1]}
-        if j < cols-1: neighbours_by_key[c] |= {key_matrix_linotype[i][j+1]}
-        if i < rows-1: neighbours_by_key[c] |= {key_matrix_linotype[i+1][j]}
+        if i > 0:    neighbours_by_key[c] |= {key_matrix_linotype_reduced[i-1][j]}
+        if j > 0:    neighbours_by_key[c] |= {key_matrix_linotype_reduced[i][j-1]}
+        if j < cols-1: neighbours_by_key[c] |= {key_matrix_linotype_reduced[i][j+1]}
+        if i < rows-1: neighbours_by_key[c] |= {key_matrix_linotype_reduced[i+1][j]}
         neighbours_by_key[c].difference_update({'@'})
         digits = {str(n) for n in range(10)}
         if c in digits:
@@ -203,21 +173,11 @@ neighbours_by_key
 
 
 # %% tags=[]
-def lino(l:list) -> list:
-    l_char_ix = [i for i,n in enumerate(l) if len(n) > 1 and type_code(n[0])=="char"]
-    if len(l_char_ix) > 0:
-        r = random.choice(l_char_ix)
-        c = random.randint(1,len(l[r])-1)
-        f = random.choice(list(neighbours_by_key[l[r][c]])) ## choose a random neighboured key
-        l[r] = l[r][0:c]+f+l[r][c+1:]
-    return l
+def lino(s:str) -> str:
+    c = random.randint(1,len(s)-1)
+    f = random.choice(list(neighbours_by_key[s[c]])) ## choose a random neighboured key
+    return s[0:c]+f+s[c+1:]
 
-
-# %%
-s = decompose("""Very nicely written. In addition, the example chosen was itself lovely to play with.""")
-for i in range(3):
-    s = lino(shorten(drop(s)))
-"".join(s)
 
 # %% [markdown]
 # ## String manipulator 3.2: German keyboard typing errors
@@ -268,15 +228,11 @@ falsecouples_by_letter
 
 
 # %%
-def fractal(s:str):
+def fractal(s:str) -> str:
     c = random.randint(1,len(s)-1)
     f = random.choice(list(falsecouples_by_letter[s[c]])) ## choose a random similar letter
     return s[0:c]+f+s[c+1:]
 
-
-# %% tags=[]
-s = decompose("""Very nicely written. In addition, the example chosen was itself lovely to play with.""")
-"".join(w(decompose(s), fractal))
 
 # %% [markdown] tags=[]
 # ## String manipulator 5: Phonetic distortion
@@ -302,26 +258,27 @@ import re
 def mix_up(s:str):
     return "!"
 
-def three_digit_parser(s:str):
-    pattern = re.compile(r"(?<!in)([- ])(?:[A-Z])", re.I)
+def four_digit_parser(s:str):
+    pattern = re.compile(r"[^ -][^i][^n][ -][A-Z]")
     s_new = ""
     for i in range(len(s)):
-        part = s[i-1 : i+2]
+        part = s[i-3 : i+2]
         if len(s) == 1:
-            part = f" {s[0]} "
+            part = f"   {s[0]} "
         elif i == 0:
-            part = f" {s[:2]}"
+            part = f"   {s[:2]}"
         elif i == len(s) - 1:
-            part = f"{s[i - 1:]} "
+            part = f"{s[i - 2:]} "
         if pattern.match(part):
             s_new += mix_up(s[i])
+            print(pattern.match(part))
         else:
             s_new += s[i]
     return s_new
 
 
 # %%
-three_digit_parser("Hallo-Hallo")
+four_digit_parser("Hallo-Hallo-in-Freiburg")
 
 
 # %% [markdown] tags=[]
@@ -338,6 +295,11 @@ def curryPartial(f, *args):
 # %% tags=[]
 def w(l:list,*args) -> list:
     l_char_ix = [i for i,n in enumerate(l) if len(n) > 1 and type_code(n[0])=="char"]
+
+    for level in perturbation_levels:
+        for i in l_char_ix:            
+            for perturbation in level:
+                
     if len(l_char_ix) > 0:
         r = random.choice(l_char_ix)
         for f in args:
@@ -346,14 +308,15 @@ def w(l:list,*args) -> list:
 
 
 # %% tags=[]
-def lino(s:str):
-    c = random.randint(1,len(s)-1)
-    f = random.choice(list(neighbours_by_key[s[c]])) ## choose a random neighboured key
-    return s[0:c]+f+s[c+1:]
+s = decompose("""Very nicely written. In addition, the example chosen was itself lovely to play with.""")
+"".join(w(decompose(s), fractal))
 
-
-# %% jupyter={"source_hidden": true} tags=[]
+# %% tags=[]
 s = decompose("""Very nicely written. In addition, the example chosen was itself lovely to play with.""")
 "".join(w(decompose(s), lino))
+
+# %% tags=[]
+s = decompose("""Very nicely written. In addition, the example chosen was itself lovely to play with.""")
+"".join(w(decompose(s), drop))
 
 # %%
