@@ -1,4 +1,3 @@
-
 from typing import Callable
 
 class Manipulator:

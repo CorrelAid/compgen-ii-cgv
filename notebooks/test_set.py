@@ -1,36 +1,45 @@
-from compgen2 import GOV, Matcher
-from compgen2.synthetic import build_test_set
+# +
+import pickle
+
+import pandas as pd
+
+from compgen2 import GOV, Matcher, GovTestData
+# -
+
+# %load_ext line_profiler
+# %load_ext autoreload
+# %autoreload 2
 
 data_root= "../data"
 
-gov = GOV(data_root)
-gov.load_data()
-gov.build_indices()
+with open("../data/gov.pickle", "rb") as stream:
+    gov = pickle.load(stream)
 
-# ## Tests
+# ## Korrekturliste GOV
 
-# Test with 100% valid data, so all entries should find a match
+gtd = GovTestData(gov)
 
-matcher = Matcher(gov)
-test_data = build_test_set(gov, size=1000, num_parts=2, valid=1)
+gtd.data
 
-test_data
+gtd.get_test_locations()
 
-matches = matcher.get_match_for_locations(test_data)
+# +
+valid_test_location = gtd.get_test_locations()
 
-matches.id.eq("").sum()
+m = Matcher(gov)
+m.get_match_for_locations(valid_test_location[:100])
+# -
 
-matches[matches.id.eq("")]
+gtd.get_accuracy(m.results)
 
-# Test with 70% valid data, so 30% should not find a match
+# +
+from pprint import pprint
 
-matcher = Matcher(gov)
-test_data = build_test_set(gov, size=1000, num_parts=2, valid=0.7)
+pprint(m.results)
+# -
+m.get_match_for_locations(["adligrose"])
 
-matches = matcher.get_match_for_locations(test_data)
 
-matches.id.eq("").sum()
-
-matches[matches.id.eq("")]
+m.results["adligrose"]
 
 

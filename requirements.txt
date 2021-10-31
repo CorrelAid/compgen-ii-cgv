@@ -6,4 +6,7 @@ jupyterlab
 jupytext
 tqdm
 pytest
+lxml
+html5lib
+BeautifulSoup4
 -e ./compgen2

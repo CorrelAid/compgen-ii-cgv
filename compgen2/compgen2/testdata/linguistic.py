@@ -1,6 +1,6 @@
 import string
 import random
-import compgen2.manipulator
+from . import Manipulator
 
 class StringEnriched:
     def __init__(self, string_: str) -> None:
@@ -11,13 +11,13 @@ class StringEnriched:
     def get_string(self) -> str:
         return self.string_
 
-    def apply_manipulator(self, manipulator: compgen2.manipulator.Manipulator):
+    def apply_manipulator(self, manipulator: Manipulator):
         if manipulator.type == "char":
             self.manipulate_by_chars(manipulator)
         if manipulator.type == "word":
             self.manipulate_by_words(manipulator)
 
-    def manipulate_by_chars(self, manipulator: compgen2.manipulator.Manipulator):
+    def manipulate_by_chars(self, manipulator: Manipulator):
         chars_modified = []
         for c in list(self.string_):
             if random.random() < manipulator.chance:
@@ -26,7 +26,7 @@ class StringEnriched:
                 chars_modified.append(c)
         self.string_ = "".join(chars_modified)
 
-    def manipulate_by_words(self, manipulator: compgen2.manipulator.Manipulator):
+    def manipulate_by_words(self, manipulator: Manipulator):
         words = self.decompose(self.string_)
         words_modified = []
         for w in words:
