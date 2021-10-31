@@ -1,16 +1,18 @@
 import logging
 from itertools import product
+from operator import itemgetter
+
 from typing import Optional
 
 from tqdm import tqdm
 
-from .const import T_KREISUNDHOEHER, T_STADT
-from .gov_extraction import GOV
-from .loc_autocorrection import LocCorrection
+from ..const import T_KREISUNDHOEHER, T_STADT
+from . import GOV
+from .. import LocCorrection
 
 logger = logging.getLogger(__name__)
-MAX_COST_EXPENSIVE = 5
-MAX_COST_INEXPENSIVE = 10
+
+MAX_COST = 5
 
 
 class Matcher:
@@ -77,7 +79,7 @@ class Matcher:
                         candidates = self.results[location]["parts"][matched_part]["candidates"]
                         relevant_names.update(self.get_relevant_names_from_part_candidates(candidates))
 
-                    candidates = self.get_best_candidates(relevant_names, unmatched_part, MAX_COST_INEXPENSIVE)
+                    candidates = self.get_best_candidates(relevant_names, unmatched_part, MAX_COST)
                     self.results[location]["parts"][unmatched_part]["candidates"].extend(c[0] for c in candidates)
 
     def find_textual_id_for_location(self) -> None:
@@ -111,28 +113,33 @@ class Matcher:
 
     def find_part_with_best_candidates(self, parts: tuple[str]) -> tuple[str, list[tuple[str, int]]]:
         for type_ids in [T_KREISUNDHOEHER, T_STADT]:
-            for cost in range(1, MAX_COST_EXPENSIVE + 1):
-                for part in parts:                    
+            for cost in range(1, 3 + 1):
+                for part in parts:
                     relevant_names = self.get_loc_names(type_ids)
                     candidates = self.get_best_candidates(relevant_names, part, cost)
 
                     if candidates:
                         return (part, candidates)
 
-        # if nothing could be found in kreis or higher, broaden search by using complete GOV
-        for part in parts:
-            relevant_names = self.get_loc_names()
-            candidates = self.get_best_candidates(relevant_names, part, MAX_COST_EXPENSIVE)
+        relevant_names = self.get_loc_names()
+        for cost in range(1, MAX_COST + 1):
+            for part in parts:
+                candidates = self.get_best_candidates(relevant_names, part, cost)
 
-            if candidates:
-                return (part, candidates)
-
+                if candidates:
+                    return (part, candidates)
+    
         return ("", [])
 
-    def get_best_candidates(self, relevant_names: set[str], name: str, cost: int) -> list[tuple[str, int]]:
-        relevant_names = filter_relevant_names(relevant_names, name, cost)
+    def get_best_candidates(self, relevant_names: set[str], name: str, max_cost: int) -> list[tuple[str, int]]:
         lC = LocCorrection.from_list(tuple(relevant_names))
-        return lC.get_best_candidates(name, cost)
+        candidates = lC.search(name, max_cost)
+
+        if candidates:
+            best_cost = min(candidates, key=itemgetter(1))[1]
+            candidates = [c for c in candidates if c[1] == best_cost]
+
+        return candidates
 
     def get_loc_names(self, type_ids: Optional[set[int]] = None) -> set[str]:
         if type_ids is not None:
@@ -175,7 +182,3 @@ class Matcher:
     def get_query_parts(query: str) -> tuple[str]:
         """Split GOV item (query) to get the single names (parts)."""
         return tuple(s.strip().lower() for s in query.split(","))
-
-
-def filter_relevant_names(relevant_names: set[str], query: str, max_cost: int) -> set[str]:
-    return set(name for name in relevant_names if len(query) - max_cost <= len(name) <= len(query) + max_cost)

@@ -13,7 +13,7 @@ from pathlib import Path
 import numpy as np
 import pandas as pd
 
-from .const import *
+from ..const import *
 
 logger = logging.getLogger(__name__)
 

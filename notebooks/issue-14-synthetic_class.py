@@ -1,4 +1,3 @@
-import pandas as pd
 from compgen2 import Synthetic
 import pickle
 

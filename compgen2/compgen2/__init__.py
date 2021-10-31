@@ -1,32 +1,15 @@
-import logging
-from datetime import datetime
+from .correction import LocCorrection, Phonetic, Preprocessing
+from .gov import GOV, Matcher
+from .testdata import GovTestData, Manipulator, StringEnriched, Synthetic
 
-from .gov_extraction import GOV
-from .gov_matching import Matcher
-from .pipeline import Pipeline
-from .loc_autocorrection import LocCorrection
-from .phonetic import Phonetic
-from .linguistic import StringEnriched
-from .manipulator import Manipulator
-from .synthetic import Synthetic
-
-
-logger = logging.getLogger(__name__)
-logger.setLevel(logging.DEBUG)
-
-file_logger = logging.FileHandler(f"{datetime.now():%Y-%m-%d-%H-%M-%S}_compgen2.log", "w", "utf-8")
-file_logger.setLevel(logging.DEBUG)
-fileformat = logging.Formatter(
-    "%(asctime)s | %(levelname)-8s | %(lineno)04d | %(message)s", datefmt="%H:%M:%S"
-)
-file_logger.setFormatter(fileformat)
-
-logger.addHandler(file_logger)
-
-stream_logger = logging.StreamHandler()
-stream_logger.setLevel(logging.INFO)
-streamformat = logging.Formatter("%(asctime)s | %(levelname)-8s | %(message)s")
-stream_logger.setFormatter(streamformat)
-
-
-logger.addHandler(stream_logger)
+__all__ = [
+    "GOV",
+    "GovTestData",
+    "Matcher",
+    "LocCorrection",
+    "Phonetic",
+    "Preprocessing",
+    "Manipulator",
+    "StringEnriched",
+    "Synthetic",
+]

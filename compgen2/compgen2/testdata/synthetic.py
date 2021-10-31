@@ -1,8 +1,12 @@
 import random
 import pandas as pd
 from collections import defaultdict
-from compgen2 import const_synthetic, GOV, StringEnriched
-import compgen2.manipulator
+from . import Manipulator
+from . import StringEnriched
+from .. import GOV
+from .. import const_synthetic 
+#import compgen2.string_utils.linguistic
+#import compgen2.string_utils.manipulator
 
 random.seed(1337)
 
@@ -13,10 +17,10 @@ class Synthetic:
         self.locations_synthetic = []
         self.fractal_dict = self._fractal_dict()
         self.lino_dict = self._linotype_dict()
-        self.m_linotype = compgen2.manipulator.Manipulator(self.linotype, "char", const_synthetic.P_LINO)
-        self.m_fractal = compgen2.manipulator.Manipulator(self.fractal, "char", const_synthetic.P_FRACTAL)
-        self.m_drop = compgen2.manipulator.Manipulator(self.drop, "char", const_synthetic.P_DROP)
-        self.m_shorten = compgen2.manipulator.Manipulator(self.shorten, "word", const_synthetic.P_SHORTEN)
+        self.m_linotype = Manipulator(self.linotype, "char", const_synthetic.P_LINO)
+        self.m_fractal = Manipulator(self.fractal, "char", const_synthetic.P_FRACTAL)
+        self.m_drop = Manipulator(self.drop, "char", const_synthetic.P_DROP)
+        self.m_shorten = Manipulator(self.shorten, "word", const_synthetic.P_SHORTEN)
         self.COMBO_TEST = [self.m_linotype, self.m_fractal, self.m_drop, self.m_shorten]
         self.MANIPULATION_COMBOS = [self.COMBO_TEST]
     
@@ -96,7 +100,7 @@ class Synthetic:
         else:
             return l
 
-    def manipulate(self, se: StringEnriched, manipulation_combo: list[compgen2.manipulator.Manipulator]) -> str:
+    def manipulate(self, se: StringEnriched, manipulation_combo: list[Manipulator]) -> str:
         """
         Manipulate a string given a collection of manipulators
         """

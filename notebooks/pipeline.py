@@ -34,7 +34,7 @@ with open("../data/gov.pickle", "rb") as stream:
     gov = pickle.load(stream)
 
 m = Matcher(gov)
-m.get_match_for_locations(["aalfag, preußisch-stargard"])
+m.get_match_for_locations(["schönau, attersteg"])
 
 m = Matcher(gov)
 m.get_match_for_locations(["Abb. Stolzenberg"])
@@ -71,3 +71,10 @@ m = Matcher(gov)
 from pprint import pprint
 
 pprint(m.results)
+# -
+
+for s in sorted(list(gov.ids_by_name.keys())):
+    if s.startswith("alt"):
+        print(s)
+
+
