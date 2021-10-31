@@ -24,7 +24,12 @@ class Synthetic:
         self.COMBO_TEST = [self.m_linotype, self.m_fractal, self.m_drop, self.m_shorten]
         self.MANIPULATION_COMBOS = [self.COMBO_TEST]
     
-    def create_synthetic_data(self, size: int):
+    def create_synthetic_data(self, size: int) -> None:
+        """
+        Create a synthetic dataset based on the GOV object that has been loaded priorly.
+        Args:
+          size (int): number of synthetic records that get created
+        """
         paths_ids = list(self.gov.all_paths)[:size]
         paths_names = [self.gov.decode_path_name(p) for p in paths_ids]
         for p in paths_names:
@@ -66,7 +71,7 @@ class Synthetic:
 
     def _fractal_dict(self) -> dict[str, set[str]]:
         """
-        Create a mapping from a letter all letters that are visually similar in fractal font
+        Create a mapping from a letter to all letters that are visually similar in fractal font
         """
         fractal_dict = defaultdict(set)
         for p in const_synthetic.fractal_confusion_pairs:
@@ -91,7 +96,7 @@ class Synthetic:
 
     def shuffle_order(self, l: list) -> list:
         """
-        Shuffle a list of objects in place
+        Shuffle a list of objects with a given probability P_SHUFFLE
         Args:
           l: list
         """
@@ -112,7 +117,7 @@ class Synthetic:
     def shorten(self, w: str) -> str:
         """
         Word-based.
-        Drop the last n characters of a word where n is randomly chosen. Insert a period after the word in case it does not yet exist.
+        Drop the last n characters of a word where n is randomly chosen. Insert a period after the remaining characters.
         """
         if len(w) > 1:
             c = random.randint(1,len(w)-1)
