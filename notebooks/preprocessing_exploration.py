@@ -3,7 +3,7 @@
 import pandas as pd
 import numpy as np
 import re
-from preprocessing import Preprocessing
+from compgen2 import Preprocessing
 
 # %% [markdown]
 # # Preprocessing
@@ -131,8 +131,9 @@ vl.location.str.extract("(?P<Abkürzung>[A-Za-zäöüßÄÖÜẞ]+\.)").dropna()
 # %%
 # INFO: Zeige Einträge mit Sonderzeichen an 
 char = "\."
-char = "Oberf\."
-vl[vl.location.str.contains(char)]
+#char = "Oberf\."
+#vl[vl.location.str.contains(char)]
+verlustliste[verlustliste.location.str.contains(char)]
 
 # %% [markdown]
 # ## Abkürzungen erweitern
@@ -142,7 +143,7 @@ vl[vl.location.str.contains(char)]
 
 # %%
 # Lade definierte Abkürzungserweiterungen
-substitutions = pd.read_csv("../data/substitutions_PM.csv", sep = ";", header = None, 
+substitutions = pd.read_csv("../data/substitutions_011121.csv", sep = ";", header = None, 
                             names = ["abbreviation", "expansion"], comment='#')
 
 # %%
