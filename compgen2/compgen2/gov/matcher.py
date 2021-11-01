@@ -96,19 +96,23 @@ class Matcher:
                     ids_for_combination = (self.gov.ids_by_name[name] for name in combination_of_names)
                     for ids in product(*ids_for_combination):
                         if len(ids) > 1:
+                            # TODO: what to do if items exist in GOV but not the relationship?
                             if not self.gov.all_reachable_nodes_by_id[ids[0]].issuperset(ids[1:]):
                                 continue
-
-                        textual_ids = [self.gov.items_by_id[id_] for id_ in ids]
-                        type_ids = list(set().union(*(self.gov.types_by_id[id_] for id_ in ids)))
-                        type_names = [self.gov.type_names_by_type[type_id] for type_id in type_ids]
-                        match = {
-                            "parts": list(combination_of_names),
-                            "gov_ids": ids,
-                            "textual_ids": textual_ids,
-                            "type_ids": type_ids,
-                            "type_names": type_names,
-                        }
+                        
+                        match = {}
+                        for i, part in enumerate(combination_of_names):
+                            gov_id = ids[i]
+                            textual_id = self.gov.items_by_id[gov_id]
+                            type_ids = list(self.gov.types_by_id[gov_id])
+                            type_names = [self.gov.type_names_by_type[type_id] for type_id in type_ids]
+                            match[part] = {
+                                "gov_id": ids[i],
+                                "textual_id": textual_id,
+                                "type_ids": type_ids,
+                                "type_names": type_names
+                            }
+                        
                         self.results[location]["possible_matches"].append(match)
 
     def find_part_with_best_candidates(self, parts: tuple[str]) -> tuple[str, list[tuple[str, int]]]:
