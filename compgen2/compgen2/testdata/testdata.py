@@ -51,7 +51,7 @@ class GovTestData:
         for location, entry in results.items():
             truth = self.data[self.data["raw"].str.lower().eq(location)]["corrected"].values[0]
             for match in entry["possible_matches"]:
-                if all(part.strip().lower() in match["parts"] for part in truth.split(",")):
+                if all(part.strip().lower() in match for part in truth.split(",")):
                     correct += 1
                     break
             else:
