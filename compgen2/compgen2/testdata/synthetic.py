@@ -24,7 +24,7 @@ class Synthetic:
         self.COMBO_TEST = [self.m_linotype, self.m_fractal, self.m_drop, self.m_shorten]
         self.MANIPULATION_COMBOS = [self.COMBO_TEST]
     
-    def create_synthetic_data(self, size: int) -> None:
+    def create_synthetic_data(self, size: int) -> list[tuple[str, str]]:
         """
         Create a synthetic dataset based on the GOV object that has been loaded priorly.
         Args:
@@ -41,9 +41,7 @@ class Synthetic:
                 se = self.manipulate(se, combo)
             self.locations_synthetic.append(se)
 
-        for pair in zip(self.locations, self.locations_synthetic):
-            print(pair[0])
-            print(pair[1])
+        return list(zip(self.locations, self.locations_synthetic))
     
     def _linotype_dict(self) -> dict[str, set[str]]:
         """
