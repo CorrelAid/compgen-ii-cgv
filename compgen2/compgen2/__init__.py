@@ -1,15 +1,17 @@
 from .correction import LocCorrection, Phonetic, Preprocessing
 from .gov import GOV, Matcher
-from .testdata import GovTestData, Manipulator, StringEnriched, Synthetic
+from .testdata import (GovTestData, Manipulator, StringEnriched, Synthetic,
+                       get_accuracy)
 
 __all__ = [
+    "get_accuracy",
     "GOV",
     "GovTestData",
-    "Matcher",
     "LocCorrection",
+    "Manipulator",
+    "Matcher",
     "Phonetic",
     "Preprocessing",
-    "Manipulator",
     "StringEnriched",
     "Synthetic",
 ]
