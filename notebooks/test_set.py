@@ -1,25 +1,17 @@
-# -*- coding: utf-8 -*-
 # +
 import pickle
 
 import pandas as pd
 
-from compgen2 import GOV, Matcher, GovTestData, Synthetic
+from compgen2 import GOV, Matcher, GovTestData, Synthetic, get_accuracy
 # -
-
-# !pip install line_profiler
 
 # %load_ext line_profiler
 # %load_ext autoreload
 # %autoreload 2
 
-data_root= "..data/"
+data_root= "../data"
 
-gov = GOV(data_root)
-gov.load_data()
-gov.build_indices()
-
-# instead of the precious cell you can load a pickled version of gov
 with open("../data/gov.pickle", "rb") as stream:
     gov = pickle.load(stream)
 
@@ -29,45 +21,43 @@ gtd = GovTestData(gov)
 
 gtd.data
 
-gtd.get_test_locations()
+gtd.get_test_data()
 
 # +
-valid_test_location = gtd.get_test_locations()
+test_set = gtd.get_test_data()[:200]
 
 m = Matcher(gov)
-m.get_match_for_locations(valid_test_location[:10])
+m.get_match_for_locations((p[0] for p in test_set))
 # -
 
-gtd.get_accuracy(m.results)
+get_accuracy(m.results, test_set)
 
 # +
 from pprint import pprint
 
 pprint(m.results)
 # -
-m.get_match_for_locations(["Gračanica, Bosnien"])
+m.get_match_for_locations(["adligrose"])
 
 
-# +
-from pprint import pprint
-
-pprint(m.results["Gračanica, Bosnien"])
-# -
+m.results["adligrose"]
 
 # ## Synthetic data
 
 syn = Synthetic(gov)
-synth_data = syn.create_synthetic_data(size=100)
+synth_data = syn.create_synthetic_data(size=200)
 
 synth_data[:10]
 
-# +
-test_locations = [pair[1] for pair in synth_data]
-
 m = Matcher(gov)
-m.get_match_for_locations(test_locations)
-# -
+m.get_match_for_locations((p[0] for p in synth_data))
 
-m.results
+get_accuracy(m.results, synth_data)
+
+# +
+from pprint import pprint
+
+pprint(m.results)
+# -
 
 
