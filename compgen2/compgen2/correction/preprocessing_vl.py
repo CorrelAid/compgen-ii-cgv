@@ -6,7 +6,7 @@ import pandas as pd
 class Preprocessing_VL:
     
     @staticmethod
-    def prep_clean_brackets(column: pd.Series):
+    def replace_corrections_vl(column: pd.Series):
         """Function for removing historical corrections '()[]' and modern-day corrections '{}' and variants
         1. brackets including their content 
         2. the word 'nicht' plus related content
@@ -35,7 +35,7 @@ class Preprocessing_VL:
             to_replace=[str_01, str_02, str_03, str_04, str_05, str_06, str_07, str_08, str_09, str_10, str_11, str_12], value=rep, regex=True)
     
     @staticmethod        
-    def prep_clean_characters(column: pd.Series): 
+    def replace_characters_vl(column: pd.Series): 
         """Function for removing special characters: 
         1. simply removed: ?^_"#*\:{}()[]!
         2. replaced with ': ´`
@@ -53,7 +53,7 @@ class Preprocessing_VL:
         return column.replace(to_replace=[char_1, char_2], value=[rep_1, rep_2], regex=True)
     
     @staticmethod      
-    def prep_vl_abbreviations(column: pd.Series): 
+    def replace_abbreviations_vl(column: pd.Series): 
         """Function for substituting abbreviations with predefined content"""
         
         # load defined abbreviations 
