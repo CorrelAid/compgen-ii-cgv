@@ -3,7 +3,7 @@
 import pandas as pd
 import numpy as np
 import re
-from compgen2 import Preprocessing
+#from compgen2 import Preprocessing_VL
 
 # %% [markdown]
 # # Preprocessing
@@ -91,31 +91,41 @@ verlustliste = verlustliste.replace({'location' : { '\/' : ',',  '\;' : ','}}, r
 # %%
 vl = verlustliste.copy()
 
-# %%
-vl = Preprocessing.prep_clean_brackets(vl)
-vl
 
 # %%
-vl = Preprocessing.prep_clean_korrigiert(vl)
+def prep_clean_brackets(column: pd.Series):
+
+    # define cases 
+    str_01 =  r'\(.*?\)' # brackets variants incl. content
+    str_02 =  r'\[.*?\]'
+    str_03 =  r'\{.*?\}'
+    str_04 =  r'\(.*?\]'
+    str_05 =  r'\[.*?\)'
+    str_06 =  r'\(.*?\}'
+    str_07 =  r'\{.*?\)'
+    str_08 =  r'\[.*?\}'
+    str_09 =  r'\{.*?\]'
+    str_10 =  r'(\Wnicht.*?)(?=,|$)'
+    str_11 =  r'(\Wkorr.*?|\WKorr\..*?)(?=,|$)'
+    str_12 =  r'(\Wverm.*?)(?=,|$)'
+    
+    rep = ''
+    
+    # replace with remove 
+    return column.replace(
+        to_replace=[str_01, str_02, str_03, str_04, str_05, str_06, str_07, str_08, str_09, str_10, str_11, str_12], value=rep, regex=True)
+    
+vl = prep_clean_brackets(vl)
+
+# %%
 vl
 
 # %%
 # INFO: Zeige Einträge mit Sonderzeichen an 
-#char = r'\(.*?\)'
-#char = r'\('
-#char = r'\Wnicht.*?'
-char = r'(?i)korr'
-#char = r'(?i)\Wverm.*?\.'  
+char = "Zoszkolon"
+
 vl[vl.location.str.contains(char)]
 
-# %%
-vl = Preprocessing.prep_clean_characters(vl)
-vl
-
-# %%
-# INFO: Zeige Einträge mit Sonderzeichen an 
-char = "\'"
-vl[vl.location.str.contains(char)]
 
 # %%
 vl = Preprocessing.prep_vl_abbreviations(vl)
@@ -131,7 +141,6 @@ vl.location.str.extract("(?P<Abkürzung>[A-Za-zäöüßÄÖÜẞ]+\.)").dropna()
 # %%
 # INFO: Zeige Einträge mit Sonderzeichen an 
 char = "\."
-#char = "Oberf\."
 #vl[vl.location.str.contains(char)]
 verlustliste[verlustliste.location.str.contains(char)]
 
