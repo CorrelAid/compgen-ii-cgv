@@ -57,7 +57,7 @@ class Preprocessing_VL:
         """Function for substituting abbreviations with predefined content"""
         
         # load defined abbreviations 
-        substitutions = pd.read_csv("../data/substitutions_101021.csv", sep = ";", header = None, names = ["abbreviation", "expansion"], comment='#')
+        substitutions = pd.read_csv("../data/substitutions_vl_gov.csv", sep = ";", header = None, names = ["abbreviation", "expansion"], comment='#')
 
         # save as dict 
         subst_dict = dict(zip(substitutions.abbreviation, substitutions.expansion))
