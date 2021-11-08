@@ -1,4 +1,4 @@
-# # # eindeutige Ortsersetzungen;
+﻿# # # eindeutige Ortsersetzungen;
 Ad.;Adelig
 Adl.;Adelig
 Adlg.;Adelig
@@ -25,7 +25,7 @@ Brandenb.;Brandenburg
 Brandenbg.;Brandenburg
 Brl.;Berlin
 Bln.;Berlin
-Böhm.;Böhmen
+BÃ¶hm.;BÃ¶hmen
 Bay.;Bayern
 Bayr.;Bayern
 Bayer.;Bayern
@@ -37,9 +37,10 @@ Bad.;Baden
 Beesk.;Beeskow
 Bf.;Bahnhof
 Bhf.;Bahnhof
-Chât.;Château
-Chat.;Château
-Ch.-Salins;Château-Salins
+ChÃ¢t.;ChÃ¢teau
+Chat.;ChÃ¢teau
+Ch.-Salins;ChÃ¢teau-Salins
+C.-G.;Coburg-Gotha
 Co.-G.;Coburg-Gotha
 Co.-Go.;Coburg-Gotha
 Cob.-Go.;Coburg-Gotha
@@ -59,10 +60,10 @@ Dresden-N.;Dresden-Neustadt
 Dresden-A.;Dresden-Altstadt
 Donaukr.;Donaukreis
 Dortm.;Dortmund
-Düsseld.;Düsseldorf
+DÃ¼sseld.;DÃ¼sseldorf
 Eis.;Eisenach
 Eisen.;Eisenach
-Els.;Elsaß
+Els.;ElsaÃŸ
 Erzg.;Erzgebirge
 Erzgb.;Erzgebirge
 Erzgeb.;Erzgebirge
@@ -71,7 +72,7 @@ Flensbg.;Flensburg
 Frankf.;Frankfurt
 Fehm.;Fehmarn
 Gelsenk.;Gelsenkirchen
-Gr.;Groß
+Gr.;GroÃŸ
 Geb.;Gebirgskreis
 Gebirgskr.;Gebirgskreis
 Goarsh.;Goarshausen
@@ -89,15 +90,15 @@ Hildburgh.;Hildburghausen
 Hohenz.;Hohenzollern
 Hohenzoll.;Hohenzollern
 Holst.;Holstein
-Jüterb.;Jüterbog
+JÃ¼terb.;JÃ¼terbog
 Jagstkr.;Jagstkreis
 Kaisersl.;Kaiserslautern
-Königsb.;Königsberg
-Königsbg.;Königsberg
-Köllm.;Köllmisch
+KÃ¶nigsb.;KÃ¶nigsberg
+KÃ¶nigsbg.;KÃ¶nigsberg
+KÃ¶llm.;KÃ¶llmisch
 Kolb.;Kolberg
 Kolbg.;Kolberg
-Kyffh.;Kyffhäuser
+Kyffh.;KyffhÃ¤user
 Kl.;Klein
 Lbg.;Lauenburg
 Lauenb.;Lauenburg
@@ -107,9 +108,10 @@ Lothr.;Lothringen
 Laus.;Lausitz
 Lahnkr.;Lahnkreis
 Luckenw.;Luckenwalde
-Lüdingh.;Lüdinghausen
-Mähr.;Mährisch
-Märk.;Märkisch
+LÃ¼dingh.;LÃ¼dinghausen
+M. W. B.;Main-Weser-Bahn
+MÃ¤hr.;MÃ¤hrisch
+MÃ¤rk.;MÃ¤rkisch
 Mansf.;Mansfelder
 Mansfld.;Mansfelder
 Mansfeld.;Mansfelder
@@ -119,6 +121,7 @@ Marienb.;Marienburg
 Marienbg.;Marienburg
 Merseb.;Merseburg
 Mersebg.;Merseburg
+Mekl.;Mecklenburg
 Mckl.;Mecklenburg
 Meckl.;Mecklenburg
 Mcklb.;Mecklenburg
@@ -129,18 +132,18 @@ Mecklenb.;Mecklenburg
 Mecklenbg.;Mecklenburg
 Mein.;Meiningen
 Meining.;Meiningen
-M.-Gl.;Mönchengladbach
-M. Gl.;Mönchengladbach
-M.-Gladbach;Mönchengladbach
-M. Gladbach;Mönchengladbach
-Mühlh.;Mühlheim
+M.-Gl.;MÃ¶nchengladbach
+M. Gl.;MÃ¶nchengladbach
+M.-Gladbach;MÃ¶nchengladbach
+M. Gladbach;MÃ¶nchengladbach
+MÃ¼hlh.;MÃ¼hlheim
 Mkt. Oberdorf;Marktoberdorf
 Mfr.;Mittelfranken
 Mtlfr.;Mittelfranken
 Mittelfr.;Mittelfranken
 Mitelfr.;Mittelfranken
 MIttelfr.;Mittelfranken
-Mülh.;Mülheim
+MÃ¼lh.;MÃ¼lheim
 Nass.;Nassau
 Neidenb.;Neidenburg
 Neidenbg.;Neidenburg
@@ -164,11 +167,15 @@ Norderdithm.;Norderdithmarschen
 Ob.;Ober
 Oberb.;Oberbayern
 Oberbarn.;Oberbarnim
+O. E.;Ober-ElsaÃŸ
+O.-E.;Ober-ElsaÃŸ
 Ofr.;Oberfranken
 Obfr.;Oberfranken
 Oberf.;Oberfranken
 Oberfr.;Oberfranken
 Oberlahnkr.;Oberlahnkreis
+O. L.;Oberlausitzkreis
+O.-L.;Oberlausitzkreis
 Oberpf.;Oberpfalz
 Obpf.;Oberpfalz
 Obertaunuskr.;Obertaunuskreis
@@ -180,28 +187,32 @@ Oldenb.;Oldenburg
 Oldenbg.;Oldenburg
 Odenw.;Odenwald
 Ortelsb.;Ortelsburg
+OS.;Oberschlesien
+O. S.;Oberschlesien
+O.-S.;Oberschlesien
 O. Schlesien;Oberschlesien
 O.-Schlesien;Oberschlesien
 Oberschl.;Oberschlesien
 Osthavelld.;Osthavelland
 Ostfr.;Ostfriesland
 Ostkr.;Ostkreis
-Ostpr.;Ostpreußen
-O. Preußen;Ostpreußen
-O. Preußisch;Ostpreußen
+Ostpr.;OstpreuÃŸen
+O. PreuÃŸen;OstpreuÃŸen
+O.-PreuÃŸen;OstpreuÃŸen
+O. PreuÃŸisch;OstpreuÃŸisch
 Ostprign.;Ostprignitz
 Pf.;Pfalz
-Pr.;Preußen
-Pr.-;Preußen
-Preuß.;Preußen
-Preuß.-;Preußen
+Pr.-;PreuÃŸisch-
+PreuÃŸ.-;PreuÃŸisch-
+Pr.;PreuÃŸen
+PreuÃŸ.;PreuÃŸen
 Pom.;Pommern
 Pomm.;Pommern
 Pos.;Posen
 Quedlinb.;Quedlinburg
 Quedlinbg.;Quedlinburg
-Rbg.;Rübenberge
-Rbge.;Rübenberge
+Rbg.;RÃ¼benberge
+Rbge.;RÃ¼benberge
 Rappoltsw.;Rappoltsweiler
 Recklingh.;Recklinghausen
 Rheinpf.;Rheinland-Pfalz
@@ -220,8 +231,8 @@ Schwieb.;Schwiebus
 Schaumb.;Schaumburg
 Schaumbg.;Schaumburg
 Schwab.;Schwaben
-Saarbr.;Saarbrücken
-Saargem.;Saargemünd
+Saarbr.;SaarbrÃ¼cken
+Saargem.;SaargemÃ¼nd
 Schwzb.;Schwarzburg
 Schwzbg.;Schwarzburg
 Schwrzb.;Schwarzburg
@@ -232,10 +243,8 @@ Schwarzw.;Schwarzwald
 Schwarzwaldkr.;Schwarzwaldkreis
 Schl.;Schlesien
 Schles.;Schlesien
-Sa.-;Sachsen 
-Sa.;Sachsen 
-Sach.;Sachsen 
-Sachs.;Sachsen 
+S-A.;Sachsen-Anhalt
+S.-A.;Sachsen-Anhalt
 Sa-A.;Sachsen-Anhalt
 Sa-Anh.;Sachsen-Anhalt
 Sa.-Anh.;Sachsen-Anhalt
@@ -247,30 +256,37 @@ Sachsen-A.;Sachsen-Anhalt
 Sachsen-Anh.;Sachsen-Anhalt
 Sachsen A.;Sachsen-Anhalt
 Sachsen Anh.;Sachsen-Anhalt
-Sa. Weimar;Sachsen-Weimar
-Sa.-Weimar;Sachsen-Weimar
+S.-W.-E.;Sachsen-Weimar-Eisenach
 S. Weimar E.;Sachsen-Weimar-Eisenach
 S.-Weimar-E.;Sachsen-Weimar-Eisenach
+Sa. Weimar;Sachsen-Weimar
+Sa.-Weimar;Sachsen-Weimar
+S. M.;Sachsen-Meiningen
+S.-M.;Sachsen-Meiningen
 Sachsen M.;Sachsen-Meiningen
 S.-Meiningen;Sachsen-Meiningen
 Sa.-Meiningen;Sachsen-Meiningen
 Sachsen Mein.;Sachsen-Meiningen
 Sachsen-Mein.;Sachsen-Meiningen
-Sächs.;Sächsisch
+Sa.-;Sachsen-
+Sa.;Sachsen
+Sach.;Sachsen
+Sachs.;Sachsen
+SÃ¤chs.;SÃ¤chsisch
 Saalkr.;Saalekreis
 Saalkrs.;Saalekreis
 Sangerh.;Sangerhausen
 Seekr.;Seekreis
 Siegkr.;Siegkreis
-Süd.-Ditm.;Süderdithmarschen
-Süd.-Dithm.;Süderdithmarschen
-Sd.-Dithm.;Süderdithmarschen
-Süd. Dithm.;Süderdithmarschen
-S. Dithmarschen;Süderdithmarschen
-Süd. Dithmarschen;Süderdithmarschen
-Süd.-Dithmarschen;Süderdithmarschen
-Süderdithmarsch.;Süderdithmarschen
-Süderdithm.;Süderdithmarschen
+SÃ¼d.-Ditm.;SÃ¼derdithmarschen
+SÃ¼d.-Dithm.;SÃ¼derdithmarschen
+Sd.-Dithm.;SÃ¼derdithmarschen
+SÃ¼d. Dithm.;SÃ¼derdithmarschen
+S. Dithmarschen;SÃ¼derdithmarschen
+SÃ¼d. Dithmarschen;SÃ¼derdithmarschen
+SÃ¼d.-Dithmarschen;SÃ¼derdithmarschen
+SÃ¼derdithmarsch.;SÃ¼derdithmarschen
+SÃ¼derdithm.;SÃ¼derdithmarschen
 Sond.;Sondershausen
 Sonderh.;Sondershausen
 Sondersh.;Sondershausen
@@ -285,10 +301,10 @@ Schleswig-Hol.;Schleswig-Holstein
 Strel.;Strelitz
 Schw.;Schwerin
 Schwer.;Schwerin
-Schwäb.;Schwäbisch
+SchwÃ¤b.;SchwÃ¤bisch
 Stork.;Storkow
-Straßb.;Straßburg
-Straßbg.;Straßburg
+StraÃŸb.;StraÃŸburg
+StraÃŸbg.;StraÃŸburg
 Tauberbischofsh.;Tauberbischofsheim
 Taunuskr.;Taunuskreis
 Teckl.;Tecklenburg
@@ -296,10 +312,10 @@ Tecklb.;Tecklenburg
 Tecklbg.;Tecklenburg
 Tecklenb.;Tecklenburg
 Tecklenbg.;Tecklenburg
-Th.;Thüringen
-Thr.;Thüringen
-Thür.;Thüringen
-Thüring.;Thüringen
+Th.;ThÃ¼ringen
+Thr.;ThÃ¼ringen
+ThÃ¼r.;ThÃ¼ringen
+ThÃ¼ring.;ThÃ¼ringen
 Uckerm.;Uckermark
 Unt.;Unter
 Ufr.;Unterfranken
@@ -320,77 +336,46 @@ Waldenb.;Waldenburg
 Waldenbg.;Waldenburg
 Wartenb.;Wartenberg
 Wartenbg.;Wartenberg
-Weim.;Weimar
+Weimar E.;Weimar-Eisenach
 Weimar-E.;Weimar-Eisenach
+Weim.;Weimar
 Wend.;Wendisch
 Westf.;Westfalen
 Westkr.;Westkreis
-Wpr.;Westpreußen
-Wstpr.;Westpreußen
-Westpr.;Westpreußen
+W. PreuÃŸen;WestpreuÃŸen
+W.-PreuÃŸen;WestpreuÃŸen
+Wpr.;WestpreuÃŸen
+Wstpr.;WestpreuÃŸen
+Westpr.;WestpreuÃŸen
 Westprign.;Westprignitz
 Westerw.;Westerwald
 Westhavelld.;Westhavelland
-Wttbg.;Württemberg
-Wttmb.;Württemberg
-Wttmbg.;Württemberg
-Wrttb.;Württemberg
-Wrttbg.;Württemberg
-Württg.;Württemberg
-Wüttb.;Württemberg
-Wüttbg.;Württemberg
-Würtb.;Württemberg
-Würtbg.;Württemberg
-Württ.;Württemberg
-Württb.;Württemberg
-Württbg.;Württemberg
-Württemb.;Württemberg
-Württembg.;Württemberg
-bad.;baden
-bay.;bayern
-els.;elsaß
-fal.;falen
-friesl.;friesland
-frsld.;friesland
-geb.;gebirge
-hsn.;hausen
-havell.;havelland
-kirch.;kirchen
-preuß.;preußen
-pom.;pommern
-pomm.;pommern
-prov.;provinz
-schles.;schlesien
-#;
-# # # umstrittene Ortsersetzungen, da nur wenig Info;
-M. W. B.;Main-Weser-Bahn
-O. E.;Ober-Elsaß
-N.-A.;Nordamerika
-M.-A.;Nordamerika
-OS.;Oberschlesien
-O. S.;Oberschlesien
-O.-S.;Oberschlesien
-O. L.;Oberlausitzkreis
-O.-L.;Oberlausitzkreis
-S-A.;Sachsen-Anhalt
-S.-A.;Sachsen-Anhalt
-S. M.;Sachsen-Meiningen
-S.-M.;Sachsen-Meiningen
-S.-W.-E.;Sachsen-Weimar-Eisenach
-C.-G.;Coburg-Gotha
-#;
-# # # weitere Abkürzungen;
- a. d.; an der
- a.; am
- b. d.; bei der 
- b.; bei
- i.; im
- o. d.; ob der
- v. d.; von der
-str.;straße
-Str.;Straße
-#;
-# # # Flüsse ;
+Wttbg.;WÃ¼rttemberg
+Wttmb.;WÃ¼rttemberg
+Wttmbg.;WÃ¼rttemberg
+Wrttb.;WÃ¼rttemberg
+Wrttbg.;WÃ¼rttemberg
+WÃ¼rttg.;WÃ¼rttemberg
+WÃ¼ttb.;WÃ¼rttemberg
+WÃ¼ttbg.;WÃ¼rttemberg
+WÃ¼rtb.;WÃ¼rttemberg
+WÃ¼rtbg.;WÃ¼rttemberg
+WÃ¼rtt.;WÃ¼rttemberg
+WÃ¼rttb.;WÃ¼rttemberg
+WÃ¼rttbg.;WÃ¼rttemberg
+WÃ¼rttemb.;WÃ¼rttemberg
+WÃ¼rttembg.;WÃ¼rttemberg
+# # # weitere AbkÃ¼rzungen;
+a. d. ;an der 
+a. ;am 
+b. d. ;bei der 
+b. ;bei 
+i. ;im 
+o. d. ;ob der 
+v. d. ;von der 
+str.;straÃŸe
+Str.;StraÃŸe
+# # # FlÃ¼sse ;
 Brz.;Brenz
 Elz.;Elsenz
 Katzb.;Katzbach
@@ -400,38 +385,37 @@ Pers.;Persante
 Unstr.;Unstrut
 Wes.;Weser
 Rh.;Rhein
-#;
-# # # Länder;
+# # # LÃ¤nder;
 Belg.;Belgien
-Dt.-;Deutsch 
-Dt.;Deutsch 
-Dtsch.-;Deutsch 
-Dtsch.;Deutsch 
+Dt.-;Deutsch-
+Dt.;Deutsch
+Dtsch.-;Deutsch-
+Dtsch.;Deutsch
 Engl.;England
-Brit.;Großbritannien
-Franz.-;Französisch 
-Franz.;Französisch
-Fr.-;Französisch 
-Fr.;Französisch
+Brit.;GroÃŸbritannien
+Franz.-;FranzÃ¶sisch-
+Franz.;FranzÃ¶sisch
+Fr.-;FranzÃ¶sisch-
+Fr.;FranzÃ¶sisch
 Frankr.;Frankreich
 Niederl.;Niederlande
-Oest.;österreich
-Oester.;österreich
-Oesterr.;österreich
-Oster.;österreich
-Osterr.;österreich
-Öster.;österreich
-Österr.;österreich
+Oest.;Ã¶sterreich
+Oester.;Ã¶sterreich
+Oesterr.;Ã¶sterreich
+Oster.;Ã¶sterreich
+Osterr.;Ã¶sterreich
+Ã–ster.;Ã¶sterreich
+Ã–sterr.;Ã¶sterreich
 Pol.;Polen
-Poln.-;Polen
+Poln.-;Polnisch-
 Poln.;Polnisch
-Polln. ;Polnisch
 Russ.;Russland
-Rußl.;Russland
-Rußld.;Russland
-Ruß.;Russland
-rußl.;russland
+RuÃŸl.;Russland
+RuÃŸld.;Russland
+RuÃŸ.;Russland
 Ung.;Ungarn
+N.-A.;Nordamerika
+M.-A.;Mittelamerika
 V. St. A.;United States of America
 U. S. A.;United States of America
 U. St. A.;United States of America
@@ -444,7 +428,25 @@ v. Nord-Amerika;of America
 v. Amerika;of America
 v. Nordamerika;of America
 #;
-# # #  Irrelevante Informationen löschen;
+# # #  Ergänzungen innerhalb eines Wortes;
+bad.;baden
+bay.;bayern
+els.;elsaÃŸ
+fal.;falen
+friesl.;friesland
+frsld.;friesland
+geb.;gebirge
+hsn.;hausen
+havell.;havelland
+kirch.;kirchen
+preuÃŸ.;preuÃŸen
+pom.;pommern
+pomm.;pommern
+prov.;provinz
+ruÃŸl.;russland
+schles.;schlesien
+#;
+# # #  Irrelevante Typeninformationen lÃ¶schen;
 O.-A.; 
 O.-A; 
 O-A.; 
@@ -463,24 +465,24 @@ Ev.;
 Forsth.; 
 Fstt.; 
 Frstt.; 
-Fürst.; 
-Fürstt.; 
-Fürstent.; 
-Fürstl.; 
+FÃ¼rst.; 
+FÃ¼rstt.; 
+FÃ¼rstent.; 
+FÃ¼rstl.; 
 Grfsch.; 
 Grafsch.; 
 Grschft.; 
 Grfscht.; 
 Grfschft.; 
 Grafschft.; 
-Gräfl.; 
+GrÃ¤fl.; 
 Gem.; 
 Gde.; 
 Gouv.; 
 Geistl.; 
-Großh.; 
-Großherz.; 
-Großherzogt.; 
+GroÃŸh.; 
+GroÃŸherz.; 
+GroÃŸherzogt.; 
 Gutbez.; 
 Hzt.; 
 Hzgt.; 
@@ -490,9 +492,9 @@ Herzgt.;
 Herzogt.; 
 Herzogl.; 
 Kgr.; 
-Königr.; 
+KÃ¶nigr.; 
 Kgl.; 
-Königl.; 
+KÃ¶nigl.; 
 Kt.; 
 Kth.; 
 Kath.; 
@@ -509,11 +511,11 @@ Reg-;
 Reg.-; 
 Reg.; 
 Sdt.; 
-Städt.; 
+StÃ¤dt.; 
 Stadtkr.; 
 Vw.; 
 Vorw.; 
- wohnh.; 
+wohnh.; 
 Adr.; 
- j. L.; 
- ä. L.; 
+j. L.; 
+Ã¤. L.; 
