@@ -181,31 +181,42 @@ verlustliste[verlustliste.location.str.contains(char)]
 # INFO: Sonderzeichen . kennzeichnet Abkürzungen 
 
 # %%
-with open('../data/substitutions_vl_gov.csv') as f:
-    print(f)
-
-# %%
 # Lade definierte Abkürzungserweiterungen
-substitutions = pd.read_csv("../data/substitutions_vl_gov.csv", sep = ";", header = None, 
-                            names = ["abbreviation", "expansion"], comment='#', encoding='utf-8')
+sub1 = pd.read_csv("../data/substitutions_vl_gov_utf8.csv", sep = ";", header = None, 
+                            names = ["abbreviation", "expansion"], comment='#', encoding ='utf-8')
 
 # %%
 # preprocess: regex-compatible and lower case
-substitutions.abbreviation = "((?<=\W)|^)" + substitutions.abbreviation.replace(to_replace='\.', value='\\.', regex=True).str.lower()
-substitutions.abbreviation
+sub1.abbreviation = "((?<=\W)|^)" + sub1.abbreviation.replace(to_replace='\.', value='\\.', regex=True).str.lower()
+sub1.abbreviation
 
 # %%
 # abbreviations lower case
-substitutions.expansion = substitutions.expansion.str.lower()
-substitutions.expansion
-
-# %%
-substitutions.info()
-substitutions
+sub1.expansion = sub1.expansion.str.lower()
+sub1.expansion
 
 # %%
 # INFO: Diese Abkürzungen werden im Folgenden entfernt
-substitutions[substitutions.expansion == "  "]
+sub1[sub1.expansion == " "]
+
+# %%
+# Lade definierte Abkürzungserweiterungen
+sub2 = pd.read_csv("../data/substitutions_vl_gov_lc_utf8.csv", sep = ";", header = None, 
+                            names = ["abbreviation", "expansion"], comment='#', encoding ='utf-8')
+
+# %%
+# preprocess: regex-compatible and lower case
+sub2.abbreviation = "(?<=\w)" + sub2.abbreviation.replace(to_replace='\.', value='\\.', regex=True).str.lower()
+sub2.abbreviation
+
+# %%
+# abbreviations lower case
+sub2.expansion = sub2.expansion.str.lower()
+sub2.expansion
+
+# %%
+substitutions = pd.concat([sub1, sub2])
+substitutions
 
 # %%
 # Substitutions in dict Format

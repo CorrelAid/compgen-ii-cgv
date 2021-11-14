@@ -375,7 +375,6 @@ b. ;bei
 i. ;im 
 o. d. ;ob der 
 v. d. ;von der 
-str.;straße
 Str.;Straße
 # # # Flüsse ;
 Brz.;Brenz
@@ -429,24 +428,6 @@ Staaten;States
 v. Nord-Amerika;of America
 v. Amerika;of America
 v. Nordamerika;of America
-#;
-# # #  Ergänzungen innerhalb eines Wortes;
-bad.;baden
-bay.;bayern
-els.;elsaß
-fal.;falen
-friesl.;friesland
-frsld.;friesland
-geb.;gebirge
-hsn.;hausen
-havell.;havelland
-kirch.;kirchen
-preuß.;preußen
-pom.;pommern
-pomm.;pommern
-prov.;provinz
-rußl.;rußland
-schles.;schlesien
 #;
 # # #  Irrelevante Typeninformationen lÃ¶schen;
 O.-A.; 
