@@ -49,9 +49,10 @@ gtd.get_accuracy(m.results)
 
 
 # +
+gtd = GovTestData(gov)
 gtd.data["raw"] = Preprocessing_VL.replace_corrections_vl(gtd.data["raw"])
 gtd.data["raw"] = Preprocessing_VL.replace_characters_vl(gtd.data["raw"])
-gtd.data["raw"] = Preprocessing_VL.replace_abbreviations_vl(gtd.data["raw"])
+#gtd.data["raw"] = Preprocessing_VL.replace_abbreviations_vl(gtd.data["raw"])
 
 valid_test_locations = pd.Series(gtd.get_test_locations())
 # -
