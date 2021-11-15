@@ -4,7 +4,12 @@ import pickle
 
 import pandas as pd
 
-from compgen2 import GOV, Matcher, GovTestData
+from compgen2 import GOV, Matcher, GovTestData, Preprocessing_VL
+
+# +
+from pathlib import Path
+
+Path(".").cwd()
 # -
 
 # !pip install line_profiler
@@ -23,7 +28,7 @@ gov.build_indices()
 with open("../data/gov.pickle", "rb") as stream:
     gov = pickle.load(stream)
 
-# ## Korrekturliste GOV
+# ## Korrekturliste GOV ohne Preprcoessing
 
 gtd = GovTestData(gov)
 
@@ -35,23 +40,25 @@ gtd.get_test_locations()
 valid_test_location = gtd.get_test_locations()
 
 m = Matcher(gov)
-m.get_match_for_locations(valid_test_location[:10])
+m.get_match_for_locations(valid_test_location)
 # -
 
 gtd.get_accuracy(m.results)
 
-# +
-from pprint import pprint
-
-pprint(m.results)
-# -
-m.get_match_for_locations(["Gračanica, Bosnien"])
+# ## Korrekturliste GOV mit VL Preprcoessing
 
 
 # +
-from pprint import pprint
+gtd.data["raw"] = Preprocessing_VL.replace_corrections_vl(gtd.data["raw"])
+gtd.data["raw"] = Preprocessing_VL.replace_characters_vl(gtd.data["raw"])
+gtd.data["raw"] = Preprocessing_VL.replace_abbreviations_vl(gtd.data["raw"])
 
-pprint(m.results["Gračanica, Bosnien"])
+valid_test_locations = pd.Series(gtd.get_test_locations())
 # -
+
+m = Matcher(gov)
+m.get_match_for_locations(valid_test_locations)
+
+gtd.get_accuracy(m.results)
 
 
