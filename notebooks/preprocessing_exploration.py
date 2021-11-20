@@ -3,7 +3,7 @@
 import pandas as pd
 import numpy as np
 import re
-from compgen2 import Preprocessing_VL
+from compgen2 import GOV, Matcher, const, Preprocessing_VL, Preprocessing_GOV
 
 # %% [markdown]
 # # Preprocessing
@@ -234,23 +234,6 @@ testset = with_abbreviations.sample(n=20)
 testset
 
 # %%
-# INFO: Test Methode mit replace(regex=False)
-# expanded = with_abbreviations.location.replace(replace_dict, regex=False)
-# expanded
-
-# Problem: Matched keine Substrings -> grundsätzlich nicht geeignet
-
-# column.replace(to_replace=subst_dict, regex=False)
-
-# %%
-# INFO: Test Methode mit str.replace, benötigt loop  
-# for old, new in replace_dict.items():
-#    with_abbreviations['location'] = with_abbreviations['location'].str.replace(old, new, regex=False)
-# with_abbreviations
-
-# Funktioniert! Matched Substrings aber ist ineffizient
-
-# %%
 # INFO: Test Methode mit replace(regex=True)
 testset.location = testset.location.replace(replace_dict, regex=True)
 testset
@@ -281,5 +264,42 @@ with_abbreviations[with_abbreviations.location.str.contains(char)]
 # %%
 # Check: Häufigste weiterhin bestehende Abkürzungen
 # vl.location.str.extract("(?P<Abkürzung>[A-Za-zäöüßÄÖÜẞ]+\.)").dropna().value_counts(normalize = True)[0:50]
+
+# %% [markdown]
+# # GOV 
+
+# %% [markdown]
+# ## Abkürzungen überprüfen
+
+# %%
+data_root = "../data"
+gov = GOV(data_root)
+
+# %%
+gov.load_data()
+
+# %%
+gov.build_indices()
+
+# %%
+kreise = gov.get_names_by_ids(gov.get_ids_by_types(const.T_KREISUNDHOEHER))
+
+# %%
+kreise = list(kreise)
+kreise = pd.DataFrame(data=kreise, columns=['name'])
+
+# %%
+kreise.info()
+
+# %%
+kreise.sample(n=20)
+
+# %%
+char = "(?i)i\."
+kreise[kreise.name.str.contains(char)]
+
+# %%
+char = "(?i)i\."
+verlustliste[verlustliste.location.str.contains(char)].sample(n=20)
 
 # %%
