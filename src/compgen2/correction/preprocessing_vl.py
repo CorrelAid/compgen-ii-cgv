@@ -53,14 +53,56 @@ class Preprocessing_VL:
         return column.replace(to_replace=[char_1, char_2], value=[rep_1, rep_2], regex=True)
     
     @staticmethod      
-    def replace_abbreviations_vl(column: pd.Series): 
-        """Function for substituting abbreviations with predefined content"""
+    def substitute_partial_words_vl(column: pd.Series): 
+        """Function no 1. for substituting abbreviations: flexibly substitutes abbreviations that are part of a longer word 
+        (e.g. Oberfr./Mittelfr. -> franken)
+        """
         
         # load defined abbreviations 
-        substitutions = pd.read_csv("../data/substitutions_vl_gov.csv", sep = ";", header = None, names = ["abbreviation", "expansion"], comment='#')
-
+        sub = pd.read_csv("../data/substitutions_vl_gov_partial_word.csv", sep = ";", header = None, names = ["abbreviation", "expansion"], comment='#', encoding ='utf-8')
+        
+        # add regex (THIS IS FUNCTION-SPECIFIC)
+        sub.abbreviation = "(?<=\w)" + sub.abbreviation.replace(to_replace='\.', value='\\.', regex=True).str.lower()
+        sub.expansion = sub.expansion.str.lower()
+        
         # save as dict 
-        subst_dict = dict(zip(substitutions.abbreviation, substitutions.expansion))
+        subst_dict = dict(zip(sub.abbreviation, sub.expansion))
         
         # do replacement 
-        return column.replace(to_replace=subst_dict, regex=False)
+        return column.replace(to_replace=subst_dict, regex=True)
+    
+    @staticmethod      
+    def substitute_delete_words_vl(column: pd.Series): 
+        """Function no 2. for substituting abbreviations: removes unnecessary abbreviations and words that relates to types 
+        (e.g. Kr., Kreis, Amtshauptmannschaft)
+        """
+        
+        # load defined abbreviations 
+        sub = pd.read_csv("../data/substitutions_vl_gov_to_delete.csv", sep = ";", header = None, names = ["abbreviation", "expansion"], comment='#', encoding ='utf-8') 
+        
+        # add regex and remove empty space (THIS IS FUNCTION-SPECIFIC)
+        sub.abbreviation = "((?<=\W)|^)" + sub.abbreviation.replace(to_replace='\.', value='\\.', regex=True).str.lower()
+        sub.expansion = sub.expansion.replace(to_replace=' ', value='')
+        
+        # save as dict 
+        subst_dict = dict(zip(sub.abbreviation, sub.expansion))
+        
+        # do replacement 
+        return column.replace(to_replace=subst_dict, regex=True)
+    
+    @staticmethod      
+    def substitute_full_words_vl(column: pd.Series): 
+        """Function no 3. for substituting abbreviations: substitutes specific abbreviations"""
+        
+        # load defined abbreviations 
+        sub = pd.read_csv("../data/substitutions_vl_gov_full_word.csv", sep = ";", header = None, names = ["abbreviation", "expansion"], comment='#', encoding ='utf-8')
+        
+        # add regex (THIS IS FUNCTION-SPECIFIC)
+        sub.abbreviation = "((?<=\W)|^)" + sub.abbreviation.replace(to_replace='\.', value='\\.', regex=True).str.lower()
+        sub.expansion = sub.expansion.str.lower()
+        
+        # save as dict 
+        subst_dict = dict(zip(sub.abbreviation, sub.expansion))
+        
+        # do replacement 
+        return column.replace(to_replace=subst_dict, regex=True)
