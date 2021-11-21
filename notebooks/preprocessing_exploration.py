@@ -90,62 +90,15 @@ verlustliste = verlustliste.replace({'location' : { '\/' : ',',  '\;' : ','}}, r
 
 # %%
 vl = verlustliste.copy()
-
-
-# %%
-def replace_corrections_vl(column: pd.Series):
-    """Function for removing historical corrections '()[]' and modern-day corrections '{}' and variants
-    1. brackets including their content 
-    2. the word 'nicht' plus related content
-    3. the word 'korrigiert' and its variants plus related content
-    4. the word 'vermutlich' and its variants plus related content
-    """
-        
-    # define cases 
-    str_01 = r'\(.*?\)' # bracket variants incl. content
-    str_02 = r'\[.*?\]'
-    str_03 = r'\{.*?\}'
-    str_04 = r'\(.*?\]'
-    str_05 = r'\[.*?\)'
-    str_06 = r'\(.*?\}'
-    str_07 = r'\{.*?\)'
-    str_08 = r'\[.*?\}'
-    str_09 = r'\{.*?\]'
-    str_10 = r'(\Wnicht.*?)(?=,|$)' # word 'nicht' and following content, until (not including) comma or end of line
-    str_11 = r'(\Wkorr.*?|\WKorr\..*?)(?=,|$)' # word 'korr' and following content, until (not including) comma or end of line
-    str_12 = r'(\Wverm.*?)(?=,|$)'
-
-    rep = ''
-    
-    # replace with remove 
-    return column.replace(
-        to_replace=[str_01, str_02, str_03, str_04, str_05, str_06, str_07, str_08, str_09, str_10, str_11, str_12], value=rep, regex=True)
-    
-vl = replace_corrections_vl(vl)
-
-# %%
 vl
 
+# %%
+vl = Preprocessing_VL.replace_corrections_vl(vl)
+vl
 
 # %%
-def replace_characters_vl(column: pd.Series): 
-    """Function for removing special characters: 
-    1. simply removed: ?^_"#*\:{}()[]!
-    2. replaced with ': ´`
-    """
-        
-    # replace with remove 
-    char_1 = '[?^_"#*\:{}()[\]!]'
-    rep_1 = ''
-        
-    # replace with special character (')
-    char_2 = '[´`]'
-    rep_2 = '\''
-        
-    # do replacement 
-    return column.replace(to_replace=[char_1, char_2], value=[rep_1, rep_2], regex=True)
-
-vl = replace_characters_vl(vl)
+vl = Preprocessing_VL.replace_characters_vl(vl)
+vl
 
 # %%
 vl
@@ -164,16 +117,6 @@ vl[vl.location.str.contains(char)]
 # Check: Prozentzahl an weiterhin bestehenden Abkürzungen
 #vl.location.str.count("[A-Za-zäöüßÄÖÜẞ]+\.").sum() / vl.shape[0]
 
-# %%
-# Check: Häufigste weiterhin bestehende Abkürzungen
-#vl.location.str.extract("(?P<Abkürzung>[A-Za-zäöüßÄÖÜẞ]+\.)").dropna().value_counts(normalize = True)[0:50]
-
-# %%
-# INFO: Zeige Einträge mit Sonderzeichen an 
-char = "\."
-#vl[vl.location.str.contains(char)]
-verlustliste[verlustliste.location.str.contains(char)]
-
 # %% [markdown]
 # ## Abkürzungen erweitern
 
@@ -182,46 +125,72 @@ verlustliste[verlustliste.location.str.contains(char)]
 
 # %%
 # Lade definierte Abkürzungserweiterungen
-sub1 = pd.read_csv("../data/substitutions_vl_gov_utf8.csv", sep = ";", header = None, 
+sub_partial = pd.read_csv("../data/substitutions_vl_gov_partial_word.csv", sep = ";", header = None, 
                             names = ["abbreviation", "expansion"], comment='#', encoding ='utf-8')
+
+# %% [markdown]
+# #### Prepare 'partial'
 
 # %%
 # preprocess: regex-compatible and lower case
-sub1.abbreviation = "((?<=\W)|^)" + sub1.abbreviation.replace(to_replace='\.', value='\\.', regex=True).str.lower()
-sub1.abbreviation
+sub_partial.abbreviation = "(?<=\w)" + sub_partial.abbreviation.replace(to_replace='\.', value='\\.', regex=True).str.lower()
+#sub_partial.abbreviation
 
 # %%
 # abbreviations lower case
-sub1.expansion = sub1.expansion.str.lower()
-sub1.expansion
-
-# %%
-# INFO: Diese Abkürzungen werden im Folgenden entfernt
-sub1[sub1.expansion == " "]
-
-# %%
-# Lade definierte Abkürzungserweiterungen
-sub2 = pd.read_csv("../data/substitutions_vl_gov_lc_utf8.csv", sep = ";", header = None, 
-                            names = ["abbreviation", "expansion"], comment='#', encoding ='utf-8')
-
-# %%
-# preprocess: regex-compatible and lower case
-sub2.abbreviation = "(?<=\w)" + sub2.abbreviation.replace(to_replace='\.', value='\\.', regex=True).str.lower()
-sub2.abbreviation
-
-# %%
-# abbreviations lower case
-sub2.expansion = sub2.expansion.str.lower()
-sub2.expansion
-
-# %%
-substitutions = pd.concat([sub1, sub2])
-substitutions
+sub_partial.expansion = sub_partial.expansion.str.lower()
+#sub_partial.expansion
 
 # %%
 # Substitutions in dict Format
-replace_dict = dict(zip(substitutions.abbreviation, substitutions.expansion))
-replace_dict
+replace_dict_1 = dict(zip(sub_partial.abbreviation, sub_partial.expansion))
+#replace_dict_1
+
+# %% [markdown]
+# #### Prepare 'delete'
+
+# %%
+sub_delete = pd.read_csv("../data/substitutions_vl_gov_to_delete.csv", sep = ";", header = None, 
+                            names = ["abbreviation", "expansion"], comment='#', encoding ='utf-8')
+
+# %%
+# preprocess: regex-compatible and lower case
+sub_delete.abbreviation = "((?<=\W)|^)" + sub_delete.abbreviation.replace(to_replace='\.', value='\\.', regex=True).str.lower()
+#sub_delete.abbreviation
+
+# %%
+# abbreviations lower case
+sub_delete.expansion = sub_delete.expansion.replace(to_replace=' ', value='')
+
+# %%
+# Substitutions in dict Format
+replace_dict_2 = dict(zip(sub_delete.abbreviation, sub_delete.expansion))
+#replace_dict_2
+
+# %% [markdown]
+# #### Prepare 'full'
+
+# %%
+sub_full = pd.read_csv("../data/substitutions_vl_gov_full_word.csv", sep = ";", header = None, 
+                            names = ["abbreviation", "expansion"], comment='#', encoding ='utf-8')
+
+# %%
+# preprocess: regex-compatible and lower case
+sub_full.abbreviation = "((?<=\W)|^)" + sub_full.abbreviation.replace(to_replace='\.', value='\\.', regex=True).str.lower()
+#sub_full.abbreviation
+
+# %%
+# abbreviations lower case
+sub_full.expansion = sub_full.expansion.str.lower()
+#sub_full.expansion
+
+# %%
+# Substitutions in dict Format
+replace_dict_3 = dict(zip(sub_full.abbreviation, sub_full.expansion))
+#replace_dict_3
+
+# %% [markdown]
+# #### Do all replacements
 
 # %%
 # TEST data set
@@ -230,32 +199,45 @@ with_abbreviations["location"] = with_abbreviations["location"].str.lower()
 with_abbreviations
 
 # %%
-testset = with_abbreviations.sample(n=20)
-testset
+testset = with_abbreviations.sample(n=50).drop('loc_parts_count', axis=1)
+#testset
 
 # %%
 # INFO: Test Methode mit replace(regex=True)
-testset.location = testset.location.replace(replace_dict, regex=True)
-testset
+testset['result_sub_partial'] = testset.location.replace(replace_dict_1, regex=True)
+#testset
 
 # Funktioniert! 
 
 # %%
-with_abbreviations.location.str.count("[A-Za-zäöüßÄÖÜẞ]+\.").sum() / with_abbreviations.shape[0]
+# INFO: Test Methode mit replace(regex=True)
+testset['result_sub_delete'] = testset.result_sub_partial.replace(replace_dict_2, regex=True)
+#testset
+
+# Funktioniert! 
 
 # %%
-with_abbreviations.location.str.extract("(?P<Abkürzung>[A-Za-zäöüßÄÖÜẞ]+\.)").dropna().value_counts(normalize = True)[0:50]
+# INFO: Test Methode mit replace(regex=True)
+testset['result_sub_full']= testset.result_sub_delete.replace(replace_dict_3, regex=True)
+#testset
+
+# Funktioniert! 
 
 # %%
-# INFO: Zeige Einträge an 
-char = "kl\."
+# INFO: Test Methode mit replace(regex=True)
+testset['result_replace_i']= testset.result_sub_full.replace(to_replace=" i\.", value=",", regex=True)
+#testset
 
-with_abbreviations[with_abbreviations.location.str.contains(char)]
+# Funktioniert! 
+
+# %% [markdown]
+# #### Statistics
 
 # %%
-# Ersetze Abkürzungen in Verlustliste
-# vl.location = vl.location.replace(replace_dict, regex=True)
-# vl
+# with_abbreviations.location.str.count("[A-Za-zäöüßÄÖÜẞ]+\.").sum() / with_abbreviations.shape[0]
+
+# %%
+# with_abbreviations.location.str.extract("(?P<Abkürzung>[A-Za-zäöüßÄÖÜẞ]+\.)").dropna().value_counts(normalize = True)[0:50]
 
 # %%
 # Check: Prozentzahl an weiterhin bestehenden Abkürzungen
@@ -266,10 +248,57 @@ with_abbreviations[with_abbreviations.location.str.contains(char)]
 # vl.location.str.extract("(?P<Abkürzung>[A-Za-zäöüßÄÖÜẞ]+\.)").dropna().value_counts(normalize = True)[0:50]
 
 # %% [markdown]
+# ### Test: Methode aus Preprocessing
+
+# %%
+with_abbreviations = vl[vl.location.str.contains("[A-Za-zäöüßÄÖÜẞ]+\.")].copy()
+with_abbreviations["location"] = with_abbreviations["location"]
+
+# %%
+testset = with_abbreviations.sample(n=50).drop('loc_parts_count', axis=1)
+
+# %%
+testset_2 = testset.copy()
+#testset_2
+
+# %%
+testset_2['location'] = Preprocessing_VL.substitute_partial_words_vl(testset_2['location'])
+#testset_2
+
+# %%
+testset_2['location'] = Preprocessing_VL.substitute_delete_words_vl(testset_2['location'])
+#testset_2
+
+# %%
+testset_2['location'] = Preprocessing_VL.substitute_full_words_vl(testset_2['location'])
+#testset_2
+
+# %%
+def substitute_full_words_vl(column: pd.Series): 
+    """Function no 3. for substituting abbreviations: substitutes specific abbreviations"""
+        
+    # load defined abbreviations 
+    sub = pd.read_csv("../data/substitutions_vl_gov_full_word.csv", sep = ";", header = None, names = ["abbreviation", "expansion"], comment='#', encoding ='utf-8')
+        
+    # add regex (THIS IS FUNCTION-SPECIFIC)
+    sub.abbreviation = "((?<=\W)|^)" + sub.abbreviation.replace(to_replace='\.', value='\\.', regex=True).str.lower()
+    sub.expansion = sub.expansion.str.lower()
+        
+    # save as dict 
+    subst_dict = dict(zip(sub.abbreviation, sub.expansion))
+        
+    # do replacement 
+    return column.replace(to_replace=subst_dict, regex=True)
+
+
+# %%
+testset_2['location'] = Preprocessing_VL.substitute_full_words_vl(testset_2['location'])
+
+# %% [markdown]
 # # GOV 
 
 # %% [markdown]
-# ## Abkürzungen überprüfen
+# ### Abkürzungen erweitern
 
 # %%
 data_root = "../data"
@@ -295,11 +324,11 @@ kreise.info()
 kreise.sample(n=20)
 
 # %%
-char = "(?i)i\."
+char = "(?i)Reuß"
 kreise[kreise.name.str.contains(char)]
 
 # %%
-char = "(?i)i\."
-verlustliste[verlustliste.location.str.contains(char)].sample(n=20)
+char = "(?i)j\. L\."
+vl[vl.location.str.contains(char)]
 
 # %%
