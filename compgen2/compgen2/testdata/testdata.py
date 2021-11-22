@@ -34,28 +34,43 @@ class GovTestData:
 
         return df
 
-    def get_test_locations(self) -> list[str]:
+    def get_test_data(self) -> list[tuple[str, str]]:
         valid_entries = []
         for location, truth in zip(self.data["raw"].str.lower(), self.data["corrected"].str.lower()):
             parts = Matcher.get_query_parts(truth)
             if all(part in self.gov.ids_by_name for part in parts):
-                valid_entries.append(location)
+                valid_entries.append((location, truth))
             else:
                 print(f"Could not find {truth} with parts {parts} in GOV.")
 
         print(f"Found {len(valid_entries)} valid corrected names in GOV")
         return valid_entries
     
-    def get_accuracy(self, results: dict) -> float:
-        correct = 0
-        for location, entry in results.items():
-            truth = self.data[self.data["raw"].str.lower().eq(location)]["corrected"].values[0]
-            for match in entry["possible_matches"]:
+    
+def get_accuracy(results: dict, test_set: list[tuple[str,str]]) -> float:
+    """Calculates accuracy for matcher results compared against a ground truth.
+
+    Args:
+        results (dict): Output from `matcher.get_match_for_locations`.
+        truth (list[str]): A list of expected locations names in the same order as the test set.
+
+    Returns:
+        float: Accuracy for test set. A match is counted as correct, if all parts of the truth location can be found in the match.
+    """
+    correct = 0
+    
+    for location, truth in test_set:
+        prediction = results.get(location)
+        
+        if prediction is not None:
+            for match in prediction["possible_matches"]:
                 if all(part.strip().lower() in match for part in truth.split(",")):
                     correct += 1
                     break
             else:
-                print(f"Could not solve {location}, expected {truth.lower()}.")   
-                
-        print(f"Solved {correct} of {len(results)} ({correct / len(results)}) locations.")
-        return correct / len(results)
+                print(f"Could not solve {location}, expected {truth.lower()}.") 
+        else:
+            print(f"No prediction found for {location}.")
+            
+    print(f"Solved {correct} of {len(results)} ({correct / len(results)}) locations.")
+    return correct / len(results)
