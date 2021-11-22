@@ -23,12 +23,11 @@ class Synthetic:
         self.m_fractal = Manipulator(self.fractal, "char", const_synthetic.P_FRACTAL)
         self.m_drop = Manipulator(self.drop, "char", const_synthetic.P_DROP)
         self.m_shorten = Manipulator(self.shorten, "word", const_synthetic.P_SHORTEN)
-        self.COMBO_TEST = [self.m_linotype, self.m_fractal, self.m_drop, self.m_shorten]
-        self.MANIPULATION_COMBOS = [self.COMBO_TEST]
+        self.MANIPULATION_STEPS = [self.m_linotype, self.m_fractal, self.m_drop, self.m_shorten]
 
     def create_synthetic_data(self, size: int) -> list[tuple[str, str]]:
         """
-        Create a synthetic dataset based on the GOV object that has been loaded priorly.
+        Create a synthetic dataset based on the paths of the GOV object that has been loaded priorly.
         Args:
           size (int): number of synthetic records that get created
         """
@@ -39,9 +38,9 @@ class Synthetic:
             self.locations.append(", ".join(location))
             location = self.shuffle_order(location)
             se = StringEnriched(", ".join(location))
-            for combo in self.MANIPULATION_COMBOS:
-                se = self.manipulate(se, combo)
-            self.locations_synthetic.append(se)
+            for m in self.MANIPULATION_STEPS:
+                se.apply_manipulator(m)
+            self.locations_synthetic.append(se.get_string())
 
         return list(zip(self.locations_synthetic, self.locations,))
 
@@ -108,15 +107,6 @@ class Synthetic:
             return l[::-1]
         else:
             return l
-
-    def manipulate(self, se: StringEnriched, manipulation_combo: list[Manipulator]) -> str:
-        """
-        Manipulate a string given a collection of manipulators
-        """
-
-        for m in manipulation_combo:
-            se.apply_manipulator(m)
-        return se.get_string()
 
     def shorten(self, w: str) -> str:
         """
