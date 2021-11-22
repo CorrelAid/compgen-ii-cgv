@@ -60,19 +60,19 @@ paths = gov.all_paths
 list(paths)[:10]
 
 
-# %% tags=[]
+# %% tags=[] jupyter={"outputs_hidden": true}
 gov.items_by_id
 
-# %% tags=[]
+# %% tags=[] jupyter={"outputs_hidden": true}
 gov.names_by_id
 
-# %% tags=[]
+# %% tags=[] jupyter={"outputs_hidden": true}
 gov.ids_by_name
 
-# %% tags=[]
+# %% tags=[] jupyter={"outputs_hidden": true}
 gov.types_by_id
 
-# %% tags=[]
+# %% tags=[] jupyter={"outputs_hidden": true}
 gov.all_reachable_nodes_by_id
 
 # %% [markdown] tags=[]
@@ -86,31 +86,31 @@ pmin = min(paths, key=lambda p: len(p))
 pmax, pmin
 
 # %%
-gov.decode_paths_name({pmax})
+gov.decode_path_name(pmax)
 
 # %%
-gov.decode_paths_id({pmax})
+gov.decode_path_id(pmax)
 
 # %%
 gov.names_by_id[190315]
 
 # %%
-gov.decode_paths_type({pmax})
+gov.decode_path_type(pmax)
 
 # %%
-gov.decode_paths_name({pmin})
+gov.decode_path_name(pmin)
 
 # %%
-gov.decode_paths_id({pmin})
+gov.decode_path_id(pmin)
 
 # %%
-gov.decode_paths_type({pmin})
+gov.decode_path_type(pmin)
 
 # %%
-gov.ids_by_name["Krefeld"]
+gov.ids_by_name["krefeld"]
 
 # %%
-gov.decode_paths_name({tuple(gov.ids_by_name["Krefeld"])})
+gov.decode_path_name(tuple(gov.ids_by_name["krefeld"]))
 
 # %% [markdown]
 # ## Using Matcher
@@ -118,54 +118,23 @@ gov.decode_paths_name({tuple(gov.ids_by_name["Krefeld"])})
 # %%
 matcher = Matcher(gov)
 
-# %% tags=[]
-matcher.find_relevant_paths("Blasdorf, Landeshut")
+# %%
+matcher.get_match_for_locations(["Blasdorf, Landeshut"])
 
 # %%
-matcher.find_relevant_ids("Blasdorf")
-
-# %%
-matcher.find_relevant_ids("Blasdorf, Landeshut")
-
-# %%
-gov.decode_paths_name(matcher.find_relevant_paths("Blasdorf, Landeshut"))
-
-# %%
-gov.decode_paths_name(matcher.find_relevant_paths("Blasdorf"))
-
-# %%
-gov.ids_by_name["Landshut"]
-
-# %%
-matcher.find_relevant_paths("Aach, Freudenstadt")
-
-# %%
-# with this command you can measure the runtime of each line in the function
-# # %lprun -f matcher.find_relevant_ids  matcher.find_relevant_ids("Aach, Freudenstadt")
+matcher.results
 
 # %% [markdown]
 # ## Weitere Beispiele
 
-# %%
-matcher.find_relevant_ids("Freudenstadt")
+# %% tags=[]
+matcher.get_match_for_locations("Aach, Freudenstadt")
+
+# %% tags=[] jupyter={"outputs_hidden": true}
+matcher.results
 
 # %% tags=[]
-gov.decode_paths_name(matcher.find_relevant_paths("Aach, Freudenstadt"))
+matcher.get_match_for_locations("Neustadt, Sachsen")
 
-# %%
-matcher.group_relevant_paths_by_query(matcher.find_relevant_paths("Aach, Freudenstadt"), "Aach, Freudenstadt")
-
-# %% tags=[]
-matcher.group_relevant_paths_by_query(matcher.find_relevant_paths("Freudenstadt"), "Freudenstadt")
-
-# %% tags=[]
-gov.all_reachable_nodes_by_id[1279230]
-
-# %% tags=[]
-matcher.group_relevant_paths_by_query(matcher.find_relevant_paths("Neustadt, Sachsen"), "Neustadt, Sachsen")
-
-# %% tags=[]
-matcher.group_relevant_paths_by_query(matcher.find_relevant_paths("Neustadt, Sachsen"), "Neustadt, Sachsen")
-
-# %%
-matcher.find_relevant_ids("Neustadt, Sachsen")
+# %% tags=[] jupyter={"outputs_hidden": true}
+matcher.results
