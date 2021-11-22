@@ -1,4 +1,4 @@
-from .correction import LocCorrection, Phonetic, Preprocessing
+from .correction import LocCorrection, Phonetic, Preprocessing_VL, Preprocessing_GOV
 from .gov import GOV, Matcher
 from .testdata import GovTestData
 
@@ -8,5 +8,6 @@ __all__ = [
     "Matcher",
     "LocCorrection",
     "Phonetic",
-    "Preprocessing",
+    "Preprocessing_VL",
+    "Preprocessing_GOV",
 ]
