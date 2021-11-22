@@ -528,20 +528,20 @@ class GOV:
 
         return reachable_nodes
 
-    def decode_paths_id(self, paths: set[tuple[int]]) -> set[tuple[int]]:
+    def decode_path_id(self, path: tuple[int]) -> tuple[int]:
         """Return the gov textual id for each node in a path."""
-        paths_decoded = {tuple(self.items_by_id[o] for o in p) for p in paths}
-        return paths_decoded
+        path_decoded = tuple(self.items_by_id[o] for o in path)
+        return path_decoded
 
-    def decode_paths_name(self, paths: set[tuple[int]]) -> set[tuple[int]]:
+    def decode_path_name(self, path: tuple[int]) -> tuple[str]:
         """Return the gov display name for each node in a path."""
-        paths_decoded = {tuple(_set_retrieve(self.names_by_id[o]) for o in p) for p in paths}
-        return paths_decoded
+        path_decoded = tuple(_set_retrieve(self.names_by_id[o]) for o in path)
+        return path_decoded
 
-    def decode_paths_type(self, paths: set[tuple[int]]) -> set[tuple[int]]:
+    def decode_path_type(self, path: tuple[int]) -> tuple[int]:
         """Return the type display name for each node in a path."""
-        paths_decoded = {tuple(self.type_names_by_type[_set_retrieve(self.types_by_id[o])] for o in p) for p in paths}
-        return paths_decoded
+        path_decoded = tuple(self.type_names_by_type[_set_retrieve(self.types_by_id[o])] for o in path)
+        return path_decoded
 
     def get_ids_by_types(self, type_ids: set[int]) -> set[int]:
         """

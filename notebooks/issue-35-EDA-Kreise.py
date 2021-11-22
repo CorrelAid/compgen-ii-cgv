@@ -60,7 +60,7 @@ len(all_types_found_in_the_paths)
 # %% [markdown]
 # Print the statistic of how often any type occurs in the GOV class:
 
-# %% tags=[]
+# %% tags=[] jupyter={"outputs_hidden": true}
 count_by_type = gov.type_statistic(return_dict = True)
 
 # %%
@@ -85,7 +85,7 @@ def find_all_items_based_on_types(types:set) -> list[tuple]:
         print(o)
 
 
-# %% tags=[]
+# %% tags=[] jupyter={"outputs_hidden": true}
 type_subset = {k for k,v in count_by_type.items() if v[0] <= 20}
 find_all_items_based_on_types(type_subset)
 
@@ -149,6 +149,6 @@ for p in gov.all_paths:
 diff_dict.keys()
 
 # %%
-gov.decode_paths_id(diff_dict[1])
+{gov.decode_path_id(p) for p in diff_dict[1]}
 
 # %%
