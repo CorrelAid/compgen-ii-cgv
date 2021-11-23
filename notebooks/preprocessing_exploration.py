@@ -105,17 +105,9 @@ vl
 
 # %%
 # INFO: Zeige Einträge an 
-char = "Pr.-"
+char = r'\Wnicht.*?'
 
 vl[vl.location.str.contains(char)]
-
-
-# %%
-#vl = Preprocessing.prep_vl_abbreviations(vl)
-
-# %%
-# Check: Prozentzahl an weiterhin bestehenden Abkürzungen
-#vl.location.str.count("[A-Za-zäöüßÄÖÜẞ]+\.").sum() / vl.shape[0]
 
 # %% [markdown]
 # ## Abkürzungen erweitern
@@ -324,7 +316,7 @@ kreise.info()
 kreise.sample(n=20)
 
 # %%
-char = "(?i)Reuß"
+char = "(?i)königsberg"
 kreise[kreise.name.str.contains(char)]
 
 # %%
