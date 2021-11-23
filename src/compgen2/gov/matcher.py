@@ -1,3 +1,12 @@
+"""This module contains the Matcher class that provides the main logic to match names against the Gov database.
+
+Examples:
+```Python
+m = Matcher(gov)
+m.get_match_for_locations(["Aachen", "aarösund, flensburg"])
+print(m.results)
+```
+"""
 import logging
 from itertools import product
 from operator import itemgetter
@@ -12,10 +21,20 @@ from . import Gov
 
 logger = logging.getLogger(__name__)
 
-MAX_COST = 5
+MAX_COST = 3
 
 
 class Matcher:
+    """Main class to match names against the Gov database.
+    
+    Main steps of the matching algorithm:
+        1. ...
+        
+    Attributes:
+        gov (Gov): A fully initialized instance of the Gov class.
+        results (dict): A dictionary containing the final results. 
+            Provides information about the found parts and the possible matches for each query.
+    """
     def __init__(self, gov: Gov) -> None:
         self.gov = gov
         self.results = {}
@@ -29,10 +48,12 @@ class Matcher:
             logger.info(f"Initialized matcher with a gov database of {len(gov.items):,} items.")
 
     def get_match_for_locations(self, locations: Union[list[str], pd.Series]) -> None:
-        self.find_parts_for_location(locations)
-        self.find_textual_id_for_location()
+        for location in tqdm(locations, desc="Processing locations"):
+            self.find_parts_for_location(location)
+            self.find_textual_id_for_location(location)
 
-    def find_parts_for_location(self, locations: Union[list[str], pd.Series]) -> None:
+
+    def find_parts_for_location(self, location: str) -> None:
         """Find the Gov parts for each location name.
 
         If a part is not found in the Gov in its original form, we try to find better candidates.
@@ -44,28 +65,28 @@ class Matcher:
                 - candidates (list): A list of possible candidates in Gov.
 
         Args:
-            locations (list[str]): list of location names, e.g. "aachen, alsdorf".
+            location (str): location names, e.g. "aachen, alsdorf".
         """
-        for location in tqdm(locations, desc="Find parts for location"):
-            self.results[location] = {"parts": {}}
-            parts = Matcher.get_query_parts(location)
-            for part in parts:
-                in_gov = True if part in self.gov.ids_by_name else False
-                self.results[location]["parts"][part] = {
-                    "in_gov": in_gov,
-                    "candidates": [part] if in_gov else [],
+        self.results[location] = {"parts": {}}
+        parts = Matcher.get_query_parts(location)
+        for part in parts:
+            in_gov = True if part in self.gov.ids_by_name else False
+            self.results[location]["parts"][part] = {
+                "in_gov": in_gov,
+                "candidates": [part] if in_gov else [],
                 }
 
-            # first handle case that we did not find anything for any part
-            # try to find at least one candidate for any part
-            if not any(part["in_gov"] for part in self.results[location]["parts"].values()):
-                matched_part, candidates = self.find_part_with_best_candidates(parts)
+        # first handle case that we did not find anything for any part
+        # try to find at least one candidate for any part
+        if not any(part["in_gov"] for part in self.results[location]["parts"].values()):
+            matched_part, candidates = self.find_part_with_best_candidates(parts)
 
-                if candidates:
-                    self.results[location]["parts"][matched_part]["candidates"].extend(c[0] for c in candidates)
+            if candidates:
+                self.results[location]["parts"][matched_part]["candidates"].extend(c[0] for c in candidates)
 
-            # now check if there is still one part without a match
-            # and use the already matched part to get relevant names
+        # now check if there is still one part without a match
+        # and use the already matched part to get relevant names
+        if len(parts) > 1:
             for unmatched_part in parts:
                 if (
                     not self.results[location]["parts"][unmatched_part]["in_gov"]
@@ -82,38 +103,39 @@ class Matcher:
                     candidates = self.get_best_candidates(relevant_names, unmatched_part, MAX_COST)
                     self.results[location]["parts"][unmatched_part]["candidates"].extend(c[0] for c in candidates)
 
-    def find_textual_id_for_location(self) -> None:
-        """Find a textual id for each location name."""
-        for location in self.results:
-            self.results[location]["possible_matches"] = []
 
-            list_of_candidates = [
-                part["candidates"] for part in self.results[location]["parts"].values() if part["candidates"]
-            ]
+    def find_textual_id_for_location(self, location: str) -> None:
+        """Find a textual id for given location name."""
+        
+        self.results[location]["possible_matches"] = []
 
-            if list_of_candidates:
-                for combination_of_names in product(*list_of_candidates):
-                    ids_for_combination = (self.gov.ids_by_name[name] for name in combination_of_names)
-                    for ids in product(*ids_for_combination):
-                        if len(ids) > 1:
-                            # TODO: what to do if items exist in Gov but not the relationship?
-                            if not self.gov.all_reachable_nodes_by_id[ids[0]].issuperset(ids[1:]):
-                                continue
-                        
-                        match = {}
-                        for i, part in enumerate(combination_of_names):
-                            gov_id = ids[i]
-                            textual_id = self.gov.items_by_id[gov_id]
-                            type_ids = list(self.gov.types_by_id[gov_id])
-                            type_names = [self.gov.type_names_by_type[type_id] for type_id in type_ids]
-                            match[part] = {
-                                "gov_id": ids[i],
-                                "textual_id": textual_id,
-                                "type_ids": type_ids,
-                                "type_names": type_names
-                            }
-                        
-                        self.results[location]["possible_matches"].append(match)
+        list_of_candidates = [
+            part["candidates"] for part in self.results[location]["parts"].values() if part["candidates"]
+        ]
+
+        if list_of_candidates:
+            for combination_of_names in product(*list_of_candidates):
+                ids_for_combination = (self.gov.ids_by_name[name] for name in combination_of_names)
+                for ids in product(*ids_for_combination):
+                    if len(ids) > 1:
+                        # TODO: what to do if items exist in Gov but not the relationship?
+                        if not self.gov.all_reachable_nodes_by_id[ids[0]].issuperset(ids[1:]):
+                            continue
+                    
+                    match = {}
+                    for i, part in enumerate(combination_of_names):
+                        gov_id = ids[i]
+                        textual_id = self.gov.items_by_id[gov_id]
+                        type_ids = list(self.gov.types_by_id[gov_id])
+                        type_names = [self.gov.type_names_by_type[type_id] for type_id in type_ids]
+                        match[part] = {
+                            "gov_id": ids[i],
+                            "textual_id": textual_id,
+                            "type_ids": type_ids,
+                            "type_names": type_names
+                        }
+                    
+                    self.results[location]["possible_matches"].append(match)
 
     def find_part_with_best_candidates(self, parts: tuple[str]) -> tuple[str, list[tuple[str, int]]]:
         for type_ids in [T_KREISUNDHOEHER, T_STADT]:
