@@ -1,12 +1,20 @@
-# -*- coding: utf-8 -*-
-# #Complete Gov extract #10
-# Issue link: https://github.com/CorrelAid/compgen-ii-cgv/issues/10
+"""This module contains the Gov class that provides an interface to all data in the Gov database.
 
+Examples:
+```Python
+# first, initialize the instance properly
+gov = Gov(data_root)
+gov.load_data()
+gov.build_indices()
+
+# now you can call any gov method.
+gov.all_paths()
+```
+"""
 import logging
 import pickle
 from collections import defaultdict
 from functools import lru_cache
-
 ## Imports
 from pathlib import Path
 
@@ -165,7 +173,7 @@ class Gov:
         """Read in govitems.csv"""
         logger.info("Reading in govitems.csv.")
         gov_item = pd.read_csv(
-            self.data_root / GOV_ITEMS,
+            self.data_root / FILENAME_GOV_ITEMS,
             sep="\t",
             dtype={"id": np.int32, "textual_id": object, "deleted": bool},
         )
@@ -176,7 +184,7 @@ class Gov:
         """Read in propertynames.csv"""
         logger.info("Reading in propertynames.csv.")
         names = pd.read_csv(
-            self.data_root / PROPERTY_NAMES,
+            self.data_root / FILENAME_GOV_PROPERTY_NAMES,
             sep="\t",
             dtype={
                 "id": np.int32,
@@ -193,7 +201,7 @@ class Gov:
         """Read in propertytypes.csv"""
         logger.info("Reading in propertytypes.csv.")
         types = pd.read_csv(
-            self.data_root / PROPERTY_TYPES,
+            self.data_root / FILENAME_GOV_PROPERTY_TYPES,
             sep="\t",
             dtype={
                 "id": np.int32,
@@ -209,7 +217,7 @@ class Gov:
         """Read in relation.csv"""
         logger.info("Reading in relation.csv.")
         relations = pd.read_csv(
-            self.data_root / GOV_RELATIONS,
+            self.data_root / FILENAME_GOV_RELATIONS,
             sep="\t",
             dtype={
                 "child": np.int32,
@@ -225,7 +233,7 @@ class Gov:
         """Read in typenames.csv"""
         logger.info("Reading in typenames.csv.")
         type_names = pd.read_csv(
-            self.data_root / GOV_TYPENAMES,
+            self.data_root / FILENAME_GOV_TYPENAMES,
             sep="\t",
             dtype={
                 "type_id": int,

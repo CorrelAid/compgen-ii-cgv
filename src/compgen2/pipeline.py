@@ -14,7 +14,7 @@ from pathlib import Path
 
 import pandas as pd
 
-from .const import LOG_PATH, VL_FILE
+from .const import LOG_PATH, FILENAME_VL
 from .gov import Gov, Matcher
 from .correction import Preprocessing_VL, Preprocessing_GOV
 
@@ -85,7 +85,7 @@ class Pipeline:
         self.vl = self.read_vl()
 
     def read_vl(self) -> pd.DataFrame:
-        path = self.data_root / VL_FILE
+        path = self.data_root / FILENAME_VL
         parquet_filename = path.parent / (
             path.stem + ".parquet"
         )  # replace .csv with .parquet

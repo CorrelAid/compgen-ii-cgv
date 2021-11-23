@@ -168,6 +168,6 @@ def sample_test_set_from_gov(gov: Gov, size: int, num_parts: int = 2, valid: flo
         num_invalid = int(size * (1 - valid))
         num_invalid_idx = random.sample(range(size), k=num_invalid)
         for i in num_invalid_idx:
-            test_set.loc[i, 'location'] = ", ".join(random.sample(list(gov.names.content.values), k=2))
+            test_set.loc[i, 'location'] = ", ".join(random.sample(list(gov.ids_by_name), k=2))
 
     return test_set

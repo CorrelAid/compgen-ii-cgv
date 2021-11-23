@@ -4,6 +4,7 @@ from pathlib import Path
 import pandas as pd
 
 from ..gov import Gov, Matcher
+from ..const import FILENAME_GOV_TEST_SET
 
 GOV_URL = "http://wiki-de.genealogy.net/Verlustlisten_Erster_Weltkrieg/Projekt/Ortsnamen"
 logger = logging.getLogger(__name__)
@@ -12,7 +13,7 @@ class GovTestData:
     def __init__(self, gov: Gov, url: str = GOV_URL):
         self.gov_url = url
         self.gov = gov
-        self.filename = "gov_test_data.parquet"
+        self.filename = FILENAME_GOV_TEST_SET
         self.filepath = Path(gov.data_root)
 
         # load data

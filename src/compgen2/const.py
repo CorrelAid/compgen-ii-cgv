@@ -1,12 +1,12 @@
 # ## Definitions
 
-GOV_ITEMS = "gov_a_govitem.csv"
-GOV_RELATIONS = "gov_a_relation.csv"
-GOV_TYPENAMES = "gov_a_typenames.csv"
-PROPERTY_NAMES = "gov_a_propertynames.csv"
-PROPERTY_TYPES = "gov_a_propertytypes.csv"
-VL_FILE = "deutsche-verlustlisten-1wk.tsv"
-LOG_PATH = "log/"
+FILENAME_GOV_ITEMS = "gov_a_govitem.csv"
+FILENAME_GOV_RELATIONS = "gov_a_relation.csv"
+FILENAME_GOV_TYPENAMES = "gov_a_typenames.csv"
+FILENAME_GOV_PROPERTY_NAMES = "gov_a_propertynames.csv"
+FILENAME_GOV_PROPERTY_TYPES = "gov_a_propertytypes.csv"
+FILENAME_VL = "deutsche-verlustlisten-1wk.parquet"
+FILENAME_GOV_TEST_SET = "gov_test_data.parquet"
 
 # 2404429 = 1. Januar 1871
 # 2404794 = 1. Januar 1872
