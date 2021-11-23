@@ -1,2 +1,2 @@
-from .gov import GOV
+from .gov import Gov
 from .matcher import Matcher

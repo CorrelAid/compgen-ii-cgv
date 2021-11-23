@@ -1,18 +1,20 @@
+import logging
 from pathlib import Path
 
 import pandas as pd
-from compgen2 import GOV, Matcher
+
+from ..gov import Gov, Matcher
 
 GOV_URL = "http://wiki-de.genealogy.net/Verlustlisten_Erster_Weltkrieg/Projekt/Ortsnamen"
-
+logger = logging.getLogger(__name__)
 
 class GovTestData:
-    def __init__(self, gov: GOV, url: str = GOV_URL):
+    def __init__(self, gov: Gov, url: str = GOV_URL):
         self.gov_url = url
         self.gov = gov
         self.filename = "gov_test_data.parquet"
-        self.filepath = Path("../data")
-        
+        self.filepath = Path(gov.data_root)
+
         # load data
         self.data = self.load_gov_test_data()
 
@@ -28,26 +30,27 @@ class GovTestData:
 
             df = df[~df.raw.str.contains("?", regex=False) & ~df.corrected.str.contains("?", regex=False)]
             df = df.drop(columns=["page"])
-            df.to_parquet("../data/gov_test_data.parquet")
+            df.to_parquet(self.filepath / self.filename)
         else:
             df = pd.read_parquet(self.filepath / self.filename)
 
         return df
 
-    def get_test_data(self) -> list[tuple[str, str]]:
-        valid_entries = []
+    def get_test_set(self) -> pd.DataFrame:
+        test_set = {"location": [], "truth": []}
         for location, truth in zip(self.data["raw"].str.lower(), self.data["corrected"].str.lower()):
             parts = Matcher.get_query_parts(truth)
             if all(part in self.gov.ids_by_name for part in parts):
-                valid_entries.append((location, truth))
+                test_set["location"].append(location)
+                test_set["truth"].append(truth)
             else:
-                print(f"Could not find {truth} with parts {parts} in GOV.")
+                logger.debug(f"Could not find {truth} with parts {parts} in GOV.")
 
-        print(f"Found {len(valid_entries)} valid corrected names in GOV")
-        return valid_entries
-    
-    
-def get_accuracy(results: dict, test_set: list[tuple[str,str]]) -> float:
+        logger.info(f"Found {len(test_set)} valid corrected names in GOV")
+        return pd.DataFrame(test_set)
+
+
+def get_accuracy(results: dict, test_set: pd.DataFrame) -> float:
     """Calculates accuracy for matcher results compared against a ground truth.
 
     Args:
@@ -58,19 +61,19 @@ def get_accuracy(results: dict, test_set: list[tuple[str,str]]) -> float:
         float: Accuracy for test set. A match is counted as correct, if all parts of the truth location can be found in the match.
     """
     correct = 0
-    
-    for location, truth in test_set:
+
+    for _, (location, truth) in test_set.iterrows():
         prediction = results.get(location)
-        
+
         if prediction is not None:
             for match in prediction["possible_matches"]:
                 if all(part.strip().lower() in match for part in truth.split(",")):
                     correct += 1
                     break
             else:
-                print(f"Could not solve {location}, expected {truth.lower()}.") 
+                logger.debug(f"Could not solve {location}, expected {truth.lower()}.")
         else:
-            print(f"No prediction found for {location}.")
-            
-    print(f"Solved {correct} of {len(results)} ({correct / len(results)}) locations.")
-    return correct / len(results)
+            logger.error(f"No prediction found for {location}.")
+
+    logger.info(f"Solved {correct} of {len(test_set)} ({correct / len(test_set)}) locations.")
+    return correct / len(test_set)

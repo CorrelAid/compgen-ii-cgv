@@ -15,9 +15,8 @@ from pathlib import Path
 import pandas as pd
 
 from .const import LOG_PATH, VL_FILE
-from .gov_extraction import GOV
-from .gov_matching import Matcher
-from .preprocessing import Preprocessing
+from .gov import Gov, Matcher
+from .correction import Preprocessing_VL, Preprocessing_GOV
 
 logger = logging.getLogger(__name__)
 
