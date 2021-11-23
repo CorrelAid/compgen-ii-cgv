@@ -140,3 +140,6 @@ dmypy.json
 
 # log
 log/*.csv
+
+# data -> Nextcloud!
+data/

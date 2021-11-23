@@ -1,14 +1,14 @@
 import logging
 from itertools import product
 from operator import itemgetter
+from typing import Optional, Union
 
-from typing import Optional
-
+import pandas as pd
 from tqdm import tqdm
 
-from ..const import T_KREISUNDHOEHER, T_STADT
-from . import GOV
 from .. import LocCorrection
+from ..const import T_KREISUNDHOEHER, T_STADT
+from . import Gov
 
 logger = logging.getLogger(__name__)
 
@@ -16,7 +16,7 @@ MAX_COST = 5
 
 
 class Matcher:
-    def __init__(self, gov: GOV) -> None:
+    def __init__(self, gov: Gov) -> None:
         self.gov = gov
         self.results = {}
 
@@ -28,20 +28,20 @@ class Matcher:
         else:
             logger.info(f"Initialized matcher with a gov database of {len(gov.items):,} items.")
 
-    def get_match_for_locations(self, locations: list[str]) -> None:
+    def get_match_for_locations(self, locations: Union[list[str], pd.Series]) -> None:
         self.find_parts_for_location(locations)
         self.find_textual_id_for_location()
 
-    def find_parts_for_location(self, locations: list[str]) -> None:
-        """Find the GOV parts for each location name.
+    def find_parts_for_location(self, locations: Union[list[str], pd.Series]) -> None:
+        """Find the Gov parts for each location name.
 
-        If a part is not found in the GOV in its original form, we try to find better candidates.
+        If a part is not found in the Gov in its original form, we try to find better candidates.
             Candidates are found by using the Levenshtein distance.
 
         This method fills the 'parts' dictionary of self.result[location].
             For each part of location, there will be a new entry with
-                - in_gov (bool): True, if part is part of GOV, False otherwise.
-                - candidates (list): A list of possible candidates in GOV.
+                - in_gov (bool): True, if part is part of Gov, False otherwise.
+                - candidates (list): A list of possible candidates in Gov.
 
         Args:
             locations (list[str]): list of location names, e.g. "aachen, alsdorf".
@@ -96,7 +96,7 @@ class Matcher:
                     ids_for_combination = (self.gov.ids_by_name[name] for name in combination_of_names)
                     for ids in product(*ids_for_combination):
                         if len(ids) > 1:
-                            # TODO: what to do if items exist in GOV but not the relationship?
+                            # TODO: what to do if items exist in Gov but not the relationship?
                             if not self.gov.all_reachable_nodes_by_id[ids[0]].issuperset(ids[1:]):
                                 continue
                         
@@ -164,7 +164,7 @@ class Matcher:
         return relevant_names
 
     def find_relevant_ids(self, query: str) -> list[tuple[int, ...]]:
-        """Retrieve all ids from GOV where the query is part of the path."""
+        """Retrieve all ids from Gov where the query is part of the path."""
         parts = Matcher.get_query_parts(query)
         ids_by_part = self.get_ids_by_part(parts)
 
@@ -184,5 +184,5 @@ class Matcher:
 
     @staticmethod
     def get_query_parts(query: str) -> tuple[str]:
-        """Split GOV item (query) to get the single names (parts)."""
+        """Split Gov item (query) to get the single names (parts)."""
         return tuple(s.strip().lower() for s in query.split(","))

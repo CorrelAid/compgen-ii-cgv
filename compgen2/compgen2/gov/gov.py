@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# #Complete GOV extract #10
+# #Complete Gov extract #10
 # Issue link: https://github.com/CorrelAid/compgen-ii-cgv/issues/10
 
 import logging
@@ -22,8 +22,8 @@ def _set_retrieve(s: set):
     return next(iter(s))
 
 
-class GOV:
-    """Main class to work with GOV items.
+class Gov:
+    """Main class to work with Gov items.
 
     To work with this class you have to
         1. Initialize a new instance `Gov(data_root)`
@@ -45,8 +45,8 @@ class GOV:
         names_by_id (dict): A mapping between an item's id and its names.
         ids_by_name (dict): A mapping between a name and its possible ids.
         type_names_by_type (dict): A mapping from the type-id to its type-name.
-        all_relations (set): A set of all relations in GOV
-        all_paths (set): A set of all paths in GOV from SUPERNODES to their children.
+        all_relations (set): A set of all relations in Gov
+        all_paths (set): A set of all paths in Gov from SUPERNODES to their children.
         all_reachable_nodes_by_id (dict): A mapping between an item's id and its reachable nodes.
     """
 
@@ -80,7 +80,7 @@ class GOV:
 
     @staticmethod
     def from_file(file: str):
-        """Load serialized GOV object."""
+        """Load serialized Gov object."""
         with open(file, "rb") as stream:
             gov = pickle.load(stream)
         return gov
@@ -89,7 +89,7 @@ class GOV:
         if self.fully_initialized:
             return
 
-        logger.info("Start loading all relevant GOV tables ...")
+        logger.info("Start loading all relevant Gov tables ...")
         self.items = self._read_item()
         self.names = self._read_names()
         self.types = self._read_types()
@@ -101,10 +101,10 @@ class GOV:
         self._prefilter_relations()
         self._prefilter_types()
 
-        logger.info("Finished loading all relevant GOV tables. Please call `build_indices()` next.")
+        logger.info("Finished loading all relevant Gov tables. Please call `build_indices()` next.")
 
     def build_indices(self):
-        """Build all relevant indices that are necessary for efficiently querying and working with GOV."""
+        """Build all relevant indices that are necessary for efficiently querying and working with Gov."""
         if self.fully_initialized:
             return
 
@@ -121,7 +121,7 @@ class GOV:
         self.all_reachable_nodes_by_id = self._all_reachable_nodes_by_id()
         self.fully_initialized = True
 
-        logger.info("Finished building all relevant search indices. You can now start working with GOV data.")
+        logger.info("Finished building all relevant search indices. You can now start working with Gov data.")
 
     def clear_data(self):
         """Necessary step to pickle model so that its size its manageable.
@@ -153,7 +153,7 @@ class GOV:
 
     @lru_cache
     def get_loc_names(self) -> set[str]:
-        """Return all location names stored in GOV
+        """Return all location names stored in Gov
 
         Returns:
             set[str]: set of names
@@ -186,7 +186,7 @@ class GOV:
                 "time_end": object,
             },
         )
-        names = GOV.convert_time(names)
+        names = Gov.convert_time(names)
         return names
 
     def _read_types(self) -> pd.DataFrame:
@@ -202,7 +202,7 @@ class GOV:
                 "time_end": object,
             },
         )
-        types = GOV.convert_time(types)
+        types = Gov.convert_time(types)
         return types
 
     def _read_relations(self) -> pd.DataFrame:
@@ -218,7 +218,7 @@ class GOV:
                 "time_end": object,
             },
         )
-        relations = GOV.convert_time(relations)
+        relations = Gov.convert_time(relations)
         return relations
 
     def _read_type_names(self) -> pd.DataFrame:
@@ -615,7 +615,7 @@ class GOV:
         for o in sorted(count_by_type.items(), key=itemgetter(1), reverse=True):
             if markdown_style_output:
                 print(
-                    f"|[{o[0]}](http://wiki-de.genealogy.net/GOV/Objekttyp_{o[0]}) | {o[1][0]} | {o[1][1]} | {o[1][2]}|"
+                    f"|[{o[0]}](http://wiki-de.genealogy.net/Gov/Objekttyp_{o[0]}) | {o[1][0]} | {o[1][1]} | {o[1][2]}|"
                 )
             else:
                 print(o)

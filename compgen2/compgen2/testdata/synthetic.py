@@ -3,7 +3,7 @@ from collections import defaultdict
 
 import pandas as pd
 
-from .. import GOV, const_synthetic
+from .. import Gov, const_synthetic
 from . import Manipulator, StringEnriched
 
 # import compgen2.string_utils.linguistic
@@ -13,10 +13,9 @@ random.seed(1337)
 
 
 class Synthetic:
-    def __init__(self, gov: GOV) -> None:
+    def __init__(self, gov: Gov) -> None:
         self.gov = gov
-        self.locations = []
-        self.locations_synthetic = []
+        self.test_set = pd.DataFrame()
         self.fractal_dict = self._fractal_dict()
         self.lino_dict = self._linotype_dict()
         self.m_linotype = Manipulator(self.linotype, "char", const_synthetic.P_LINO)
@@ -25,25 +24,27 @@ class Synthetic:
         self.m_shorten = Manipulator(self.shorten, "word", const_synthetic.P_SHORTEN)
         self.MANIPULATION_STEPS = [self.m_linotype, self.m_fractal, self.m_drop, self.m_shorten]
 
-    def create_synthetic_data(self, size: int) -> list[tuple[str, str]]:
+    def create_synthetic_test_set(self, size: int) -> pd.DataFrame:
         """
-        Create a synthetic dataset based on the paths of the GOV object that has been loaded priorly.
+        Create a synthetic dataset based on the paths of the Gov object that has been loaded priorly.
         Args:
           size (int): number of synthetic records that get created
         """
         paths_ids = list(self.gov.all_paths)[:size]
         paths_names = [self.gov.decode_path_name(p) for p in paths_ids]
+        test_set = {"location": [], "truth": []}
         for p in paths_names:
             location = self.create_location_from_path(p)
-            self.locations.append(", ".join(location))
+            test_set["truth"].append(", ".join(location))
+            
             location = self.shuffle_order(location)
             se = StringEnriched(", ".join(location))
             for m in self.MANIPULATION_STEPS:
                 se.apply_manipulator(m)
-            self.locations_synthetic.append(se.get_string())
+            test_set["location"].append(se.get_string())
 
-        return list(zip(self.locations_synthetic, self.locations,))
-
+        self.test_set = pd.DataFrame(test_set)
+        return self.test_set
     def _linotype_dict(self) -> dict[str, set[str]]:
         """
         Create a mapping from a character to all its neighboured characters on the linotype keyboard
@@ -140,8 +141,8 @@ class Synthetic:
         return ""
 
 
-def build_test_set(gov, size: int, num_parts: int = 2, valid: float = 1):
-    test_set = []
+def sample_test_set_from_gov(gov: Gov, size: int, num_parts: int = 2, valid: float = 1) -> pd.DataFrame:
+    test_set = {"location": [], "truth": []}
     population = [p for p in gov.all_paths if 190315 in p and len(p) >= num_parts]
 
     samples = random.sample(population=population, k=size)
@@ -149,22 +150,24 @@ def build_test_set(gov, size: int, num_parts: int = 2, valid: float = 1):
         while True:
             sample_nodes = random.sample(sample, k=num_parts)
             try:
-                test_set.append(
-                    ", ".join(
+                item = ", ".join(
                         map(
                             lambda id_: random.sample(list(gov.names_by_id[id_]), k=1)[0],
                             sample_nodes,
                         )
                     )
-                )
+                test_set["location"].append(item)
+                test_set["truth"].append(item)
                 break
             except KeyError:
                 pass
+            
+    test_set = pd.DataFrame(test_set)
 
     if valid < 1:
         num_invalid = int(size * (1 - valid))
         num_invalid_idx = random.sample(range(size), k=num_invalid)
         for i in num_invalid_idx:
-            test_set[i] = ", ".join(random.sample(list(gov.names.content.values), k=2))
+            test_set.loc[i, 'location'] = ", ".join(random.sample(list(gov.names.content.values), k=2))
 
-    return pd.Series(test_set, name="location")
+    return test_set
