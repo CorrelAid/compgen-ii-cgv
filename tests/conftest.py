@@ -4,7 +4,7 @@ from pathlib import Path
 
 def pytest_addoption(parser):
     parser.addoption(
-        "--data-root", action="store", default=Path(__file__).parent.parent.parent.joinpath("data"), help="root directory for gov data"
+        "--data-root", action="store", default=Path(__file__).parent.parent.joinpath("data"), help="root directory for gov data"
     )
 
 

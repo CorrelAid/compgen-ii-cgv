@@ -1,10 +1,10 @@
-from compgen2 import GOV
+from compgen2 import Gov
 import numpy as np
 import pytest
 
 @pytest.fixture
 def gov(data_root):
-    gov = GOV(data_root)
+    gov = Gov(data_root)
     return gov
 
 def test_read_gov_data(gov):
