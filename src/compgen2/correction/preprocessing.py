@@ -3,7 +3,7 @@
 
 import pandas as pd
 
-class Preprocessing_VL:
+class Preprocessing:
     
     @staticmethod
     def replace_corrections_vl(column: pd.Series):
