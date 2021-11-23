@@ -3,7 +3,7 @@
 import pandas as pd
 import numpy as np
 import re
-from compgen2 import GOV, Matcher, const, Preprocessing_VL, Preprocessing_GOV
+from compgen2 import GOV, Matcher, const, Preprocessing
 
 # %% [markdown]
 # # Preprocessing
@@ -20,11 +20,11 @@ verlustliste = pd.read_parquet("../data/deutsche-verlustlisten-1wk.parquet")
 vl = verlustliste.copy()
 
 # %%
-vl = Preprocessing_VL.replace_corrections_vl(vl)
+vl = Preprocessing.replace_corrections_vl(vl)
 vl
 
 # %%
-vl = Preprocessing_VL.replace_characters_vl(vl)
+vl = Preprocessing.replace_characters_vl(vl)
 vl
 
 # %%
@@ -41,15 +41,15 @@ testset = with_abbreviations.sample(n=20, random_state=99).drop('loc_parts_count
 testset
 
 # %%
-testset['location_partial'] = Preprocessing_VL.substitute_partial_words_vl(testset['location'])
+testset['location_partial'] = Preprocessing.substitute_partial_words(testset['location'])
 testset
 
 # %%
-testset['location_delete'] = Preprocessing_VL.substitute_delete_words_vl(testset['location_partial'])
+testset['location_delete'] = Preprocessing.substitute_delete_words(testset['location_partial'])
 testset
 
 # %%
-testset['location_full'] = Preprocessing_VL.substitute_full_words_vl(testset['location_delete'])
+testset['location_full'] = Preprocessing.substitute_full_words(testset['location_delete'])
 testset
 
 # %%
