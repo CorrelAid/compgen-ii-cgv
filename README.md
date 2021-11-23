@@ -12,9 +12,10 @@ $ pip install -r requirements.txt
 Danach steht das `compgen2` package bereit zur Nutzung.
 
 ## Quickstart
-`compgen` zwei bietet für Anwender ein Kommandozeilen-Interface sowie Klassen, die im Code importiert werden können. Wir zeigen nachfolgend beide Anwendungsfälle.
+`compgen2` bietet für Anwender ein Kommandozeilen-Interface sowie Klassen, die im Code importiert werden können. Wir zeigen nachfolgend beide Anwendungsfälle.
 
 ### `compgen2` über die Kommandozeile
+
 
 ### `compgen2` package
 
