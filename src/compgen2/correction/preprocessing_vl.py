@@ -24,9 +24,9 @@ class Preprocessing_VL:
         str_07 = r'\{.*?\)'
         str_08 = r'\[.*?\}'
         str_09 = r'\{.*?\]'
-        str_10 = r'(\Wnicht.*?)(?=,|$)' # word 'nicht' and following content, until (not including) comma or end of line
-        str_11 = r'(\Wkorr.*?|\WKorr\..*?)(?=,|$)' # word 'korr' and following content, until (not including) comma or end of line
-        str_12 = r'(\Wverm.*?)(?=,|$)'
+        str_10 = r'(\W*?nicht.*?)(?=,|$)' # preceding non-word characters + word 'nicht' + following content, until comma (not included) or end of line
+        str_11 = r'(\W*?korr.*?|\W*?Korr\..*?)(?=,|$)' # preceding non-word characters + word 'korr' + following content, until (not including) comma or end of line
+        str_12 = r'(\W*?verm.*?)(?=,|$)'  # preceding non-word characters + word 'verm' + following content, until (not including) comma or end of line
 
         rep = ''
     
@@ -52,8 +52,22 @@ class Preprocessing_VL:
         # do replacement 
         return column.replace(to_replace=[char_1, char_2], value=[rep_1, rep_2], regex=True)
     
+    @staticmethod        
+    def replace_characters_gov(column: pd.Series): 
+        """Function for replacing special characters: 
+        1. replaced with ': ´`
+        Add more if necessary
+        """
+        
+        # replace with special character (')
+        char_1 = '[´`]'
+        rep_1 = '\''
+        
+        # do replacement 
+        return column.replace(to_replace=char_1, value=rep_1, regex=True)
+    
     @staticmethod      
-    def substitute_partial_words_vl(column: pd.Series): 
+    def substitute_partial_words(column: pd.Series): 
         """Function no 1. for substituting abbreviations: flexibly substitutes abbreviations that are part of a longer word 
         (e.g. Oberfr./Mittelfr. -> franken)
         """
@@ -72,7 +86,7 @@ class Preprocessing_VL:
         return column.replace(to_replace=subst_dict, regex=True)
     
     @staticmethod      
-    def substitute_delete_words_vl(column: pd.Series): 
+    def substitute_delete_words(column: pd.Series): 
         """Function no 2. for substituting abbreviations: removes unnecessary abbreviations and words that relates to types 
         (e.g. Kr., Kreis, Amtshauptmannschaft)
         """
@@ -91,7 +105,7 @@ class Preprocessing_VL:
         return column.replace(to_replace=subst_dict, regex=True)
     
     @staticmethod      
-    def substitute_full_words_vl(column: pd.Series): 
+    def substitute_full_words(column: pd.Series): 
         """Function no 3. for substituting abbreviations: substitutes specific abbreviations"""
         
         # load defined abbreviations 
