@@ -1,5 +1,4 @@
-from .correction import (LocCorrection, Phonetic, Preprocessing_GOV,
-                         Preprocessing_VL)
+from .correction import (LocCorrection, Phonetic, Preprocessing)
 from .gov import Gov, Matcher
 from .testdata import (GovTestData, Manipulator, StringEnriched, Synthetic,
                        get_accuracy, sample_test_set_from_gov)
@@ -12,8 +11,7 @@ __all__ = [
     "Manipulator",
     "Matcher",
     "Phonetic",
-    "Preprocessing_GOV",
-    "Preprocessing_VL",
+    "Preprocessing",
     "sample_test_set_from_gov",
     "StringEnriched",
     "Synthetic",

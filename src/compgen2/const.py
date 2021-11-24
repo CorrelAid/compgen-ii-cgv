@@ -7,6 +7,9 @@ FILENAME_GOV_PROPERTY_NAMES = "gov_a_propertynames.csv"
 FILENAME_GOV_PROPERTY_TYPES = "gov_a_propertytypes.csv"
 FILENAME_VL = "deutsche-verlustlisten-1wk.parquet"
 FILENAME_GOV_TEST_SET = "gov_test_data.parquet"
+FILENAME_SUBSTITUTIONS_PARTIAL_WORDS = "substitutions_vl_gov_partial_word.csv"
+FILENAME_SUBSTITUTIONS_DELETE_WORDS = "substitutions_vl_gov_to_delete.csv"
+FILENAME_SUBSTITUTIONS_FULL_WORDS = "substitutions_vl_gov_full_word.csv"
 
 # 2404429 = 1. Januar 1871
 # 2404794 = 1. Januar 1872

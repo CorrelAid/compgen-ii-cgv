@@ -1,55 +1,60 @@
 # -*- coding: utf-8 -*-
 # %%
+from pathlib import Path
+import re
+
 import pandas as pd
 import numpy as np
-import re
-from compgen2 import GOV, Matcher, const, Preprocessing
+
+from compgen2 import Gov, Matcher, const, Preprocessing
+
+# %%
+# %load_ext autoreload
+# %autoreload 2
 
 # %% [markdown]
 # # Preprocessing
+
+# %%
+data_root = Path("../data")
 
 # %% [markdown]
 # ## Verlustliste
 
 # %%
 # Lade verlustliste
-verlustliste = pd.read_parquet("../data/deutsche-verlustlisten-1wk.parquet")
+verlustliste = pd.read_parquet(data_root / const.FILENAME_VL)
 
 
 # %%
 vl = verlustliste.copy()
 
 # %%
-vl = Preprocessing.replace_corrections_vl(vl)
+vl.location = Preprocessing.replace_corrections_vl(vl.location)
 vl
 
 # %%
-vl = Preprocessing.replace_characters_vl(vl)
+vl.location = Preprocessing.replace_characters_vl(vl.location)
 vl
-
-# %%
-# This step is important!
-vl["location"] = vl["location"].str.lower()  
-vl 
 
 # %%
 # all entries with abbreviations
-with_abbreviations = vl[vl.location.str.contains("[A-Za-zäöüßÄÖÜẞ]+\.")].copy()
+vl_abbreviations = vl[vl.location.str.contains("[a-zäöüßẞ]+\.")]
 
 # testset
-testset = with_abbreviations.sample(n=20, random_state=99).drop('loc_parts_count', axis=1)
+testset = vl_abbreviations.sample(n=30, random_state=299).drop('loc_parts_count', axis=1)
 testset
 
 # %%
-testset['location_partial'] = Preprocessing.substitute_partial_words(testset['location'])
+testset['location_partial'] = Preprocessing.substitute_partial_words(testset['location'], data_root)
 testset
 
 # %%
-testset['location_delete'] = Preprocessing.substitute_delete_words(testset['location_partial'])
+testset['location_delete'] = Preprocessing.substitute_delete_words(testset['location_partial'], data_root)
 testset
 
 # %%
-testset['location_full'] = Preprocessing.substitute_full_words(testset['location_delete'])
+testset['location_full'] = Preprocessing.substitute_full_words(testset['location_delete'], data_root)
 testset
 
 # %%
