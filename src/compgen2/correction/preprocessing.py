@@ -29,15 +29,13 @@ class Preprocessing:
         str_08 = r'\[.*?\}'
         str_09 = r'\{.*?\]'
         str_10 = r'(\W*?nicht.*?)(?=,|$)' # preceding non-word characters + word 'nicht' + following content, until comma (not included) or end of line
-        str_11 = r'(\W*?korr.*?)(?=,|$)' # preceding non-word characters + word 'korr' + following content, until (not including) comma or end of line
+        str_11 = r'(\W*?korr.*?|\W*?Korr\..*?)' # preceding non-word characters + word 'korr' + following content, until (not including) comma or end of line
         str_12 = r'(\W*?verm.*?)(?=,|$)'  # preceding non-word characters + word 'verm' + following content, until (not including) comma or end of line
 
         rep = ''
     
         # replace with remove 
-        column = column.str.lower().replace(to_replace=[str_01, str_02, str_03, str_04, str_05, str_06, str_07, str_08, str_09, str_10, str_11, str_12], value=rep, regex=True)
-        
-        return column
+        return column.replace(to_replace=[str_01, str_02, str_03, str_04, str_05, str_06, str_07, str_08, str_09, str_10, str_11, str_12], value=rep, regex=True)
     
     @staticmethod        
     def replace_characters_vl(column: pd.Series) -> pd.Series: 
@@ -55,7 +53,7 @@ class Preprocessing:
         rep_2 = '\''
         
         # do replacement 
-        return column.str.lower().replace(to_replace=[char_1, char_2], value=[rep_1, rep_2], regex=True)
+        return column.replace(to_replace=[char_1, char_2], value=[rep_1, rep_2], regex=True)
     
     @staticmethod        
     def replace_characters_gov(column: pd.Series) -> pd.Series: 
@@ -69,7 +67,7 @@ class Preprocessing:
         rep_1 = '\''
         
         # do replacement 
-        return column.str.lower().replace(to_replace=char_1, value=rep_1, regex=True)
+        return column.replace(to_replace=char_1, value=rep_1, regex=True)
     
     @staticmethod      
     def substitute_partial_words(column: pd.Series, data_root: str) -> pd.Series: 

@@ -39,7 +39,7 @@ vl
 
 # %%
 # all entries with abbreviations
-vl_abbreviations = vl[vl.location.str.contains("[a-zäöüßẞ]+\.")]
+vl_abbreviations = vl[vl.location.str.contains("[A-Za-zäöüÄÖÜßẞ]+\.")]
 
 # testset
 testset = vl_abbreviations.sample(n=30, random_state=299).drop('loc_parts_count', axis=1)
@@ -60,7 +60,5 @@ testset
 # %%
 testset['location_i']= testset.location_full.replace(to_replace=" i\.", value=",", regex=True)
 testset
-
-# %%
 
 # %%
