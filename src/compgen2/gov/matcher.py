@@ -52,7 +52,6 @@ class Matcher:
             self.find_parts_for_location(location)
             self.find_textual_id_for_location(location)
 
-
     def find_parts_for_location(self, location: str) -> None:
         """Find the Gov parts for each location name.
 
@@ -102,7 +101,6 @@ class Matcher:
 
                     candidates = self.get_best_candidates(relevant_names, unmatched_part, MAX_COST)
                     self.results[location]["parts"][unmatched_part]["candidates"].extend(c[0] for c in candidates)
-
 
     def find_textual_id_for_location(self, location: str) -> None:
         """Find a textual id for given location name."""
@@ -175,7 +173,7 @@ class Matcher:
             relevant_names = self.gov.get_loc_names()
 
         return relevant_names
-
+    
     def get_relevant_names_from_part_candidates(self, candidates: list[str]) -> set[str]:
         relevant_names = set()
         if candidates:

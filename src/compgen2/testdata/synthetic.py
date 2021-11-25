@@ -143,12 +143,12 @@ class Synthetic:
 
 def sample_test_set_from_gov(gov: Gov, size: int, num_parts: int = 2, valid: float = 1) -> pd.DataFrame:
     test_set = {"location": [], "truth": []}
-    population = [p for p in gov.all_paths if 190315 in p and len(p) >= num_parts + 1]
+    population = list(gov.names_by_id)
 
     while len(test_set["location"]) != size:
-        sample = random.sample(population=population, k=1)[0]
+        sample_id = random.sample(population=population, k=1)[0]
         while True:
-            sample_nodes = random.sample(sample, k=num_parts)
+            sample_nodes = random.sample(gov.all_reachable_nodes_by_id[sample_id], k=num_parts)
             try:
                 item = ", ".join(
                         map(
