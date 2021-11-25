@@ -73,17 +73,17 @@ vl_test_sets.append(("vl test set with loc_count=2", vl.query("loc_parts_count =
 vl_test_sets.append(("vl test set with loc_count=3", vl.query("loc_parts_count == 3").sample(test_set_size)))
 vl_test_sets.append(("vl test set containing '.'", vl[vl.location.str.contains(".", regex=False)].sample(test_set_size)))
 
-# %%
-# Test Set 2: Gov database
-test_set_size = 100
-
-gov_test_sets = []
-gov_test_sets.append(("gov db test set with loc_count=1 and valid=1", sample_test_set_from_gov(gov, size=test_set_size, num_parts=1, valid=1)))
-gov_test_sets.append(("gov db test set with loc_count=1 and valid=0.7", sample_test_set_from_gov(gov, size=test_set_size, num_parts=1, valid=0.7)))
-gov_test_sets.append(("gov db test set with loc_count=2 and valid=1", sample_test_set_from_gov(gov, size=test_set_size, num_parts=2, valid=1)))
-gov_test_sets.append(("gov db test set with loc_count=2 and valid=0.7", sample_test_set_from_gov(gov, size=test_set_size, num_parts=2, valid=0.7)))
-gov_test_sets.append(("gov db test set with loc_count=3 and valid=1", sample_test_set_from_gov(gov, size=test_set_size, num_parts=3, valid=1)))
-gov_test_sets.append(("gov db test set with loc_count=3 and valid=0.7", sample_test_set_from_gov(gov, size=test_set_size, num_parts=3, valid=0.7)))
+# %% [markdown]
+# # Test Set 2: Gov database
+# test_set_size = 100
+#
+# gov_test_sets = []
+# gov_test_sets.append(("gov db test set with loc_count=1 and valid=1", sample_test_set_from_gov(gov, size=test_set_size, num_parts=1, valid=1)))
+# gov_test_sets.append(("gov db test set with loc_count=1 and valid=0.7", sample_test_set_from_gov(gov, size=test_set_size, num_parts=1, valid=0.7)))
+# gov_test_sets.append(("gov db test set with loc_count=2 and valid=1", sample_test_set_from_gov(gov, size=test_set_size, num_parts=2, valid=1)))
+# gov_test_sets.append(("gov db test set with loc_count=2 and valid=0.7", sample_test_set_from_gov(gov, size=test_set_size, num_parts=2, valid=0.7)))
+# gov_test_sets.append(("gov db test set with loc_count=3 and valid=1", sample_test_set_from_gov(gov, size=test_set_size, num_parts=3, valid=1)))
+# gov_test_sets.append(("gov db test set with loc_count=3 and valid=0.7", sample_test_set_from_gov(gov, size=test_set_size, num_parts=3, valid=0.7)))
 
 # %%
 # Test Set 3: Synthetic
@@ -91,13 +91,13 @@ test_set_size = 100
 
 syn = Synthetic(gov)
 
-syn_test_sets. = []
-syn_test_sets..append(("syn test set with loc_count=1 and distortion=0.", syn.create_synthetic_test_set(size=test_set_size, num_parts=1, distortion_factor=0.)))
-syn_test_sets..append(("syn test set with loc_count=1 and distortion=1.", syn.create_synthetic_test_set(gov, size=test_set_size, num_parts=1, distortion_factor=1.)))
-syn_test_sets..append(("syn test set with loc_count=2 and distortion=0.", syn.create_synthetic_test_set(size=test_set_size, num_parts=2, distortion_factor=0.)))
-syn_test_sets..append(("syn test set with loc_count=2 and distortion=1.", syn.create_synthetic_test_set(size=test_set_size, num_parts=2, distortion_factor=1.)))
-syn_test_sets..append(("syn test set with loc_count=3 and distortion=0.", syn.create_synthetic_test_set(size=test_set_size, num_parts=3, distortion_factor=0.)))
-syn_test_sets..append(("syn test set with loc_count=3 and distortion=1.", syn.create_synthetic_test_set(size=test_set_size, num_parts=3, distortion_factor=1.)))
+syn_test_sets = []
+syn_test_sets.append(("syn test set with loc_count=1 and distortion=0.", syn.create_synthetic_test_set(size=test_set_size, num_parts=1, distortion_factor=0.)))
+syn_test_sets.append(("syn test set with loc_count=1 and distortion=1.", syn.create_synthetic_test_set(size=test_set_size, num_parts=1, distortion_factor=1.)))
+syn_test_sets.append(("syn test set with loc_count=2 and distortion=0.", syn.create_synthetic_test_set(size=test_set_size, num_parts=2, distortion_factor=0.)))
+syn_test_sets.append(("syn test set with loc_count=2 and distortion=1.", syn.create_synthetic_test_set(size=test_set_size, num_parts=2, distortion_factor=1.)))
+syn_test_sets.append(("syn test set with loc_count=3 and distortion=0.", syn.create_synthetic_test_set(size=test_set_size, num_parts=3, distortion_factor=0.)))
+syn_test_sets.append(("syn test set with loc_count=3 and distortion=1.", syn.create_synthetic_test_set(size=test_set_size, num_parts=3, distortion_factor=1.)))
 
 # %%
 # Test Set 4: GovTestData
@@ -130,26 +130,29 @@ for name, test_set in vl_test_sets:
     
     result_row.append(total_matches / test_set.location.nunique())
 
-# %% jupyter={"outputs_hidden": true} tags=[]
-test_results["vl test set with loc_count=1"].results
-
 # %% [markdown]
 # Test Set 2
 
+# %% [markdown]
+# for name, test_set in gov_test_sets:
+#     m = Matcher(gov)
+#     print("Running", name)
+#     m.get_match_for_locations(test_set.location)
+#     total_matches = len([match for match in m.results.values() if match.get("possible_matches")])
+#     print(f"Total matches: {total_matches} ({round(total_matches / test_set.location.nunique() * 100, 4)}%).")
+#     
+#     accuracy = get_accuracy(m.results, test_set)
+#     print("Accuracy (entries where all parts of truth are in possible matches):", round(accuracy, 4))
+#     print()
+#     
+#     result_row.append(total_matches / test_set.location.nunique())
+#     result_row.append(accuracy)
+
 # %%
-for name, test_set in gov_test_sets:
-    m = Matcher(gov)
-    print("Running", name)
-    m.get_match_for_locations(test_set.location)
-    total_matches = len([match for match in m.results.values() if match.get("possible_matches")])
-    print(f"Total matches: {total_matches} ({round(total_matches / test_set.location.nunique() * 100, 4)}%).")
-    
-    accuracy = get_accuracy(m.results, test_set)
-    print("Accuracy (entries where all parts of truth are in possible matches):", round(accuracy, 4))
-    print()
-    
-    result_row.append(total_matches / test_set.location.nunique())
-    result_row.append(accuracy)
+test_set = sample_test_set_from_gov(gov, size=test_set_size, num_parts=3, valid=1)
+m = Matcher(gov)
+m.get_match_for_locations(test_set.location)
+[(k,v) for k, v in m.results.items() if not v["possible_matches"]]
 
 # %% [markdown]
 # Test Set 3
@@ -197,7 +200,7 @@ final_results.append(result_row)
 result_row = []
 
 # %%
-for _, test_set in vl_test_sets + gov_test_sets + syn_test_sets + gtd_test_sets:
+for _, test_set in vl_test_sets + syn_test_sets + gtd_test_sets:
     test_set.location = Preprocessing.replace_corrections_vl(test_set.location)
     test_set.location = Preprocessing.replace_characters_vl(test_set.location)
     
@@ -209,10 +212,6 @@ for _, test_set in vl_test_sets + gov_test_sets + syn_test_sets + gtd_test_sets:
 from collections import defaultdict
 
 # %%
-gov = Gov(data_root)
-gov.load_data()
-gov.build_indices()
-
 old_names = list(gov.ids_by_name.keys())
 new_names = Preprocessing.replace_characters_gov(pd.Series(old_names, dtype=str))
 
@@ -246,20 +245,20 @@ for name, test_set in vl_test_sets:
 # %% [markdown]
 # Test Set 2
 
-# %%
-for name, test_set in gov_test_sets:
-    m = Matcher(gov)
-    print("Running", name)
-    m.get_match_for_locations(test_set.location)
-    total_matches = len([match for match in m.results.values() if match.get("possible_matches")])
-    print(f"Total matches: {total_matches} ({round(total_matches / test_set.location.nunique() * 100, 4)}%).")
-    
-    accuracy = get_accuracy(m.results, test_set)
-    print("Accuracy (entries where all parts of truth are in possible matches):", round(accuracy, 4))
-    print()
-    
-    result_row.append(total_matches / test_set.location.nunique())
-    result_row.append(accuracy)
+# %% [markdown]
+# for name, test_set in gov_test_sets:
+#     m = Matcher(gov)
+#     print("Running", name)
+#     m.get_match_for_locations(test_set.location)
+#     total_matches = len([match for match in m.results.values() if match.get("possible_matches")])
+#     print(f"Total matches: {total_matches} ({round(total_matches / test_set.location.nunique() * 100, 4)}%).")
+#     
+#     accuracy = get_accuracy(m.results, test_set)
+#     print("Accuracy (entries where all parts of truth are in possible matches):", round(accuracy, 4))
+#     print()
+#     
+#     result_row.append(total_matches / test_set.location.nunique())
+#     result_row.append(accuracy)
 
 # %% [markdown]
 # Test Set 3
@@ -307,7 +306,7 @@ final_results.append(result_row)
 result_row = []
 
 # %%
-for _, test_set in vl_test_sets + gov_test_sets + syn_test_sets + gtd_test_sets:
+for _, test_set in vl_test_sets + syn_test_sets + gtd_test_sets:
     test_set.location = Preprocessing.substitute_partial_words(test_set.location, data_root)
     test_set.location = Preprocessing.substitute_delete_words(test_set.location, data_root)
     test_set.location = Preprocessing.substitute_full_words(test_set.location, data_root)
@@ -318,12 +317,7 @@ for _, test_set in vl_test_sets + gov_test_sets + syn_test_sets + gtd_test_sets:
         test_set.truth = Preprocessing.substitute_full_words(test_set.truth, data_root)
 
 # %%
-gov = Gov(data_root)
-gov.load_data()
-gov.build_indices()
-
 old_names = list(gov.ids_by_name.keys())
-new_names = Preprocessing.replace_characters_gov(pd.Series(old_names, dtype=str))
 new_names = Preprocessing.substitute_partial_words(pd.Series(new_names), data_root)
 new_names = Preprocessing.substitute_delete_words(pd.Series(new_names), data_root)
 new_names = Preprocessing.substitute_full_words(pd.Series(new_names), data_root)
@@ -358,20 +352,20 @@ for name, test_set in vl_test_sets:
 # %% [markdown]
 # Test Set 2
 
-# %%
-for name, test_set in gov_test_sets:
-    m = Matcher(gov)
-    print("Running", name)
-    m.get_match_for_locations(test_set.location)
-    total_matches = len([match for match in m.results.values() if match.get("possible_matches")])
-    print(f"Total matches: {total_matches} ({round(total_matches / test_set.location.nunique() * 100, 4)}%).")
-    
-    accuracy = get_accuracy(m.results, test_set)
-    print("Accuracy (entries where all parts of truth are in possible matches):", round(accuracy, 4))
-    print()
-    
-    result_row.append(total_matches / test_set.location.nunique())
-    result_row.append(accuracy)
+# %% [markdown]
+# for name, test_set in gov_test_sets:
+#     m = Matcher(gov)
+#     print("Running", name)
+#     m.get_match_for_locations(test_set.location)
+#     total_matches = len([match for match in m.results.values() if match.get("possible_matches")])
+#     print(f"Total matches: {total_matches} ({round(total_matches / test_set.location.nunique() * 100, 4)}%).")
+#     
+#     accuracy = get_accuracy(m.results, test_set)
+#     print("Accuracy (entries where all parts of truth are in possible matches):", round(accuracy, 4))
+#     print()
+#     
+#     result_row.append(total_matches / test_set.location.nunique())
+#     result_row.append(accuracy)
 
 # %% [markdown]
 # Test Set 3
@@ -417,7 +411,7 @@ final_results.append(result_row)
 
 # %%
 names = []
-for name, test_set in vl_test_sets + gov_test_sets + syn_test_sets + gtd_test_sets:
+for name, test_set in vl_test_sets + syn_test_sets + gtd_test_sets:
     for metric in ['total matches', 'accuracy']:
         if name.startswith("vl") and metric == 'accuracy':
             continue
@@ -433,6 +427,7 @@ final_results["test set"] = ["Baseline", "Preprocessing VL (corrections + charac
 final_results = final_results.set_index("test set")
 
 # %%
-final_results.to_csv("final_results.csv")
+from datetime import datetime
 
 # %%
+final_results.to_csv(f"{datetime.now().strftime('%Y_%m_%d_%H_%M_%S')}_final_results.csv")
