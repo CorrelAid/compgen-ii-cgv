@@ -89,8 +89,9 @@ class Matcher:
                 "in_gov": in_gov,
                 "candidates": [part] if in_gov else [],
                 }
-                
+
         if all(part["in_gov"] for part in self.results[location]["parts"].values()):
+            self.anchor_method.append("gov complete")
             return
 
         # first handle case that we did not find anything for any part
@@ -103,7 +104,7 @@ class Matcher:
             else:
                 self.anchor_method.append("No anchor at all")
         else:
-            self.anchor_method.append("gov only")
+            self.anchor_method.append("gov partial")
 
         # now check if there is still one part without a match
         # and use the already matched part to get relevant names

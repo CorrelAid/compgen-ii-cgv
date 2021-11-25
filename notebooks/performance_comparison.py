@@ -164,6 +164,7 @@ for name, test_set in syn_test_sets:
     m.get_match_for_locations(test_set.location)
     total_matches = len([match for match in m.results.values() if match.get("possible_matches")])
     print(f"Total matches: {total_matches} ({round(total_matches /  test_set.location.nunique() * 100, 4)}%).")
+    print(Counter(m.anchor_method))
     
     accuracy = get_accuracy(m.results, test_set)
     print("Accuracy (entries where all parts of truth are in possible matches):", round(accuracy, 4))
@@ -182,6 +183,7 @@ for name, test_set in gtd_test_sets:
     m.get_match_for_locations(test_set.location)
     total_matches = len([match for match in m.results.values() if match.get("possible_matches")])
     print(f"Total matches: {total_matches} ({round(total_matches /  test_set.location.nunique() * 100, 4)}%).")
+    print(Counter(m.anchor_method))
     
     accuracy = get_accuracy(m.results, test_set)
     print("Accuracy (entries where all parts of truth are in possible matches):", round(accuracy, 4))
@@ -238,6 +240,7 @@ for name, test_set in vl_test_sets:
     m.get_match_for_locations(test_set.location)
     total_matches = len([match for match in m.results.values() if match.get("possible_matches")])
     print(f"Total matches: {total_matches} ({round(total_matches / test_set.location.nunique() * 100, 4)}%).")
+    print(Counter(m.anchor_method))
     print()
     
     result_row.append(total_matches / test_set.location.nunique())
@@ -270,6 +273,7 @@ for name, test_set in syn_test_sets:
     m.get_match_for_locations(test_set.location)
     total_matches = len([match for match in m.results.values() if match.get("possible_matches")])
     print(f"Total matches: {total_matches} ({round(total_matches /  test_set.location.nunique() * 100, 4)}%).")
+    print(Counter(m.anchor_method))
     
     accuracy = get_accuracy(m.results, test_set)
     print("Accuracy (entries where all parts of truth are in possible matches):", round(accuracy, 4))
@@ -288,6 +292,7 @@ for name, test_set in gtd_test_sets:
     m.get_match_for_locations(test_set.location)
     total_matches = len([match for match in m.results.values() if match.get("possible_matches")])
     print(f"Total matches: {total_matches} ({round(total_matches /  test_set.location.nunique() * 100, 4)}%).")
+    print(Counter(m.anchor_method))
     
     accuracy = get_accuracy(m.results, test_set)
     print("Accuracy (entries where all parts of truth are in possible matches):", round(accuracy, 4))
@@ -345,6 +350,7 @@ for name, test_set in vl_test_sets:
     m.get_match_for_locations(test_set.location)
     total_matches = len([match for match in m.results.values() if match.get("possible_matches")])
     print(f"Total matches: {total_matches} ({round(total_matches / test_set.location.nunique() * 100, 4)}%).")
+    print(Counter(m.anchor_method))
     print()
     
     result_row.append(total_matches / test_set.location.nunique())
@@ -377,6 +383,7 @@ for name, test_set in syn_test_sets:
     m.get_match_for_locations(test_set.location)
     total_matches = len([match for match in m.results.values() if match.get("possible_matches")])
     print(f"Total matches: {total_matches} ({round(total_matches /  test_set.location.nunique() * 100, 4)}%).")
+    print(Counter(m.anchor_method))
     
     accuracy = get_accuracy(m.results, test_set)
     print("Accuracy (entries where all parts of truth are in possible matches):", round(accuracy, 4))
@@ -395,6 +402,7 @@ for name, test_set in gtd_test_sets:
     m.get_match_for_locations(test_set.location)
     total_matches = len([match for match in m.results.values() if match.get("possible_matches")])
     print(f"Total matches: {total_matches} ({round(total_matches /  test_set.location.nunique() * 100, 4)}%).")
+    print(Counter(m.anchor_method))
     
     accuracy = get_accuracy(m.results, test_set)
     print("Accuracy (entries where all parts of truth are in possible matches):", round(accuracy, 4))
