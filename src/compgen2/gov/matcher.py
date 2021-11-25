@@ -21,7 +21,7 @@ from . import Gov
 
 logger = logging.getLogger(__name__)
 
-MAX_COST = 3
+MAX_COST = 5
 
 
 class Matcher:
