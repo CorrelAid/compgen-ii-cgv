@@ -10,22 +10,29 @@ from setuptools import setup
 def read(fname):
     return open(os.path.join(os.path.dirname(__file__), fname)).read()
 
+
 setup(
-        name="compgen2",
-        author="CorrelAid",
-        description=("Provides the compgen2 package that allows to match locations against the GOV."),
-        long_description=read('README.md'),
-        packages=["compgen2"],
-        package_dir={'':'src'},
-        version="1.0",
-        install_requires=[
-            "pandas",
-            "numpy",
-            "pyarrow",
-            "tqdm",
-            "pytest",
-            "lxml",
-            "html5lib",
-            "BeautifulSoup4",
-        ],
+    name="compgen2",
+    author="CorrelAid",
+    description=("Provides the compgen2 package that allows to match locations against the GOV."),
+    long_description=read("README.md"),
+    packages=["compgen2"],
+    package_dir={"": "src"},
+    version="1.0",
+    install_requires=[
+        "BeautifulSoup4",
+        "html5lib",
+        "lxml",
+        "numpy",
+        "pandas",
+        "pyarrow",
+        "pyperclip",
+        "pytest",
+        "tqdm",
+    ],
+    entry_points={
+        'console_scripts': [
+            'compgen2=compgen2.app:main',
+        ]
+    }
 )
