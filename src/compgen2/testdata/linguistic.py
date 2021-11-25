@@ -11,30 +11,30 @@ class StringEnriched:
     def get_string(self) -> str:
         return self.string_
 
-    def apply_manipulator(self, manipulator: Manipulator) -> None:
+    def apply_manipulator(self, manipulator: Manipulator, distortion_factor: float = 1.) -> None:
         """Take a manipulator object and apply internally on the string
         Args:
           manipulator (Manipulator): A single mainpulator object that is applied on self.string_
         """
         if manipulator.type == "char":
-            self.manipulate_by_chars(manipulator)
+            self.manipulate_by_chars(manipulator, distortion_factor)
         if manipulator.type == "word":
-            self.manipulate_by_words(manipulator)
+            self.manipulate_by_words(manipulator, distortion_factor)
 
-    def manipulate_by_chars(self, manipulator: Manipulator) -> None:
+    def manipulate_by_chars(self, manipulator: Manipulator, distortion_factor: float = 1.) -> None:
         """Take a manipulator object of type "char" and apply it internally on self.string_
         Args:
           manipulator (Manipulator): A single mainpulator object that is applied on self.string_
         """
         chars_modified = []
         for c in list(self.string_):
-            if random.random() < manipulator.chance:
+            if random.random() < manipulator.chance * distortion_factor:
                 chars_modified.append(manipulator.m(c))
             else:
                 chars_modified.append(c)
         self.string_ = "".join(chars_modified)
 
-    def manipulate_by_words(self, manipulator: Manipulator) -> None:
+    def manipulate_by_words(self, manipulator: Manipulator, distortion_factor: float = 1.) -> None:
         """Take a manipulator object of type "word" and apply it internally on self.string_
         Args:
           manipulator (Manipulator): A single mainpulator object that is applied on self.string_
@@ -42,7 +42,7 @@ class StringEnriched:
         words = self.decompose(self.string_)
         words_modified = []
         for w in words:
-            if self.type_code(w) == "alphanumerical" and random.random() < manipulator.chance:
+            if self.type_code(w) == "alphanumerical" and random.random() < manipulator.chance * distortion_factor:
                 words_modified.append(manipulator.m(w))
             else:
                 words_modified.append(w)
