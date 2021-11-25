@@ -89,6 +89,9 @@ class Matcher:
                 "in_gov": in_gov,
                 "candidates": [part] if in_gov else [],
                 }
+                
+        if all(part["in_gov"] for part in self.results[location]["parts"].values()):
+            return
 
         # first handle case that we did not find anything for any part
         # try to find at least one candidate for any part
@@ -202,8 +205,7 @@ class Matcher:
         return candidates
         
     def get_difflib_matches(self, name: str, relevant_names: set[str], maxcost) -> list[str]:
-        return difflib.get_close_matches(name, relevant_names, n=30, cutoff=0.95*(5-maxcost)*0.25+0.6*(maxcost-1)*0.25)
-
+        return difflib.get_close_matches(name, relevant_names, n=30, cutoff=0.95*(self.levenshtein_max_cost-maxcost)/(self.levenshtein_max_cost-1)+0.6*(maxcost-1)/(self.levenshtein_max_cost-1))
 
     def get_loc_names(self, type_ids: Optional[set[int]] = None) -> set[str]:
         if type_ids is not None:
