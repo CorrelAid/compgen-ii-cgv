@@ -63,7 +63,7 @@ gov.build_indices()
 # %%
 # Test Set 1: VL
 assert data_root.joinpath(FILENAME_VL).exists()
-test_set_size = 200
+test_set_size = 100
 
 vl = pd.read_parquet(data_root / FILENAME_VL)  # location column has the test data, truth is unknown
 
@@ -91,8 +91,13 @@ test_set_size = 100
 
 syn = Synthetic(gov)
 
-syn_test_sets = []
-syn_test_sets.append(("syn test set with default probabilities", syn.create_synthetic_test_set(test_set_size)))
+syn_test_sets. = []
+syn_test_sets..append(("syn test set with loc_count=1 and distortion=0.", syn.create_synthetic_test_set(size=test_set_size, num_parts=1, distortion_factor=0.)))
+syn_test_sets..append(("syn test set with loc_count=1 and distortion=1.", syn.create_synthetic_test_set(gov, size=test_set_size, num_parts=1, distortion_factor=1.)))
+syn_test_sets..append(("syn test set with loc_count=2 and distortion=0.", syn.create_synthetic_test_set(size=test_set_size, num_parts=2, distortion_factor=0.)))
+syn_test_sets..append(("syn test set with loc_count=2 and distortion=1.", syn.create_synthetic_test_set(size=test_set_size, num_parts=2, distortion_factor=1.)))
+syn_test_sets..append(("syn test set with loc_count=3 and distortion=0.", syn.create_synthetic_test_set(size=test_set_size, num_parts=3, distortion_factor=0.)))
+syn_test_sets..append(("syn test set with loc_count=3 and distortion=1.", syn.create_synthetic_test_set(size=test_set_size, num_parts=3, distortion_factor=1.)))
 
 # %%
 # Test Set 4: GovTestData
@@ -112,16 +117,21 @@ result_row = []
 # Test Set 1
 
 # %% tags=[]
+test_results = {}
 for name, test_set in vl_test_sets:
     m = Matcher(gov)
     print("Running", name)
     m.get_match_for_locations(test_set.location)
     total_matches = len([match for match in m.results.values() if match.get("possible_matches")])
     print(f"Total matches: {total_matches} ({round(total_matches / test_set.location.nunique() * 100, 4)}%).")
-    print(Counter(m.matching_method))
+    print(Counter(m.anchor_method))
+    test_results[name] = m
     print()
     
     result_row.append(total_matches / test_set.location.nunique())
+
+# %% jupyter={"outputs_hidden": true} tags=[]
+test_results["vl test set with loc_count=1"].results
 
 # %% [markdown]
 # Test Set 2
@@ -196,20 +206,28 @@ for _, test_set in vl_test_sets + gov_test_sets + syn_test_sets + gtd_test_sets:
         test_set.truth = Preprocessing.replace_characters_vl(test_set.truth)
 
 # %%
+from collections import defaultdict
+
+# %%
 gov = Gov(data_root)
 gov.load_data()
+gov.build_indices()
+
 old_names = list(gov.ids_by_name.keys())
 new_names = Preprocessing.replace_characters_gov(pd.Series(old_names, dtype=str))
 
+ids_by_pname = defaultdict(set)
 for old_name, new_name in zip(old_names, new_names):
-    gov.ids_by_name[new_name] = gov.ids_by_name[old_name]
-    del gov.ids_by_name[old_name]
+    ids_by_pname[new_name] |= gov.ids_by_name[old_name]
+ids_by_pname.default_factory = None
+gov.ids_by_name = ids_by_pname
     
-for id_ in gov.names_by_id:
-    names = gov.names_by_id[id_]
-    gov.names_by_id[id_] =  Preprocessing.replace_characters_gov(pd.Series(names, dtype=str))
-    
-gov.build_indices()
+pnames_by_id = defaultdict(set)
+for k, v in ids_by_pname.items():
+    for i in v:
+        pnames_by_id[i] |= {k}
+pnames_by_id.default_factory = None
+gov.names_by_id = pnames_by_id
 
 # %% [markdown]
 # Test Set 1
@@ -302,24 +320,26 @@ for _, test_set in vl_test_sets + gov_test_sets + syn_test_sets + gtd_test_sets:
 # %%
 gov = Gov(data_root)
 gov.load_data()
+gov.build_indices()
+
 old_names = list(gov.ids_by_name.keys())
 new_names = Preprocessing.replace_characters_gov(pd.Series(old_names, dtype=str))
 new_names = Preprocessing.substitute_partial_words(pd.Series(new_names), data_root)
 new_names = Preprocessing.substitute_delete_words(pd.Series(new_names), data_root)
 new_names = Preprocessing.substitute_full_words(pd.Series(new_names), data_root)
 
+ids_by_pname = defaultdict(set)
 for old_name, new_name in zip(old_names, new_names):
-    gov.ids_by_name[new_name] = gov.ids_by_name[old_name]
-    del gov.ids_by_name[old_name]
+    ids_by_pname[new_name] |= gov.ids_by_name[old_name]
+ids_by_pname.default_factory = None
+gov.ids_by_name = ids_by_pname
     
-for id_ in gov.names_by_id:
-    names = gov.names_by_id[id_]
-    new_names =  Preprocessing.replace_characters_gov(pd.Series(names, dtype=str))
-    new_names = Preprocessing.substitute_partial_words(pd.Series(new_names), data_root)
-    new_names = Preprocessing.substitute_delete_words(pd.Series(new_names), data_root)
-    new_names = Preprocessing.substitute_full_words(pd.Series(new_names), data_root)
-    
-gov.build_indices()
+pnames_by_id = defaultdict(set)
+for k, v in ids_by_pname.items():
+    for i in v:
+        pnames_by_id[i] |= {k}
+pnames_by_id.default_factory = None
+gov.names_by_id = pnames_by_id
 
 # %% [markdown]
 # Test Set 1
