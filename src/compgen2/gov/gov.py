@@ -166,7 +166,7 @@ class Gov:
         Returns:
             set[str]: set of names
         """
-        loc_names = set().union(*self.names_by_id.values())
+        loc_names = set(self.ids_by_name.keys())
         return loc_names
 
     def _read_item(self) -> pd.DataFrame:

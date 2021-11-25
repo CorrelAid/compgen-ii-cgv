@@ -8,6 +8,7 @@ print(m.results)
 ```
 """
 import logging
+from collections import defaultdict
 from itertools import product
 from operator import itemgetter
 from typing import Optional, Union
@@ -18,6 +19,7 @@ from tqdm import tqdm
 from .. import LocCorrection
 from ..const import T_KREISUNDHOEHER, T_STADT
 from . import Gov
+from .. import Phonetic
 
 logger = logging.getLogger(__name__)
 
@@ -46,6 +48,14 @@ class Matcher:
             )
         else:
             logger.info(f"Initialized matcher with a gov database of {len(gov.items):,} items.")
+
+        self.koelner_phonetic = Phonetic()
+        self.names_by_phonetic = defaultdict(set)
+        for name in gov.get_loc_names():
+            self.names_by_phonetic[self.koelner_phonetic.encode(name)] |= {name}
+        self.names_by_phonetic.default_factory = None
+
+        self.matching_method = []
 
     def get_match_for_locations(self, locations: Union[list[str], pd.Series]) -> None:
         for location in tqdm(locations, desc="Processing locations"):
@@ -82,26 +92,24 @@ class Matcher:
             matched_part, candidates = self.find_part_with_best_candidates(parts)
 
             if candidates:
-                self.results[location]["parts"][matched_part]["candidates"].extend(c[0] for c in candidates)
+                self.results[location]["parts"][matched_part]["candidates"].extend(candidates)
+            else:
+                self.matching_method.append("No anchor at all")
+        else:
+            self.matching_method.append("gov only")
 
         # now check if there is still one part without a match
         # and use the already matched part to get relevant names
         if len(parts) > 1:
-            for unmatched_part in parts:
-                if (
-                    not self.results[location]["parts"][unmatched_part]["in_gov"]
-                    and not self.results[location]["parts"][unmatched_part]["candidates"]
-                ):
-                    relevant_names = set()
-                    for matched_part in parts:
-                        if unmatched_part == matched_part:
-                            continue
-
-                        candidates = self.results[location]["parts"][matched_part]["candidates"]
-                        relevant_names.update(self.get_relevant_names_from_part_candidates(candidates))
-
-                    candidates = self.get_best_candidates(relevant_names, unmatched_part, MAX_COST)
-                    self.results[location]["parts"][unmatched_part]["candidates"].extend(c[0] for c in candidates)
+            parts = self.results[location]["parts"]
+            relevant_names = set()
+            for matched_part in [part for part, partdict in self.results[location]["parts"].items() if partdict["in_gov"] or partdict["candidates"]]:
+                candidates = self.results[location]["parts"][matched_part]["candidates"]
+                relevant_names.update(self.get_relevant_names_from_part_candidates(candidates))
+            for unmatched_part in [part for part, partdict in self.results[location]["parts"].items() if not (partdict["in_gov"] or partdict["candidates"])]:
+                candidates = self.get_best_candidates(relevant_names, unmatched_part, MAX_COST)
+                self.results[location]["parts"][unmatched_part]["candidates"].extend(candidates)
+                relevant_names.update(self.get_relevant_names_from_part_candidates(candidates))
 
 
     def find_textual_id_for_location(self, location: str) -> None:
@@ -137,7 +145,7 @@ class Matcher:
                     
                     self.results[location]["possible_matches"].append(match)
 
-    def find_part_with_best_candidates(self, parts: tuple[str]) -> tuple[str, list[tuple[str, int]]]:
+    def find_part_with_best_candidates(self, parts: tuple[str]) -> tuple[str, list[str]]:
         for type_ids in [T_KREISUNDHOEHER, T_STADT]:
             for cost in range(1, 3 + 1):
                 for part in parts:
@@ -145,25 +153,40 @@ class Matcher:
                     candidates = self.get_best_candidates(relevant_names, part, cost)
 
                     if candidates:
+                        self.matching_method.append("KREISORSTADT")
                         return (part, candidates)
 
         relevant_names = self.get_loc_names()
+
+        for cost in range(1, 2):
+            for part in parts:
+                #candidates_levenshtein = self.get_best_candidates(relevant_names, part, cost)
+                candidates_levenshtein = list()
+                candidates_phonetic = self.names_by_phonetic.get(self.koelner_phonetic.encode(part), set())
+                #candidates_phonetic = list()
+                candidates = [*candidates_phonetic, *candidates_levenshtein]
+
+                if candidates:
+                    self.matching_method.append("Phonetic")
+                    return (part, candidates)
+        
         for cost in range(1, MAX_COST + 1):
             for part in parts:
                 candidates = self.get_best_candidates(relevant_names, part, cost)
 
                 if candidates:
+                    self.matching_method.append(f"Cost {cost}")
                     return (part, candidates)
     
         return ("", [])
 
-    def get_best_candidates(self, relevant_names: set[str], name: str, max_cost: int) -> list[tuple[str, int]]:
+    def get_best_candidates(self, relevant_names: set[str], name: str, max_cost: int) -> list[str]:
         lC = LocCorrection.from_list(tuple(relevant_names))
         candidates = lC.search(name, max_cost)
 
         if candidates:
             best_cost = min(candidates, key=itemgetter(1))[1]
-            candidates = [c for c in candidates if c[1] == best_cost]
+            candidates = [c[0] for c in candidates if c[1] == best_cost]
 
         return candidates
 
@@ -184,25 +207,6 @@ class Matcher:
             relevant_names.update(self.gov.get_names_by_ids(ids_for_reachable_nodes))
 
         return relevant_names
-
-    def find_relevant_ids(self, query: str) -> list[tuple[int, ...]]:
-        """Retrieve all ids from Gov where the query is part of the path."""
-        parts = Matcher.get_query_parts(query)
-        ids_by_part = self.get_ids_by_part(parts)
-
-        if not any(ids_by_part.values()):
-            return []
-
-        if len(parts) == 1:
-            return [(x,) for x in ids_by_part[parts[0]]]
-
-        relevant_ids = [
-            ids
-            for ids in product(*ids_by_part.values())
-            if self.gov.all_reachable_nodes_by_id[ids[0]].issuperset(ids[1:])
-        ]
-
-        return relevant_ids
 
     @staticmethod
     def get_query_parts(query: str) -> tuple[str]:
