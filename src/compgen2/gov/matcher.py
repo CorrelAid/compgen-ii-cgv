@@ -34,7 +34,7 @@ class Matcher:
         koelner_phonetic (Phonetic): Instance of Phonetic class.
         use_difflib (bool): If True, uses difflib.get_close_matches to find candidates.
         use_phonetic (bool): If True, uses Koelner Phonetic to search for candidates.
-        max_cost (int): Max cost for searching for candidates. Value between 1 and max_cost. 
+        max_cost (int): Max cost for searching for candidates. Value between 1 and max_cost.
         search_kreis_first (bool): If True, searches for candidates in Kreis or higher first.
         results (dict): A dictionary containing the final results.
             Provides information about the found parts and the possible matches for each query.
@@ -65,9 +65,9 @@ class Matcher:
         self.search_kreis_first = search_kreis_first
         self.results = {}
     
-        self.koelner_phonetic = None        
+        self.koelner_phonetic = Phonetic()        
         if self.use_phonetic:
-            self.koelner_phonetic = Phonetic(gov.get_loc_names())
+            self.koelner_phonetic.build_phonetic_index(gov.get_loc_names())
 
     def get_match_for_locations(self, locations: Union[list[str], pd.Series]) -> None:
         for location in tqdm(locations, desc="Processing locations"):
