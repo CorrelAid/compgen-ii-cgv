@@ -7,8 +7,8 @@ m.get_match_for_locations(["Aachen", "aarösund, flensburg"])
 print(m.results)
 ```
 """
+import difflib
 import logging
-from collections import defaultdict
 from itertools import product
 from operator import itemgetter
 from typing import Optional, Union
@@ -16,29 +16,40 @@ from typing import Optional, Union
 import pandas as pd
 from tqdm import tqdm
 
-import difflib
-
-from .. import LocCorrection
+from .. import LocCorrection, Phonetic
 from ..const import T_KREISUNDHOEHER, T_STADT
 from . import Gov
-from .. import Phonetic
 
 logger = logging.getLogger(__name__)
 
+
 class Matcher:
     """Main class to match names against the Gov database.
-    
+
     Main steps of the matching algorithm:
         1. ...
-        
+
     Attributes:
         gov (Gov): A fully initialized instance of the Gov class.
-        results (dict): A dictionary containing the final results. 
+        koelner_phonetic (Phonetic): Instance of Phonetic class.
+        use_difflib (bool): If True, uses difflib.get_close_matches to find candidates.
+        use_phonetic (bool): If True, uses Koelner Phonetic to search for candidates.
+        max_cost (int): Max cost for searching for candidates. Value between 1 and max_cost. 
+        search_kreis_first (bool): If True, searches for candidates in Kreis or higher first.
+        results (dict): A dictionary containing the final results.
             Provides information about the found parts and the possible matches for each query.
+        
     """
-    def __init__(self, gov: Gov) -> None:
+
+    def __init__(
+        self,
+        gov: Gov,
+        use_difflib: bool = True,
+        use_phonetic: bool = False,
+        max_cost: int = 3,
+        search_kreis_first: bool = False,
+    ) -> None:
         self.gov = gov
-        self.results = {}
 
         if not self.gov.fully_initialized:
             logger.warning(
@@ -48,24 +59,20 @@ class Matcher:
         else:
             logger.info(f"Initialized matcher with a gov database of {len(gov.items):,} items.")
 
-        self.koelner_phonetic = Phonetic()
-        self.names_by_phonetic = defaultdict(set)
-        for name in gov.get_loc_names():
-            self.names_by_phonetic[self.koelner_phonetic.encode(name)] |= {name}
-        self.names_by_phonetic.default_factory = None
-
-        self.anchor_method = []
-
-        self.use_difflib = True
-        self.levenshtein_max_cost = 3
-        self.anchor_flag_kreis = False
-        self.anchor_flag_phonetic = False
+        self.use_difflib = use_difflib
+        self.use_phonetic = use_phonetic
+        self.max_cost = max_cost
+        self.search_kreis_first = search_kreis_first
+        self.results = {}
+    
+        self.koelner_phonetic = None        
+        if self.use_phonetic:
+            self.koelner_phonetic = Phonetic(gov.get_loc_names())
 
     def get_match_for_locations(self, locations: Union[list[str], pd.Series]) -> None:
         for location in tqdm(locations, desc="Processing locations"):
             self.find_parts_for_location(location)
             self.find_textual_id_for_location(location)
-
 
     def find_parts_for_location(self, location: str) -> None:
         """Find the Gov parts for each location name.
@@ -88,43 +95,51 @@ class Matcher:
             self.results[location]["parts"][part] = {
                 "in_gov": in_gov,
                 "candidates": [part] if in_gov else [],
-                }
+                "anchor": True
+            }
 
-        if all(part["in_gov"] for part in self.results[location]["parts"].values()):
-            self.anchor_method.append("gov complete")
+        matched_parts = [part for part in self.results[location]["parts"].values() if part["in_gov"]]
+        if len(matched_parts) == len(parts):
+            self._set_anchor_method_for_location(location, "gov complete")
             return
 
         # first handle case that we did not find anything for any part
         # try to find at least one candidate for any part
-        if not any(part["in_gov"] for part in self.results[location]["parts"].values()):
-            matched_part, candidates = self.find_part_with_best_candidates(parts)
+        if not matched_parts:
+            matched_part, candidates = self.find_part_with_best_candidates(location, parts)
 
             if candidates:
                 self.results[location]["parts"][matched_part]["candidates"].extend(candidates)
+                self.results[location]["parts"][matched_part]["anchor"] = True
             else:
-                self.anchor_method.append("No anchor at all")
+                self._set_anchor_method_for_location(location, "No anchor at all")
         else:
-            self.anchor_method.append("gov partial")
+            self._set_anchor_method_for_location(location, "gov partial")
 
-        # now check if there is still one part without a match
+        # now check if there is still unmatched parts
         # and use the already matched part to get relevant names
-        if len(parts) > 1:
+        unmatched_parts = [part for part in self.results[location]["parts"].values() if not part["candidates"]]
+        if unmatched_parts:
             parts = self.results[location]["parts"]
             relevant_names = set()
-            for matched_part in [part for part, partdict in self.results[location]["parts"].items() if partdict["in_gov"] or partdict["candidates"]]:
+            for matched_part in [
+                part for part, partdict in self.results[location]["parts"].items() if partdict["candidates"]
+            ]:
                 candidates = self.results[location]["parts"][matched_part]["candidates"]
                 relevant_names.update(self.get_relevant_names_from_part_candidates(candidates))
-            for unmatched_part in [part for part, partdict in self.results[location]["parts"].items() if not (partdict["in_gov"] or partdict["candidates"])]:
-                candidates = self.get_matches(unmatched_part, relevant_names, self.levenshtein_max_cost)
+            for unmatched_part in [
+                part for part, partdict in self.results[location]["parts"].items() if not partdict["candidates"]
+            ]:
+                candidates = self.get_matches(unmatched_part, relevant_names, self.max_cost)
                 self.results[location]["parts"][unmatched_part]["candidates"].extend(candidates)
                 relevant_names.update(self.get_relevant_names_from_part_candidates(candidates))
 
-
     def find_textual_id_for_location(self, location: str) -> None:
         """Find a textual id for given location name."""
-        
+
         self.results[location]["possible_matches"] = []
 
+        # ignore parts with no candidates so we still find partial matches
         list_of_candidates = [
             part["candidates"] for part in self.results[location]["parts"].values() if part["candidates"]
         ]
@@ -137,7 +152,7 @@ class Matcher:
                         # TODO: what to do if items exist in Gov but not the relationship?
                         if not self.gov.all_reachable_nodes_by_id[ids[0]].issuperset(ids[1:]):
                             continue
-                    
+
                     match = {}
                     for i, part in enumerate(combination_of_names):
                         gov_id = ids[i]
@@ -148,65 +163,66 @@ class Matcher:
                             "gov_id": ids[i],
                             "textual_id": textual_id,
                             "type_ids": type_ids,
-                            "type_names": type_names
+                            "type_names": type_names,
                         }
-                    
+
                     self.results[location]["possible_matches"].append(match)
 
-    def find_part_with_best_candidates(self, parts: tuple[str]) -> tuple[str, list[str]]:
-        if self.anchor_flag_kreis:
+    def find_part_with_best_candidates(self, location: str, parts: tuple[str]) -> tuple[str, list[str]]:
+        if self.search_kreis_first:
             for type_ids in [T_KREISUNDHOEHER, T_STADT]:
-                for cost in range(1, 3 + 1):
+                for cost in range(1, self.max_cost + 1):
                     for part in parts:
                         relevant_names = self.get_loc_names(type_ids)
                         candidates = self.get_matches(part, relevant_names, cost)
 
                         if candidates:
-                            self.anchor_method.append("KREISORSTADT")
+                            self._set_anchor_method_for_location(location, f"KREISORSTADT | Cost {cost}")
                             return (part, candidates)
 
         relevant_names = self.get_loc_names()
 
-        if self.anchor_flag_phonetic:
+        if self.use_phonetic:
             for part in parts:
-                #candidates_levenshtein = self.get_levenshtein_matches(relevant_names, part, cost)
-                candidates_levenshtein = list()
-                candidates_phonetic = self.names_by_phonetic.get(self.koelner_phonetic.encode(part), set())
-                #candidates_phonetic = list()
-                candidates = [*candidates_phonetic, *candidates_levenshtein]
+                candidates = list(self.koelner_phonetic.names_by_phonetic.get(self.koelner_phonetic.encode(part), set()))
 
                 if candidates:
-                    self.anchor_method.append("Phonetic")
+                    self._set_anchor_method_for_location(location, f"Phonetic")
                     return (part, candidates)
-        
-        for cost in range(1, self.levenshtein_max_cost + 1):
+
+        for cost in range(1, self.max_cost + 1):
             for part in parts:
                 candidates = self.get_matches(part, relevant_names, cost)
 
                 if candidates:
-                    self.anchor_method.append(f"Cost {cost}")
+                    self._set_anchor_method_for_location(location, f"ALL GOV | Cost {cost}")
                     return (part, candidates)
-    
+
         return ("", [])
 
-    def get_matches(self, name: str, relevant_names: set[str], max_cost: int) -> list[str]:
+    def get_matches(self, name: str, relevant_names: set[str], cost: int) -> list[str]:
         if self.use_difflib:
-            return self.get_difflib_matches(name, relevant_names, max_cost)
+            return self.get_difflib_matches(name, relevant_names, cost)
         else:
-            return self.get_levenshtein_matches(name, relevant_names, max_cost)
+            return self.get_levenshtein_matches(name, relevant_names, cost)
 
-    def get_levenshtein_matches(self, name: str, relevant_names: set[str], max_cost: int) -> list[str]:
+    def get_levenshtein_matches(self, name: str, relevant_names: set[str], cost: int) -> list[str]:
         lC = LocCorrection.from_list(tuple(relevant_names))
-        candidates = lC.search(name, max_cost)
+        candidates = lC.search(name, cost)
 
         if candidates:
             best_cost = min(candidates, key=itemgetter(1))[1]
             candidates = [c[0] for c in candidates if c[1] == best_cost]
 
         return candidates
-        
-    def get_difflib_matches(self, name: str, relevant_names: set[str], maxcost) -> list[str]:
-        return difflib.get_close_matches(name, relevant_names, n=30, cutoff=0.95*(self.levenshtein_max_cost-maxcost)/(self.levenshtein_max_cost-1)+0.6*(maxcost-1)/(self.levenshtein_max_cost-1))
+
+    def get_difflib_matches(self, name: str, relevant_names: set[str], cost) -> list[str]:
+        return difflib.get_close_matches(
+            name,
+            relevant_names,
+            n=30,
+            cutoff=0.95 - (0.95 - 0.6) * (cost-1)/(self.max_cost-1),
+        )
 
     def get_loc_names(self, type_ids: Optional[set[int]] = None) -> set[str]:
         if type_ids is not None:
@@ -230,3 +246,6 @@ class Matcher:
     def get_query_parts(query: str) -> tuple[str]:
         """Split Gov item (query) to get the single names (parts)."""
         return tuple(s.strip().lower() for s in query.split(","))
+
+    def _set_anchor_method_for_location(self, location: str, method: str):
+        self.results[location]["anchor_method"] = method
