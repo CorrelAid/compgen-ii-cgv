@@ -95,9 +95,9 @@ class Matcher:
             self.results[location]["parts"][part] = {
                 "in_gov": in_gov,
                 "candidates": [part] if in_gov else [],
-                "anchor": True,
+                "anchor": in_gov
             }
-
+        
         matched_parts = [part for part in self.results[location]["parts"].values() if part["in_gov"]]
         if len(matched_parts) == len(parts):
             self._set_anchor_method_for_location(location, "gov complete")
@@ -171,7 +171,7 @@ class Matcher:
     def find_part_with_best_candidates(self, location: str, parts: tuple[str]) -> tuple[str, list[str]]:
         if self.search_kreis_first and len(parts) > 1:
             for type_ids in [T_KREISUNDHOEHER, T_STADT]:
-                for cost in range(1, 3 + 1):
+                for cost in range(1, 2 + 1):
                     for part in parts:
                         relevant_names = self.get_loc_names(type_ids)
                         candidates = self.get_matches(part, relevant_names, cost)
