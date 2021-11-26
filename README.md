@@ -21,6 +21,13 @@ Danach steht das `compgen2` package bereit zur Nutzung.
 
 ### `compgen2` package
 
+## Matching Algorithmus
+Unser Algorithmus
+
+**TODO** Mural Bild hinzufügen
+
+## Erkenntnisse aus dem Projekt
+**TODO**  Verweis auf Wiki
 
 ## Notebooks
 ...
