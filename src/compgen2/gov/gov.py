@@ -158,8 +158,7 @@ class Gov:
         self.fully_initialized = False
 
         logger.info("Cleared all data and attributes.")
-
-    @lru_cache
+        
     def get_loc_names(self) -> set[str]:
         """Return all location names stored in Gov
 
