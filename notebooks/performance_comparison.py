@@ -6,7 +6,7 @@
 #       extension: .py
 #       format_name: percent
 #       format_version: '1.3'
-#       jupytext_version: 1.12.0
+#       jupytext_version: 1.13.0
 #   kernelspec:
 #     display_name: Python 3 (ipykernel)
 #     language: python
@@ -32,10 +32,19 @@ from compgen2 import Gov, Matcher, GovTestData, Preprocessing
 from compgen2.const import FILENAME_VL, FILENAME_GOV_TEST_SET
 from compgen2.testdata import sample_test_set_from_gov, Synthetic, get_accuracy
 
-#random.seed(1337)
+random.seed(1337)
 
 # %%
 data_root= Path("../data")
+
+# %%
+# settings for matcher
+matcher_params = {
+    "use_difflib": True,  # False will use levenshtein
+    "use_phonetic": True,
+    "max_cost": 3,
+    "search_kreis_first": True,
+}
 
 # %% [markdown]
 # ## Test sets
@@ -117,15 +126,14 @@ result_row = []
 # Test Set 1
 
 # %% tags=[]
-test_results = {}
 for name, test_set in vl_test_sets:
-    m = Matcher(gov)
-    print("Running", name)
+    m = Matcher(gov, **matcher_params)
+    print("Rsnunning", name)
     m.get_match_for_locations(test_set.location)
+    print(Counter(v["anchor_method"] for v in m.results.values()))
+    
     total_matches = len([match for match in m.results.values() if match.get("possible_matches")])
     print(f"Total matches: {total_matches} ({round(total_matches / test_set.location.nunique() * 100, 4)}%).")
-    print(Counter(m.anchor_method))
-    test_results[name] = m
     print()
     
     result_row.append(total_matches / test_set.location.nunique())
@@ -135,7 +143,7 @@ for name, test_set in vl_test_sets:
 
 # %% [markdown]
 # for name, test_set in gov_test_sets:
-#     m = Matcher(gov)
+#     m = Matcher(gov, **matcher_params)
 #     print("Running", name)
 #     m.get_match_for_locations(test_set.location)
 #     total_matches = len([match for match in m.results.values() if match.get("possible_matches")])
@@ -148,23 +156,18 @@ for name, test_set in vl_test_sets:
 #     result_row.append(total_matches / test_set.location.nunique())
 #     result_row.append(accuracy)
 
-# %%
-test_set = sample_test_set_from_gov(gov, size=test_set_size, num_parts=3, valid=1)
-m = Matcher(gov)
-m.get_match_for_locations(test_set.location)
-[(k,v) for k, v in m.results.items() if not v["possible_matches"]]
-
 # %% [markdown]
 # Test Set 3
 
 # %%
 for name, test_set in syn_test_sets:
-    m = Matcher(gov)
+    m = Matcher(gov, **matcher_params)
     print("Running", name)
     m.get_match_for_locations(test_set.location)
+    print(Counter(v["anchor_method"] for v in m.results.values()))
+    
     total_matches = len([match for match in m.results.values() if match.get("possible_matches")])
     print(f"Total matches: {total_matches} ({round(total_matches /  test_set.location.nunique() * 100, 4)}%).")
-    print(Counter(m.anchor_method))
     
     accuracy = get_accuracy(m.results, test_set)
     print("Accuracy (entries where all parts of truth are in possible matches):", round(accuracy, 4))
@@ -178,12 +181,14 @@ for name, test_set in syn_test_sets:
 
 # %%
 for name, test_set in gtd_test_sets:
-    m = Matcher(gov)
+    m = Matcher(gov, **matcher_params)
     print("Running", name)
     m.get_match_for_locations(test_set.location)
+    print(Counter(v["anchor_method"] for v in m.results.values()))
+    
+    
     total_matches = len([match for match in m.results.values() if match.get("possible_matches")])
     print(f"Total matches: {total_matches} ({round(total_matches /  test_set.location.nunique() * 100, 4)}%).")
-    print(Counter(m.anchor_method))
     
     accuracy = get_accuracy(m.results, test_set)
     print("Accuracy (entries where all parts of truth are in possible matches):", round(accuracy, 4))
@@ -235,12 +240,13 @@ gov.names_by_id = pnames_by_id
 
 # %%
 for name, test_set in vl_test_sets:
-    m = Matcher(gov)
+    m = Matcher(gov, **matcher_params)
     print("Running", name)
     m.get_match_for_locations(test_set.location)
+    print(Counter(v["anchor_method"] for v in m.results.values()))
+    
     total_matches = len([match for match in m.results.values() if match.get("possible_matches")])
     print(f"Total matches: {total_matches} ({round(total_matches / test_set.location.nunique() * 100, 4)}%).")
-    print(Counter(m.anchor_method))
     print()
     
     result_row.append(total_matches / test_set.location.nunique())
@@ -250,7 +256,7 @@ for name, test_set in vl_test_sets:
 
 # %% [markdown]
 # for name, test_set in gov_test_sets:
-#     m = Matcher(gov)
+#     m = Matcher(gov, **matcher_params)
 #     print("Running", name)
 #     m.get_match_for_locations(test_set.location)
 #     total_matches = len([match for match in m.results.values() if match.get("possible_matches")])
@@ -268,12 +274,13 @@ for name, test_set in vl_test_sets:
 
 # %%
 for name, test_set in syn_test_sets:
-    m = Matcher(gov)
+    m = Matcher(gov, **matcher_params)
     print("Running", name)
     m.get_match_for_locations(test_set.location)
+    print(Counter(v["anchor_method"] for v in m.results.values()))
+    
     total_matches = len([match for match in m.results.values() if match.get("possible_matches")])
     print(f"Total matches: {total_matches} ({round(total_matches /  test_set.location.nunique() * 100, 4)}%).")
-    print(Counter(m.anchor_method))
     
     accuracy = get_accuracy(m.results, test_set)
     print("Accuracy (entries where all parts of truth are in possible matches):", round(accuracy, 4))
@@ -287,12 +294,13 @@ for name, test_set in syn_test_sets:
 
 # %%
 for name, test_set in gtd_test_sets:
-    m = Matcher(gov)
+    m = Matcher(gov, **matcher_params)
     print("Running", name)
     m.get_match_for_locations(test_set.location)
+    print(Counter(v["anchor_method"] for v in m.results.values()))
+    
     total_matches = len([match for match in m.results.values() if match.get("possible_matches")])
     print(f"Total matches: {total_matches} ({round(total_matches /  test_set.location.nunique() * 100, 4)}%).")
-    print(Counter(m.anchor_method))
     
     accuracy = get_accuracy(m.results, test_set)
     print("Accuracy (entries where all parts of truth are in possible matches):", round(accuracy, 4))
@@ -323,7 +331,7 @@ for _, test_set in vl_test_sets + syn_test_sets + gtd_test_sets:
 
 # %%
 old_names = list(gov.ids_by_name.keys())
-new_names = Preprocessing.substitute_partial_words(pd.Series(new_names), data_root)
+new_names = Preprocessing.substitute_partial_words(pd.Series(old_names), data_root)
 new_names = Preprocessing.substitute_delete_words(pd.Series(new_names), data_root)
 new_names = Preprocessing.substitute_full_words(pd.Series(new_names), data_root)
 
@@ -345,22 +353,30 @@ gov.names_by_id = pnames_by_id
 
 # %%
 for name, test_set in vl_test_sets:
-    m = Matcher(gov)
+    m = Matcher(gov, **matcher_params)
     print("Running", name)
     m.get_match_for_locations(test_set.location)
+    print(Counter(v["anchor_method"] for v in m.results.values()))
+    
+    
     total_matches = len([match for match in m.results.values() if match.get("possible_matches")])
     print(f"Total matches: {total_matches} ({round(total_matches / test_set.location.nunique() * 100, 4)}%).")
-    print(Counter(m.anchor_method))
     print()
     
     result_row.append(total_matches / test_set.location.nunique())
+
+# %%
+vl_test_sets[0][1].location.head(10)
+
+# %%
+m.get_match_for_locations(["rott b. reisdingen"])
 
 # %% [markdown]
 # Test Set 2
 
 # %% [markdown]
 # for name, test_set in gov_test_sets:
-#     m = Matcher(gov)
+#     m = Matcher(gov, **matcher_params)
 #     print("Running", name)
 #     m.get_match_for_locations(test_set.location)
 #     total_matches = len([match for match in m.results.values() if match.get("possible_matches")])
@@ -378,12 +394,14 @@ for name, test_set in vl_test_sets:
 
 # %%
 for name, test_set in syn_test_sets:
-    m = Matcher(gov)
+    m = Matcher(gov, **matcher_params)
     print("Running", name)
     m.get_match_for_locations(test_set.location)
+    print(Counter(v["anchor_method"] for v in m.results.values()))
+    
+    
     total_matches = len([match for match in m.results.values() if match.get("possible_matches")])
     print(f"Total matches: {total_matches} ({round(total_matches /  test_set.location.nunique() * 100, 4)}%).")
-    print(Counter(m.anchor_method))
     
     accuracy = get_accuracy(m.results, test_set)
     print("Accuracy (entries where all parts of truth are in possible matches):", round(accuracy, 4))
@@ -397,12 +415,13 @@ for name, test_set in syn_test_sets:
 
 # %%
 for name, test_set in gtd_test_sets:
-    m = Matcher(gov)
+    m = Matcher(gov, **matcher_params)
     print("Running", name)
     m.get_match_for_locations(test_set.location)
+    print(Counter(v["anchor_method"] for v in m.results.values()))
+    
     total_matches = len([match for match in m.results.values() if match.get("possible_matches")])
     print(f"Total matches: {total_matches} ({round(total_matches /  test_set.location.nunique() * 100, 4)}%).")
-    print(Counter(m.anchor_method))
     
     accuracy = get_accuracy(m.results, test_set)
     print("Accuracy (entries where all parts of truth are in possible matches):", round(accuracy, 4))
@@ -429,7 +448,7 @@ for name, test_set in vl_test_sets + syn_test_sets + gtd_test_sets:
 final_results = pd.DataFrame(final_results, columns=names)
 
 # %%
-final_results["test set"] = ["Baseline", "Preprocessing VL (corrections + characters)",  "Preprocessing VL + Gov (corrections + characters)",  "Preprocessing VL + Gov (corrections + characters + substitution)"]
+final_results["test set"] = ["Baseline", "Preprocessing VL + Gov (corrections + characters)",  "Preprocessing VL + Gov (corrections + characters + substitution)"]
 
 # %%
 final_results = final_results.set_index("test set")
