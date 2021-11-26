@@ -38,7 +38,7 @@ class Matcher:
         search_kreis_first (bool): If True, searches for candidates in Kreis or higher first.
         results (dict): A dictionary containing the final results.
             Provides information about the found parts and the possible matches for each query.
-        
+
     """
 
     def __init__(
@@ -64,8 +64,8 @@ class Matcher:
         self.max_cost = max_cost
         self.search_kreis_first = search_kreis_first
         self.results = {}
-    
-        self.koelner_phonetic = Phonetic()        
+
+        self.koelner_phonetic = Phonetic()
         if self.use_phonetic:
             self.koelner_phonetic.build_phonetic_index(gov.get_loc_names())
 
@@ -95,7 +95,7 @@ class Matcher:
             self.results[location]["parts"][part] = {
                 "in_gov": in_gov,
                 "candidates": [part] if in_gov else [],
-                "anchor": True
+                "anchor": True,
             }
 
         matched_parts = [part for part in self.results[location]["parts"].values() if part["in_gov"]]
@@ -169,9 +169,9 @@ class Matcher:
                     self.results[location]["possible_matches"].append(match)
 
     def find_part_with_best_candidates(self, location: str, parts: tuple[str]) -> tuple[str, list[str]]:
-        if self.search_kreis_first:
+        if self.search_kreis_first and len(parts) > 1:
             for type_ids in [T_KREISUNDHOEHER, T_STADT]:
-                for cost in range(1, self.max_cost + 1):
+                for cost in range(1, 3 + 1):
                     for part in parts:
                         relevant_names = self.get_loc_names(type_ids)
                         candidates = self.get_matches(part, relevant_names, cost)
@@ -180,16 +180,17 @@ class Matcher:
                             self._set_anchor_method_for_location(location, f"KREISORSTADT | Cost {cost}")
                             return (part, candidates)
 
-        relevant_names = self.get_loc_names()
-
         if self.use_phonetic:
             for part in parts:
-                candidates = list(self.koelner_phonetic.names_by_phonetic.get(self.koelner_phonetic.encode(part), set()))
+                candidates = list(
+                    self.koelner_phonetic.names_by_phonetic.get(self.koelner_phonetic.encode(part), set())
+                )
 
                 if candidates:
                     self._set_anchor_method_for_location(location, f"Phonetic")
                     return (part, candidates)
 
+        relevant_names = self.get_loc_names()
         for cost in range(1, self.max_cost + 1):
             for part in parts:
                 candidates = self.get_matches(part, relevant_names, cost)
@@ -221,7 +222,7 @@ class Matcher:
             name,
             relevant_names,
             n=30,
-            cutoff=0.95 - (0.95 - 0.6) * (cost-1)/(self.max_cost-1),
+            cutoff=0.90 - (0.90 - 0.6) * (cost - 1) / (self.max_cost - 1),
         )
 
     def get_loc_names(self, type_ids: Optional[set[int]] = None) -> set[str]:
