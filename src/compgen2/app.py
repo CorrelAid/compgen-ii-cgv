@@ -125,9 +125,12 @@ def interactive_mode(data_root: str):
         m = Matcher(gov, **MATCHER_PARAMS)
         m.get_match_for_locations(location)
 
-        print("Here is the result for your query. The result was also copied to your clipboard.")
-        pc.copy(json.dumps(m.results))
+        print("Here is the result for your query.")
         pprint.pprint(m.results[location[0]])
+        
+        user_iput = input("Do you want the result to be copied to your clipboard (y|n)?\n")
+        if user_iput.lower() == 'y':
+            pc.copy(json.dumps(m.results))
         print()
 
 
