@@ -27,7 +27,16 @@ class Phonetic:
         self.RULES[re.compile(r"[CKQ][X].", re.I)]         = "8"
 
         self.SPECIAL_CHARACTER = re.compile(r"[^a-zäöüß\sà-ãè-ïò-õù-û]", re.I)
-
+        
+        self.names_by_phonetic = {}
+        
+    def build_phonetic_index(self, names: list[str]):
+        self.names_by_phonetic = collections.defaultdict(set)
+        for name in names:
+            self.names_by_phonetic[self.encode(name)] |= {name}
+        
+        self.names_by_phonetic.default_factory = None
+        
     def encode(self, inputstring: str) -> str:
         """
         Args:

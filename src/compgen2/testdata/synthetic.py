@@ -24,23 +24,29 @@ class Synthetic:
         self.m_shorten = Manipulator(self.shorten, "word", const_synthetic.P_SHORTEN)
         self.MANIPULATION_STEPS = [self.m_linotype, self.m_fractal, self.m_drop, self.m_shorten]
 
-    def create_synthetic_test_set(self, size: int) -> pd.DataFrame:
+    def create_synthetic_test_set(self, size: int, num_parts:int = 2, distortion_factor = 1.) -> pd.DataFrame:
         """
         Create a synthetic dataset based on the paths of the Gov object that has been loaded priorly.
         Args:
           size (int): number of synthetic records that get created
         """
-        paths_ids = list(self.gov.all_paths)[:size]
-        paths_names = [self.gov.decode_path_name(p) for p in paths_ids]
+        all_paths = list(self.gov.all_paths)
         test_set = {"location": [], "truth": []}
-        for p in paths_names:
-            location = self.create_location_from_path(p)
-            test_set["truth"].append(", ".join(location))
+        while len(test_set["location"]) < size:
+            p_id = random.choice(all_paths)
+            if len(p_id) < num_parts:
+                continue
+            p = self.gov.decode_path_name(p_id)
+            location = self.create_location_from_path(p, num_parts)
+            location_string = ", ".join(location)
+            if location_string in test_set["truth"]:
+                continue
+            test_set["truth"].append(location_string)
             
             location = self.shuffle_order(location)
             se = StringEnriched(", ".join(location))
             for m in self.MANIPULATION_STEPS:
-                se.apply_manipulator(m)
+                se.apply_manipulator(m, distortion_factor)
             test_set["location"].append(se.get_string())
 
         self.test_set = pd.DataFrame(test_set)
@@ -84,7 +90,7 @@ class Synthetic:
         fractal_dict.default_factory = None
         return fractal_dict
 
-    def create_location_from_path(self, p: tuple) -> list:
+    def create_location_from_path(self, p: tuple, num_parts: int = 2) -> list:
         """
         Picks two objects from a tuple (one in case of len(p)==1)
         Args:
@@ -92,11 +98,7 @@ class Synthetic:
         Returns
           locations: list
         """
-        locations = []
-        locations.append(random.choice(p[-2:]))
-        if len(p) > 1:
-            locations.append(random.choice(p[:-2]))
-        return locations
+        return random.sample(p, k=num_parts)
 
     def shuffle_order(self, l: list) -> list:
         """

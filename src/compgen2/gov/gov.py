@@ -158,15 +158,14 @@ class Gov:
         self.fully_initialized = False
 
         logger.info("Cleared all data and attributes.")
-
-    @lru_cache
+        
     def get_loc_names(self) -> set[str]:
         """Return all location names stored in Gov
 
         Returns:
             set[str]: set of names
         """
-        loc_names = set().union(*self.names_by_id.values())
+        loc_names = set(self.ids_by_name.keys())
         return loc_names
 
     def _read_item(self) -> pd.DataFrame:
