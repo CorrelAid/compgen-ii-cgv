@@ -18,7 +18,7 @@ Die notwendigen Daten können über den folgenden [Link](https://correlcloud.org
 Der Ordner `final_data` enthält die entsprechenden Datenbankauszüge sowie die Verlustliste und die Abkürzungslisten. Den gesamten Ordner als Archiv herunterladen und lokal entpacken. Der Pfad zu diesem Ordner wird als `data_root` für die verschiedenen Anwendungen gebraucht.
 
 ## Quickstart
-`compgen2` bietet für Anwender ein Kommandozeilen-Interface sowie Klassen, die im Code importiert werden können. Wir zeigen nachfolgend beide Anwendungsfälle.
+`compgen2` bietet für Anwender ein Kommandozeilen-Interface sowie Klassen, die im Code importiert werden können.
 
 ### `compgen2` über die Kommandozeile
 
@@ -45,6 +45,20 @@ Es stehen im Wesentlichen die Klassen `Gov`, `Matcher` und `Preprocessing` berei
 
 Die genaue Verwendung dieser Klassen zeigen die **showcase** notebooks.
 
+Die grundlegende Verwendung des Matching-Algorithmus sieht wie folgt aus:
+
+```Python
+from compgen2 import Gov, Matcher
+
+data_root = "data"
+gov = Gov(data_root)
+matcher = Matcher(gov)
+
+matcher.get_match_for_locations(["location1", "location2"])
+
+matcher.results
+```
+
 ## Matching Algorithmus
 Unser Algorithmus
 
@@ -55,7 +69,11 @@ Unser Algorithmus
 Alle während des Projektes gesammelten Erkenntnisse wurden im [GitHub Wiki](https://github.com/CorrelAid/compgen-ii-cgv/wiki) gesammelt.
 
 ## Notebooks
-...
+
+- `performance_comparison`: Enthält die Evaluierung unseres Ansatzes auf 3 verschiedenen Test Sets und berechnet die Metriken
+- `showcase_levenshtein`: Enthält eine Demo für die Anwendung der Levenshtein-Distanz zum Auffinden von Kandidaten für ein Wort aus einer Liste ähnlicher Wörter.
+- `showcase_matcher`: Enthält eine Demo für die Anwendung des Matching-Algorithmus zum Auffinden von möglichen Treffern für einen Ortsnamen im GOV.
+- `showcase_preprocessing`: Enthält eine Demo für die Anwendung des Preprocessings zum Verbessern der Auffindbarkeit von Ortsnamen im GOV.
 
 ## Für Entwickler
 ...

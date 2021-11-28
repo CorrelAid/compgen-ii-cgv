@@ -128,7 +128,6 @@ class Matcher:
                 candidates = self.get_matches(unmatched_part, relevant_names, self.max_cost)
                 self.results[location]["parts"][unmatched_part]["candidates"].extend(candidates)
                 
-
     def find_textual_id_for_location(self, location: str) -> None:
         """Find a textual id for given location name."""
 
@@ -241,14 +240,10 @@ class Matcher:
 
         # for each part, get all ids for all reachable nodes
         # then use only the intersection between different parts as search space
-        for i, part in enumerate(matched_parts):
+        for part in matched_parts:
             ids_for_name = self.gov.get_ids_by_names(self.get_part_candidates(location, part)) 
             ids_for_reachable_nodes = self.gov.get_reachable_nodes_by_id(ids_for_name)
-            
-            if i == 0:
-                relevant_ids = ids_for_reachable_nodes
-            else:
-                relevant_ids &= ids_for_reachable_nodes
+            relevant_ids.update(ids_for_reachable_nodes)
 
         return self.gov.get_names_by_ids(relevant_ids)
 
