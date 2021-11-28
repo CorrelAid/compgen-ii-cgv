@@ -95,10 +95,10 @@ class Matcher:
             self.results[location]["parts"][part] = {
                 "in_gov": in_gov,
                 "candidates": [part] if in_gov else [],
-                "anchor": in_gov
+                "anchor": in_gov,
             }
-        
-        matched_parts = [part for part in self.results[location]["parts"].values() if part["in_gov"]]
+
+        matched_parts = self.get_matched_parts(location)
         if len(matched_parts) == len(parts):
             self._set_anchor_method_for_location(location, "gov complete")
             return
@@ -118,21 +118,16 @@ class Matcher:
 
         # now check if there is still unmatched parts
         # and use the already matched part to get relevant names
-        unmatched_parts = [part for part in self.results[location]["parts"].values() if not part["candidates"]]
-        if unmatched_parts:
-            parts = self.results[location]["parts"]
-            relevant_names = set()
-            for matched_part in [
-                part for part, partdict in self.results[location]["parts"].items() if partdict["candidates"]
-            ]:
-                candidates = self.results[location]["parts"][matched_part]["candidates"]
-                relevant_names.update(self.get_relevant_names_from_part_candidates(candidates))
+        unmatched_parts = self.get_unmatched_parts(location)
+        matched_parts = self.get_matched_parts(location)
+        if unmatched_parts and matched_parts:
+            relevant_names = self.get_relevant_names_from_matched_parts(location)
             for unmatched_part in [
                 part for part, partdict in self.results[location]["parts"].items() if not partdict["candidates"]
             ]:
                 candidates = self.get_matches(unmatched_part, relevant_names, self.max_cost)
                 self.results[location]["parts"][unmatched_part]["candidates"].extend(candidates)
-                relevant_names.update(self.get_relevant_names_from_part_candidates(candidates))
+                
 
     def find_textual_id_for_location(self, location: str) -> None:
         """Find a textual id for given location name."""
@@ -150,7 +145,9 @@ class Matcher:
                 for ids in product(*ids_for_combination):
                     if len(ids) > 1:
                         # TODO: what to do if items exist in Gov but not the relationship?
-                        if not self.gov.all_reachable_nodes_by_id[ids[0]].issuperset(ids[1:]):
+                        highest_id = max(ids, key=lambda x: len(self.gov.all_reachable_nodes_by_id[x]))
+                        other_ids = {id_ for id_ in ids if id_ != highest_id}
+                        if not self.gov.all_reachable_nodes_by_id[highest_id].issuperset(other_ids):
                             continue
 
                     match = {}
@@ -169,17 +166,6 @@ class Matcher:
                     self.results[location]["possible_matches"].append(match)
 
     def find_part_with_best_candidates(self, location: str, parts: tuple[str]) -> tuple[str, list[str]]:
-        if self.search_kreis_first and len(parts) > 1:
-            for type_ids in [T_KREISUNDHOEHER, T_STADT]:
-                for cost in range(1, 2 + 1):
-                    for part in parts:
-                        relevant_names = self.get_loc_names(type_ids)
-                        candidates = self.get_matches(part, relevant_names, cost)
-
-                        if candidates:
-                            self._set_anchor_method_for_location(location, f"KREISORSTADT | Cost {cost}")
-                            return (part, candidates)
-
         if self.use_phonetic:
             for part in parts:
                 candidates = list(
@@ -189,6 +175,17 @@ class Matcher:
                 if candidates:
                     self._set_anchor_method_for_location(location, f"Phonetic")
                     return (part, candidates)
+                
+        if self.search_kreis_first:
+            for type_ids in [T_KREISUNDHOEHER, T_STADT]:
+                for cost in range(1, 3 + 1):
+                    for part in parts:
+                        relevant_names = self.get_loc_names(type_ids)
+                        candidates = self.get_matches(part, relevant_names, cost)
+
+                        if candidates:
+                            self._set_anchor_method_for_location(location, f"KREISORSTADT | Cost {cost}")
+                            return (part, candidates)
 
         relevant_names = self.get_loc_names()
         for cost in range(1, self.max_cost + 1):
@@ -234,14 +231,26 @@ class Matcher:
 
         return relevant_names
 
-    def get_relevant_names_from_part_candidates(self, candidates: list[str]) -> set[str]:
-        relevant_names = set()
-        if candidates:
-            ids_for_name = self.gov.get_ids_by_names(candidates)
-            ids_for_reachable_nodes = self.gov.get_reachable_nodes_by_id(ids_for_name)
-            relevant_names.update(self.gov.get_names_by_ids(ids_for_reachable_nodes))
+    def get_relevant_names_from_matched_parts(self, location: str) -> set[str]:
+        matched_parts = self.get_matched_parts(location)
+        
+        if not matched_parts:
+            return set()
+        
+        relevant_ids = set()
 
-        return relevant_names
+        # for each part, get all ids for all reachable nodes
+        # then use only the intersection between different parts as search space
+        for i, part in enumerate(matched_parts):
+            ids_for_name = self.gov.get_ids_by_names(self.get_part_candidates(location, part)) 
+            ids_for_reachable_nodes = self.gov.get_reachable_nodes_by_id(ids_for_name)
+            
+            if i == 0:
+                relevant_ids = ids_for_reachable_nodes
+            else:
+                relevant_ids &= ids_for_reachable_nodes
+
+        return self.gov.get_names_by_ids(relevant_ids)
 
     @staticmethod
     def get_query_parts(query: str) -> tuple[str]:
@@ -250,3 +259,12 @@ class Matcher:
 
     def _set_anchor_method_for_location(self, location: str, method: str):
         self.results[location]["anchor_method"] = method
+
+    def get_matched_parts(self, location: str) -> list[str]:
+        return [part for part, partdict in self.results[location]["parts"].items() if partdict["candidates"]]
+
+    def get_unmatched_parts(self, location: str) -> list[str]:
+        return [part for part, partdict in self.results[location]["parts"].items() if not partdict["candidates"]]
+    
+    def get_part_candidates(self, location, part) -> list[str]:
+        return self.results[location]["parts"][part]["candidates"]

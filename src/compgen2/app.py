@@ -65,17 +65,17 @@ def get_matches(locations: list[str], preprocessing: bool, data_root: str) -> di
 
     if preprocessing:
         print("Preprocessing location names...")
-        locations = Preprocessing.replace_characters_vl(locations)
-        locations = Preprocessing.replace_corrections_vl(locations)
-        locations = Preprocessing.substitute_partial_words(locations, data_root)
-        locations = Preprocessing.substitute_delete_words(locations, data_root)
-        locations = Preprocessing.substitute_full_words(locations, data_root)
+        locations = Preprocessing.replace_characters_vl(locations).str.strip()
+        locations = Preprocessing.replace_corrections_vl(locations).str.strip()
+        locations = Preprocessing.substitute_partial_words(locations, data_root).str.strip()
+        locations = Preprocessing.substitute_delete_words(locations, data_root).str.strip()
+        locations = Preprocessing.substitute_full_words(locations, data_root).str.strip()
 
         old_names = list(gov.ids_by_name.keys())
-        new_names = Preprocessing.replace_characters_gov(pd.Series(old_names, dtype=str))
-        new_names = Preprocessing.substitute_partial_words(pd.Series(new_names), data_root)
-        new_names = Preprocessing.substitute_delete_words(pd.Series(new_names), data_root)
-        new_names = Preprocessing.substitute_full_words(pd.Series(new_names), data_root)
+        new_names = Preprocessing.replace_characters_gov(pd.Series(old_names, dtype=str)).str.strip()
+        new_names = Preprocessing.substitute_partial_words(pd.Series(new_names), data_root).str.strip()
+        new_names = Preprocessing.substitute_delete_words(pd.Series(new_names), data_root).str.strip()
+        new_names = Preprocessing.substitute_full_words(pd.Series(new_names), data_root).str.strip()
 
         ids_by_pname = defaultdict(set)
         for old_name, new_name in zip(old_names, new_names):
