@@ -23,42 +23,40 @@ data_root = Path("../data")
 
 # %%
 # Lade verlustliste
-verlustliste = pd.read_parquet(data_root / const.FILENAME_VL)
+vl = pd.read_parquet(data_root / const.FILENAME_VL)
 
 
 # %%
-vl = verlustliste.copy()
-
-# %%
-vl.location = Preprocessing.replace_corrections_vl(vl.location)
-vl
-
-# %%
-vl.location = Preprocessing.replace_characters_vl(vl.location)
-vl
-
-# %%
-# all entries with abbreviations
-vl_abbreviations = vl[vl.location.str.contains("[A-Za-zäöüÄÖÜßẞ]+\.")]
-
-# testset
-testset = vl_abbreviations.sample(n=30, random_state=299).drop('loc_parts_count', axis=1)
+testset = pd.concat([vl[vl.location.str.contains("[A-Za-zäöüÄÖÜßẞ]+\.")].sample(n=12, random_state=10),
+                    vl[vl.location.str.contains("kr\.")].sample(n=3, random_state=10),
+                    vl[vl.location.str.contains("[\[{(]")].sample(n=5, random_state=10),
+                    vl[vl.location.str.contains(" verm.")].sample(n=2, random_state=10),
+                    vl[vl.location.str.contains(" nicht")].sample(n=3, random_state=10),
+                    vl[vl.location.str.contains("[#^]")].sample(n=2, random_state=10)]).drop(['loc_parts_count', 'loc_count'], axis=1).sample(frac=1, random_state=10).reset_index(drop=True)
 testset
 
 # %%
-testset['location_partial'] = Preprocessing.substitute_partial_words(testset['location'], data_root)
+testset['replace_corrs'] = Preprocessing.replace_corrections_vl(testset.location)
 testset
 
 # %%
-testset['location_delete'] = Preprocessing.substitute_delete_words(testset['location_partial'], data_root)
+testset['replace_chars'] = Preprocessing.replace_characters_vl(testset.replace_corrs)
 testset
 
 # %%
-testset['location_full'] = Preprocessing.substitute_full_words(testset['location_delete'], data_root)
+testset['subst_partial'] = Preprocessing.substitute_partial_words(testset['replace_chars'], data_root)
 testset
 
 # %%
-testset['location_i']= testset.location_full.replace(to_replace=" i\.", value=",", regex=True)
+testset['subst_delete'] = Preprocessing.substitute_delete_words(testset['subst_partial'], data_root)
+testset
+
+# %%
+testset['subst_full'] = Preprocessing.substitute_full_words(testset['subst_delete'], data_root)
+testset
+
+# %%
+testset['subst_i'] = testset.subst_full.replace(to_replace=" i\.", value=",", regex=True)
 testset
 
 # %%
