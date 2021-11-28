@@ -9,6 +9,8 @@ Das Python package kann mit dem folgenden Befehl installiert werden:
 $ pip install -r requirements.txt
 ```
 
+**TODO**: Daten aus nextcloud
+
 Danach steht das `compgen2` package bereit zur Nutzung.
 
 ## Quickstart
@@ -19,9 +21,18 @@ Danach steht das `compgen2` package bereit zur Nutzung.
 
 ### `compgen2` package
 
+## Matching Algorithmus
+Unser Algorithmus
+
+**TODO** Mural Bild hinzufügen
+
+## Erkenntnisse aus dem Projekt
+**TODO**  Verweis auf Wiki
 
 ## Notebooks
 ...
 
 ## Für Entwickler
 ...
+
+**TODO**: SQL

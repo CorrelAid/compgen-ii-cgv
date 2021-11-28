@@ -3,12 +3,20 @@ import json
 import pprint
 import textwrap
 from datetime import datetime
+from collections import defaultdict
 
 import pandas as pd
 import pyperclip as pc
 
 from compgen2.correction import Preprocessing
 from compgen2.gov import Gov, Matcher
+
+MATCHER_PARAMS = {
+    "use_difflib": True,
+    "use_phonetic": True,
+    "max_cost": 3,
+    "search_kreis_first": True,
+}
 
 
 def parse_args():
@@ -54,16 +62,35 @@ def get_matches(locations: list[str], preprocessing: bool, data_root: str) -> di
     gov = Gov(data_root)
     gov.load_data()
     gov.build_indices()
-    
+
     if preprocessing:
         print("Preprocessing location names...")
-        locations = Preprocessing.replace_characters_vl(locations)
-        locations = Preprocessing.replace_corrections_vl(locations)
-        locations = Preprocessing.substitute_partial_words(locations, data_root)
-        locations = Preprocessing.substitute_delete_words(locations, data_root)
-        locations = Preprocessing.substitute_full_words(locations, data_root)
+        locations = Preprocessing.replace_characters_vl(locations).str.strip()
+        locations = Preprocessing.replace_corrections_vl(locations).str.strip()
+        locations = Preprocessing.substitute_partial_words(locations, data_root).str.strip()
+        locations = Preprocessing.substitute_delete_words(locations, data_root).str.strip()
+        locations = Preprocessing.substitute_full_words(locations, data_root).str.strip()
 
-    m = Matcher(gov)
+        old_names = list(gov.ids_by_name.keys())
+        new_names = Preprocessing.replace_characters_gov(pd.Series(old_names, dtype=str)).str.strip()
+        new_names = Preprocessing.substitute_partial_words(pd.Series(new_names), data_root).str.strip()
+        new_names = Preprocessing.substitute_delete_words(pd.Series(new_names), data_root).str.strip()
+        new_names = Preprocessing.substitute_full_words(pd.Series(new_names), data_root).str.strip()
+
+        ids_by_pname = defaultdict(set)
+        for old_name, new_name in zip(old_names, new_names):
+            ids_by_pname[new_name] |= gov.ids_by_name[old_name]
+        ids_by_pname.default_factory = None
+        gov.ids_by_name = ids_by_pname
+
+        pnames_by_id = defaultdict(set)
+        for k, v in ids_by_pname.items():
+            for i in v:
+                pnames_by_id[i] |= {k}
+        pnames_by_id.default_factory = None
+        gov.names_by_id = pnames_by_id
+
+    m = Matcher(gov, **MATCHER_PARAMS)
     m.get_match_for_locations(locations)
 
     return m.results
@@ -95,7 +122,7 @@ def interactive_mode(data_root: str):
             location = Preprocessing.substitute_delete_words(location, data_root)
             location = Preprocessing.substitute_full_words(location, data_root)
 
-        m = Matcher(gov)
+        m = Matcher(gov, **MATCHER_PARAMS)
         m.get_match_for_locations(location)
 
         print("Here is the result for your query. The result was also copied to your clipboard.")
@@ -114,7 +141,7 @@ def main():
             locations = fh.read().splitlines()
         print(f"Processing {len(locations)} locations...")
         result = get_matches(locations, args.use_preprocessing, args.data_root)
-       
+
         output = f"{datetime.now().strftime('%Y_%m_%d_%H_%M_%S')}_compgen2.json"
         print(f"Results will be written to {output}.")
         with open(output, "w", encoding="utf-8") as fh:
