@@ -60,9 +60,8 @@ matcher.results
 ```
 
 ## Matching Algorithmus
-Unser Algorithmus
 
-**TODO** Mural Bild hinzufügen
+![](CompGenII_MatchingAlgorithmus.png)
 
 ## Erkenntnisse aus dem Projekt
 
