@@ -26,7 +26,7 @@
 # %%
 import pandas as pd
 import numpy as np
-from compgen2 import GOV, Matcher, const
+from compgen2 import Gov, Matcher, const
 from pathlib import Path
 import sys
 
@@ -35,7 +35,7 @@ import sys
 
 # %%
 data_root = "../data"
-gov = GOV(data_root)
+gov = Gov(data_root)
 
 # %% tags=[]
 gov.load_data()

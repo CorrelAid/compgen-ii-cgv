@@ -7,7 +7,7 @@
 #       extension: .py
 #       format_name: percent
 #       format_version: '1.3'
-#       jupytext_version: 1.11.4
+#       jupytext_version: 1.12.0
 #   kernelspec:
 #     display_name: Python 3 (ipykernel)
 #     language: python
@@ -21,13 +21,13 @@
 # %%
 import pandas as pd
 import numpy as np
-from compgen2 import GOV, Matcher, const, Phonetic
+from compgen2 import Gov, Matcher, const, Phonetic
 from pathlib import Path
 import sys
 
 # %%
 data_root = "../data"
-gov = GOV(data_root)
+gov = Gov(data_root)
 
 # %% tags=[]
 gov.load_data()
@@ -103,3 +103,17 @@ print(ph.encode("Trakirschken"))
 
 # %%
 print(ph.encode("Gr. Trakischken, Goldap"))
+
+# %% [markdown]
+# ### Achtung: Unicode, Fremdsprachen, Buchstabe H, unbekannte Laute
+# Alle folgenden vier Strings besitzen die selbse Codierung in der Kölner Phonetik, was überraschen mag. Das liegt an folgenden vier Gründen:
+# * H vor einem Vokal wird immer ignoriert
+# * Für Buchstaben-Kombinationen/Laute aus anderen Sprachen wie "ci" gibt es keine definierte Codierung in der Kölner Phonetik geben, da sie auf die deutsche Sprache optimiert ist. Diese Kombinmationen/Laute werden dann folglich ignoriert.
+# * Unbekannte (Unicode-)Zeichen wie ż weren ignoriert. Man kann unbekannte Zeichen stets eine der 8 Konsonanten-Laut-Gruppen der Kölner Phonetik zuordnen. Problem: Die Kölner Phonetik ist auf Deutsch optimiert und für Laute fremder Sprache mag es keine passende Gruppe geben.
+#
+
+# %%
+print(ph.encode("Aachen"))
+print(ph.encode("höggen")) ## Buchstabe H am Anfang
+print(ph.encode("okocim")) ## Unbekannter Laut in der Kölner Phonetik: "ci"
+print(ph.encode("žigoni")) ## Unbekannter Laut/Character in der Kölner Phonetik
