@@ -17,6 +17,8 @@ Die notwendigen Daten können über den folgenden [Link](https://correlcloud.org
 
 Der Ordner `final_data` enthält die entsprechenden Datenbankauszüge sowie die Verlustliste und die Abkürzungslisten. Den gesamten Ordner als Archiv herunterladen und lokal entpacken. Der Pfad zu diesem Ordner wird als `data_root` für die verschiedenen Anwendungen gebraucht.
 
+Die csv-Dateien `gov_a_{}.csv` können alternativ per [aktuellem Auszug](https://github.com/CorrelAid/compgen-ii-cgv/blob/main/sql/README_SQL.md) von der Datenbank erstellt werden.
+
 ## Quickstart
 `compgen2` bietet für Anwender ein Kommandozeilen-Interface sowie Klassen, die im Code importiert werden können.
 
@@ -67,6 +69,8 @@ matcher.results
 
 Alle während des Projektes gesammelten Erkenntnisse wurden im [GitHub Wiki](https://github.com/CorrelAid/compgen-ii-cgv/wiki) gesammelt.
 
+Unter anderem findet sich dort auch eine [Sammlung](https://github.com/CorrelAid/compgen-ii-cgv/wiki/21-Geschichtliches-Ortsverzeichnis--(Findings)) von Lücken, Unregelmäßigkeiten und Fehlern im GOV
+
 ## Notebooks
 
 - `performance_comparison`: Enthält die Evaluierung unseres Ansatzes auf 3 verschiedenen Test Sets und berechnet die Metriken
@@ -75,6 +79,5 @@ Alle während des Projektes gesammelten Erkenntnisse wurden im [GitHub Wiki](htt
 - `showcase_preprocessing`: Enthält eine Demo für die Anwendung des Preprocessings zum Verbessern der Auffindbarkeit von Ortsnamen im GOV.
 
 ## Für Entwickler
-...
-
-**TODO**: SQL
+### Aktueller Auszug GOV, SQL Dateien
+Für einen aktuellen Abzug aus dem GOV und einer Erklärung der SQL Dateien siehe [hier](https://github.com/CorrelAid/compgen-ii-cgv/blob/main/sql/README_SQL.md).

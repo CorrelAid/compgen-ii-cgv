@@ -1,3 +1,19 @@
+"""This module contains the Synthetic class.
+The class provides synthetic training data based on a gov-object.
+The main method is `create_synthetic_test_set()` whose output data is provided as a pandas data frame with two columns "location" and "truth".
+
+Examples:
+```Python
+# first, initialize the gov instance
+data_root = "../data"
+gov = Gov(data_root)
+gov.load_data()
+gov.build_indices()
+
+# now the synthetic class can be initialized
+syn = Synthetic(gov)
+```
+"""
 import random
 from collections import defaultdict
 
@@ -13,6 +29,42 @@ random.seed(1337)
 
 
 class Synthetic:
+    """
+    Main class to create a synthetic data in the style of the Verlustliste.
+
+    Attributes:
+        create_synthetic_test_set(int, int, float): Main method to create a pandas data frame of synthetic training data in the style of the Verlustliste.
+        create_location_from_path(tuple, int): Picks num_parts random entries from a tuple p.
+        shuffle_order(list, float): Shuffles the items of a list. The probability is taken from const_synthetic.py and multiplied by the distortion_factor.
+        shorten(string): Drop the last n characters of a word where n is randomly chosen. Insert a period after the remaining characters.
+        linotype(string): Replace a character with a random neighbouring character from the linotype keyboard.
+        fractal(string): Replace a character with a random character that looks similar in the fractal font.
+        drop(string): Returns the empty string. The class linguistic expects a callable type, so this method is used to actually remove a single character.
+
+    Example:
+    ```Python
+    # first, initialize the gov instance
+    data_root = "../data"
+    gov = Gov(data_root)
+    gov.load_data()
+    gov.build_indices()
+
+    # now the synthetic class can be initialized
+    syn = Synthetic(gov)
+    # Create a dataframe of 1000 rows of synthetic data.
+    create_synthetic_test_set(size=1000, num_parts=2, distortion_factor=1.)
+    # The parameter num_parts = 2 creates the truth string from two connected locations in the gov.
+    # The distortion factor 1. is a meta-factor by which all distortion-probabilities are multiplied by.
+    ```
+    This gives the following data frame:
+    ```
+    | - |location | truth |
+    | 0 | sargtns, schweizerische eidge. | sargans, schweizerische eidgenossenschaft |
+    | 1 | ritzenswnsch, frankfurt (oder) | frankfurt (oder), ritzenswunsch |
+    | 2 |preußen, krummkavel | preußen, krummkavel |
+    | ... | ... | ... |
+    ```
+    """
     def __init__(self, gov: Gov) -> None:
         self.gov = gov
         self.test_set = pd.DataFrame()
@@ -43,7 +95,7 @@ class Synthetic:
                 continue
             test_set["truth"].append(location_string)
             
-            location = self.shuffle_order(location)
+            location = self.shuffle_order(location, distortion_factor)
             se = StringEnriched(", ".join(location))
             for m in self.MANIPULATION_STEPS:
                 se.apply_manipulator(m, distortion_factor)
@@ -92,7 +144,7 @@ class Synthetic:
 
     def create_location_from_path(self, p: tuple, num_parts: int = 2) -> list:
         """
-        Picks two objects from a tuple (one in case of len(p)==1)
+        Picks num_parts random entries from a tuple p.
         Args:
           p: tuple
         Returns
@@ -100,13 +152,13 @@ class Synthetic:
         """
         return random.sample(p, k=num_parts)
 
-    def shuffle_order(self, l: list) -> list:
+    def shuffle_order(self, l: list, distortion_factor: float = 1.) -> list:
         """
         Shuffle a list of objects with a given probability P_SHUFFLE
         Args:
           l: list
         """
-        if random.random() < const_synthetic.P_SHUFFLE:
+        if random.random() < const_synthetic.P_SHUFFLE * distortion_factor:
             return l[::-1]
         else:
             return l
@@ -127,18 +179,21 @@ class Synthetic:
     def linotype(self, c: str) -> str:
         """
         Character-based.
+        Replace a character with a random character on the linotype keyboard.
         """
         return random.choice(list(self.lino_dict.get(c, {c})))  ## choose a random neighboured key
 
     def fractal(self, c: str) -> str:
         """
         Character-based.
+        Replace a character with a random character that looks similar in the fractal font.
         """
         return random.choice(list(self.fractal_dict.get(c, {c})))  ## choose a random similar letter
 
     def drop(self, _: str) -> str:
         """
         Character-based.
+        Returns the empty string. The class linguistic expects a callable type, so this method is used to actually remove a single character.
         """
         return ""
 
