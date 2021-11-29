@@ -78,7 +78,6 @@ Alle während des Projektes gesammelten Erkenntnisse wurden im [GitHub Wiki](htt
 - `showcase_preprocessing`: Enthält eine Demo für die Anwendung des Preprocessings zum Verbessern der Auffindbarkeit von Ortsnamen im GOV.
 
 ## Für Entwickler
-...
 ### Aktueller Auszug GOV
 Für einen aktuellen Abzug aus dem GOV verwendet man die [5 sql Dateien](https://github.com/CorrelAid/compgen-ii-cgv/tree/main/sql) `query_raw_{...}.sql`. Mit ihrer Hilfe werden die 5 csv Dateien `gov_a_{...}.csv` erstellt, die für die Initialisierung des Gov Objekts im data Ordner erwartet werden. Mit folgendem Befehl lässt sich das von der Kommando-Zeile aus erreichen:
 ```
