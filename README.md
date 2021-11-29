@@ -70,6 +70,8 @@ Unser Algorithmus
 
 Alle während des Projektes gesammelten Erkenntnisse wurden im [GitHub Wiki](https://github.com/CorrelAid/compgen-ii-cgv/wiki) gesammelt.
 
+Unter anderem findet sich dort auch eine [Sammlung](https://github.com/CorrelAid/compgen-ii-cgv/wiki/21-Geschichtliches-Ortsverzeichnis--(Findings)) von Lücken, Unregelmäßigkeiten und Fehlern im GOV
+
 ## Notebooks
 
 - `performance_comparison`: Enthält die Evaluierung unseres Ansatzes auf 3 verschiedenen Test Sets und berechnet die Metriken
