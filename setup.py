@@ -22,6 +22,7 @@ setup(
     install_requires=[
         "BeautifulSoup4",
         "html5lib",
+        "jupytext",
         "lxml",
         "numpy",
         "pandas",
