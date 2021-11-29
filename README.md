@@ -78,7 +78,7 @@ Unter anderem findet sich dort auch eine [Sammlung](https://github.com/CorrelAid
 - `showcase_matcher`: Enthält eine Demo für die Anwendung des Matching-Algorithmus zum Auffinden von möglichen Treffern für einen Ortsnamen im GOV.
 - `showcase_preprocessing`: Enthält eine Demo für die Anwendung des Preprocessings zum Verbessern der Auffindbarkeit von Ortsnamen im GOV.
 - `showcase_gov`: Enthält eine Sammlung von typischen Aufrufen mit der Gov Klasse
-- `showcase_koelner_phonetik`: Enthält eine und Einführung in die Kölner Phonetik mitsamt Schwächen und Stärken
+- `showcase_koelner_phonetik`: Enthält eine Einführung in die Kölner Phonetik mitsamt Beispielen ihrer Schwächen und Stärken
 - `showcase_synthetic`: Enthält Beispiel-Anwendungen der Synthetic Klasse
 
 ## Für Entwickler
