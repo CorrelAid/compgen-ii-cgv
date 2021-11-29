@@ -79,5 +79,6 @@ Unter anderem findet sich dort auch eine [Sammlung](https://github.com/CorrelAid
 - `showcase_preprocessing`: Enthält eine Demo für die Anwendung des Preprocessings zum Verbessern der Auffindbarkeit von Ortsnamen im GOV.
 
 ## Für Entwickler
+
 ### Aktueller Auszug GOV, SQL Dateien
 Für einen aktuellen Abzug aus dem GOV und einer Erklärung der SQL Dateien siehe [hier](https://github.com/CorrelAid/compgen-ii-cgv/blob/main/sql/README_SQL.md).
