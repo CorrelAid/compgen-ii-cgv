@@ -81,4 +81,4 @@ Unter anderem findet sich dort auch eine [Sammlung](https://github.com/CorrelAid
 
 ## Für Entwickler
 ### Aktueller Auszug GOV
-Für einen aktuellen Abzug aus dem GOV verwendet siehe [hier](https://github.com/CorrelAid/compgen-ii-cgv/blob/main/sql/README_SQL.md).
+Für einen aktuellen Abzug aus dem GOV folge dieser [Anleitung](https://github.com/CorrelAid/compgen-ii-cgv/blob/main/sql/README_SQL.md).
