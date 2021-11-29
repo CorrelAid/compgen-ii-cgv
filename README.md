@@ -17,7 +17,7 @@ Die notwendigen Daten können über den folgenden [Link](https://correlcloud.org
 
 Der Ordner `final_data` enthält die entsprechenden Datenbankauszüge sowie die Verlustliste und die Abkürzungslisten. Den gesamten Ordner als Archiv herunterladen und lokal entpacken. Der Pfad zu diesem Ordner wird als `data_root` für die verschiedenen Anwendungen gebraucht.
 
-Die csv-Dateien `gov_a_{}.csv` können alternativ per aktuellem Auszug von der Datenbank erstellt werden, siehe [Aktueller Auszug GOV](#aktueller-auszug-gov)
+Die csv-Dateien `gov_a_{}.csv` können alternativ per [aktuellem Auszug](https://github.com/CorrelAid/compgen-ii-cgv/blob/main/sql/README_SQL.md) von der Datenbank erstellt werden.
 
 ## Quickstart
 `compgen2` bietet für Anwender ein Kommandozeilen-Interface sowie Klassen, die im Code importiert werden können.
@@ -81,8 +81,4 @@ Unter anderem findet sich dort auch eine [Sammlung](https://github.com/CorrelAid
 
 ## Für Entwickler
 ### Aktueller Auszug GOV
-Für einen aktuellen Abzug aus dem GOV verwendet man die [5 sql Dateien](https://github.com/CorrelAid/compgen-ii-cgv/tree/main/sql) `query_raw_{...}.sql`. Mit ihrer Hilfe werden die 5 csv Dateien `gov_a_{...}.csv` erstellt, die für die Initialisierung des Gov Objekts im data Ordner erwartet werden. Mit folgendem Befehl lässt sich das von der Kommando-Zeile aus erreichen:
-```
-mysql -N -h 168.119.177.101 -u gov -PASSWORD gov < query_raw_xyz.sql > gov_a_xyz.csv
-```
-PASSWORD muss durch das entsprechende Passwort ersetzt werden. Der Parameter `-N` ist notwendig, um die Spaltenüberschriften zu unterdrücken.
+Für einen aktuellen Abzug aus dem GOV verwendet siehe [hier](https://github.com/CorrelAid/compgen-ii-cgv/blob/main/sql/README_SQL.md).
