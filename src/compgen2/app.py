@@ -130,7 +130,7 @@ def interactive_mode(data_root: str):
         
         user_iput = input("Do you want the result to be copied to your clipboard (y|n)?\n")
         if user_iput.lower() == 'y':
-            pc.copy(json.dumps(m.results))
+            pc.copy(json.dumps(m.results, ensure_ascii=False))
         print()
 
 
@@ -148,7 +148,7 @@ def main():
         output = f"{datetime.now().strftime('%Y_%m_%d_%H_%M_%S')}_compgen2.json"
         print(f"Results will be written to {output}.")
         with open(output, "w", encoding="utf-8") as fh:
-            json.dump(result, fh)
+            json.dump(result, fh, ensure_ascii=False)
 
 
 if __name__ == "__main__":
