@@ -82,3 +82,7 @@ Unter anderem findet sich dort auch eine [Sammlung](https://github.com/CorrelAid
 
 ### Aktueller Auszug GOV, SQL Dateien
 Für einen aktuellen Abzug aus dem GOV und einer Erklärung der SQL Dateien siehe [hier](https://github.com/CorrelAid/compgen-ii-cgv/blob/main/sql/README_SQL.md).
+
+### Arbeiten mit Notebooks dank jupytext
+
+Wir verwenden [jupytext](https://github.com/mwouts/jupytext), um Notebooks in `.ipynb` und `.py` Format zu synchronisieren.
