@@ -17,7 +17,7 @@ Die notwendigen Daten können über den folgenden [Link](https://correlcloud.org
 
 Der Ordner `final_data` enthält die entsprechenden Datenbankauszüge sowie die Verlustliste und die Abkürzungslisten. Den gesamten Ordner als Archiv herunterladen und lokal entpacken. Der Pfad zu diesem Ordner wird als `data_root` für die verschiedenen Anwendungen gebraucht.
 
-Die csv-Dateien gov_a_{}.csv können alternativ per aktuellem Auszug von der Datenbank erstellt werden, siehe [Aktueller Auszug GOV](#aktueller-auszug-gov)
+Die csv-Dateien `gov_a_{}.csv` können alternativ per aktuellem Auszug von der Datenbank erstellt werden, siehe [Aktueller Auszug GOV](#aktueller-auszug-gov)
 
 ## Quickstart
 `compgen2` bietet für Anwender ein Kommandozeilen-Interface sowie Klassen, die im Code importiert werden können.
