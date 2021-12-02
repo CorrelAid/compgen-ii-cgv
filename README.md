@@ -93,3 +93,11 @@ Für einen aktuellen Abzug aus dem GOV und einer Erklärung der SQL Dateien sieh
 ### Arbeiten mit Notebooks dank jupytext
 
 Wir verwenden [jupytext](https://github.com/mwouts/jupytext), um Notebooks in `.ipynb` und `.py` Format zu synchronisieren.
+
+## License information
+
+### Code
+
+![](https://camo.githubusercontent.com/78f47a09877ba9d28da1887a93e5c3bc2efb309c1e910eb21135becd2998238a/68747470733a2f2f696d672e736869656c64732e696f2f62616467652f4c6963656e73652d4d49542d79656c6c6f772e737667)
+
+The code is licensed by CorrelAid e.V. under a MIT License. Please see LICENSE.md for more detailed information.
