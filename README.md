@@ -21,7 +21,7 @@ Die notwendigen Daten können über den folgenden [Link](https://correlcloud.org
 
 Der Ordner `final_data` enthält die entsprechenden Datenbankauszüge sowie die Verlustliste und die Abkürzungslisten. Den gesamten Ordner als Archiv herunterladen und lokal entpacken. Der Pfad zu diesem Ordner wird als `data_root` für die verschiedenen Anwendungen gebraucht.
 
-Die csv-Dateien `gov_a_{}.csv` können alternativ per [aktuellem Auszug](https://github.com/CorrelAid/compgen-ii-cgv/blob/main/sql/README_SQL.md) von der Datenbank erstellt werden.
+Die csv-Dateien `gov_a_{}.csv` können alternativ per [aktuellem Auszug](https://github.com/CorrelAid/compgen-ii-cgv/blob/main/sql/README_DB.md) von der Datenbank erstellt werden.
 
 ## Quickstart
 `compgen2` bietet für Anwender ein Kommandozeilen-Interface sowie Klassen, die im Code importiert werden können.
@@ -88,7 +88,7 @@ Unter anderem findet sich dort auch eine [Sammlung](https://github.com/CorrelAid
 ## Für Entwickler
 
 ### Aktueller Auszug GOV, SQL Dateien
-Für einen aktuellen Abzug aus dem GOV und einer Erklärung der SQL Dateien siehe [hier](https://github.com/CorrelAid/compgen-ii-cgv/blob/main/sql/README_SQL.md).
+Für einen aktuellen Abzug aus dem GOV und einer Erklärung der SQL Dateien siehe [hier](https://github.com/CorrelAid/compgen-ii-cgv/blob/main/sql/README_DB.md).
 
 ### Arbeiten mit Notebooks dank jupytext
 
